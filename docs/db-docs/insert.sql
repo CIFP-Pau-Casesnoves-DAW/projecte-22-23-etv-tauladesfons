@@ -85,3 +85,38 @@ INSERT INTO `MUNICIPIS` (`ID_MUNICIPI`, `NOM_MUNICIPI`) VALUES
 	(65, 'Son Servera'),
 	(66, 'Valldemossa'),
 	(67, 'Vilafranca de Bonany');
+
+INSERT INTO `VACANCES` (`ID_VACANCES`, `NOM_VACANCES`) VALUES
+	(1, 'Platja'),
+	(2, 'Muntanya'),
+	(3, 'Urbà'),
+	(4, 'Rural'),
+	(5, 'Cultural');
+
+INSERT INTO `TRADUCCIO_VACANCES` (`FK_ID_VACANCES`, `FK_ID_IDIOMA`, `TRADUCCIO_VAC`) VALUES
+	(1, 1, 'Playa'),
+	(1, 2, 'Platja'),
+	(1, 3, 'Beach'),
+	(2, 1, 'Montaña'),
+	(2, 2, 'Muntanya'),
+	(2, 3, 'Mountain'),
+	(3, 1, 'Urbano'),
+	(3, 2, 'Urbà'),
+	(3, 3, 'Urban'),
+	(4, 1, 'Rural'),
+	(4, 2, 'Rural'),
+	(4, 3, 'Rural'),
+	(5, 1, 'Cultural'),
+	(5, 2, 'Cultural'),
+	(5, 3, 'Cultural');
+
+INSERT INTO `USUARIS` (`ID_USUARI`, `DNI`, `NOM_COMPLET`, `CORREU_ELECTRONIC`, `CONTRASENYA`, `TELEFON`, `ADMINISTRADOR`) VALUES
+	(1, '11111111A', 'Joan Toni Ramon Crespí', 'joanantoniramon@paucasesnovescifp.cat', 'joantoni1234', '666555444', TRUE),
+	(2, '22222222B', 'Jaume Truyols Sosa', 'jaumetruyols@paucasesnovescifp.cat', 'jaume1234', '666333222', FALSE),
+	(3, '33333333C', 'Isaac Palou Gijón', 'isaacpalou@paucasesnovescifp.cat', 'isaac1234', '666111999', TRUE),
+	(4 '44444444D', 'Maria Ferrer Bleda', 'mariamargalidaferrer@paucasesnovescifp.cat', 'maria1234', '666888777' FALSE);
+
+INSERT INTO `ALLOTJAMENTS` (`ID_ALLOTJAMENT`,`NOM_COMERCIAL`, `NUM_REGISTRE`, `DESCRIPCIO`, `LLITS`, `PERSONES`, `BANYS`,
+							`FOTOGRAFIES`, `ADREÇA`, `DESTACAT`, `VALORACIO_GLOBAL`, `FK_ID_MUNICIPI`, `FK_ID_TIPUS`,
+							`FK_ID_SERVEI`, `FK_ID_VACANCES`, `FK_ID_CATEGORIA`, `FK_ID_USUARI`) VALUES
+	();
