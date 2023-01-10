@@ -16,7 +16,51 @@ INSERT INTO `TIPUS`(`NOM_TIPUS`) VALUES
 	('Bar'),
 	('Gimnas'),
 	('Spa');
+INSERT INTO `SERVEIS`(`ID_SERVEI`,`NOM_SERVEI`) VALUES
+	(1,'Platja'),
+	(2,'Jardí'),
+	(3,'Wifi'),
+	(4,'Ascensor');
+INSERT INTO `VACANCES` (`ID_VACANCES`, `NOM_VACANCES`) VALUES
+	(1, 'Platja'),
+	(2, 'Muntanya'),
+	(3, 'Urbà'),
+	(4, 'Rural'),
+	(5, 'Cultural');
 
+INSERT INTO `TRADUCCIO_TIPUS`(`FK_ID_TIPUS`,`FK_ID_IDIOMA`,`TRADUCCIO_TIPUS`) VALUES
+	(1,1,'Hotel'),(1,2,'Hotel'),(1,3,'Hotel'),
+	(2,1, 'Apartamento'),(2,2,'Apartament'),(2,3,'Apartment'),
+	(3,1,'Casa Rural'),(3,2,'Casa Rural'),(3,3,'Cottage'),
+	(4,1,'Hostal'),(4,2, 'Hostal'),(4,3,'Hostel'),
+	(5,1,'Cámping'),(5,2,'Campament'),(5,3,'Camping'),
+	(6,1,'Piscina'),(5,2,'Piscina'),(6,3,'Swimming pool'),
+	(7,1,'Restaurante'),(7,2,'Restaurant'),(7,3,'Restaurant'),
+	(8,1,'Bar'),(8,2,'Bar'),(8,3,'Pub'),
+	(9,1,'Gimnasio'),(9,2,'Gimnas'),(9,3,'Gym'),
+	(10,1,'Spa'),(10,2,'Spa'),(10,3,'Spa');
+
+INSERT INTO `TRADUCCIO_VACANCES` (`FK_ID_VACANCES`, `FK_ID_IDIOMA`, `TRADUCCIO_VAC`) VALUES
+	(1, 1, 'Playa'),
+	(1, 2, 'Platja'),
+	(1, 3, 'Beach'),
+	(2, 1, 'Montaña'),
+	(2, 2, 'Muntanya'),
+	(2, 3, 'Mountain'),
+	(3, 1, 'Urbano'),
+	(3, 2, 'Urbà'),
+	(3, 3, 'Urban'),
+	(4, 1, 'Rural'),
+	(4, 2, 'Rural'),
+	(4, 3, 'Rural'),
+	(5, 1, 'Cultural'),
+	(5, 2, 'Cultural'),
+	(5, 3, 'Cultural');
+INSERT INTO `TRADUCCIO_SERVEIS`(`FK_ID_SERVEI`,`FK_ID_IDIOMA`,`TRADUCCIO_SERVEI`) VALUES
+	(1,1,'Playa'),(1,2,'Platja'),(1,3,'Beach'),
+	(2,1, 'Jardín'),(2,2,'Jardí'),(2,3,'Garden'),
+	(3,1,'WiFi'),(3,2,'WiFi'),(3,3,'WiFi'),
+	(4,1,'Ascensor'),(4,2, 'Ascensor'),(4,3,'Lift');
 INSERT INTO `MUNICIPIS` (`ID_MUNICIPI`, `NOM_MUNICIPI`) VALUES
 	(1, 'Alaior'),
 	(2, 'Alaró'),
@@ -86,37 +130,16 @@ INSERT INTO `MUNICIPIS` (`ID_MUNICIPI`, `NOM_MUNICIPI`) VALUES
 	(66, 'Valldemossa'),
 	(67, 'Vilafranca de Bonany');
 
-INSERT INTO `VACANCES` (`ID_VACANCES`, `NOM_VACANCES`) VALUES
-	(1, 'Platja'),
-	(2, 'Muntanya'),
-	(3, 'Urbà'),
-	(4, 'Rural'),
-	(5, 'Cultural');
-
-INSERT INTO `TRADUCCIO_VACANCES` (`FK_ID_VACANCES`, `FK_ID_IDIOMA`, `TRADUCCIO_VAC`) VALUES
-	(1, 1, 'Playa'),
-	(1, 2, 'Platja'),
-	(1, 3, 'Beach'),
-	(2, 1, 'Montaña'),
-	(2, 2, 'Muntanya'),
-	(2, 3, 'Mountain'),
-	(3, 1, 'Urbano'),
-	(3, 2, 'Urbà'),
-	(3, 3, 'Urban'),
-	(4, 1, 'Rural'),
-	(4, 2, 'Rural'),
-	(4, 3, 'Rural'),
-	(5, 1, 'Cultural'),
-	(5, 2, 'Cultural'),
-	(5, 3, 'Cultural');
-
 INSERT INTO `USUARIS` (`ID_USUARI`, `DNI`, `NOM_COMPLET`, `CORREU_ELECTRONIC`, `CONTRASENYA`, `TELEFON`, `ADMINISTRADOR`) VALUES
 	(1, '11111111A', 'Joan Toni Ramon Crespí', 'joanantoniramon@paucasesnovescifp.cat', 'joantoni1234', '666555444', TRUE),
-	(2, '22222222B', 'Jaume Truyols Sosa', 'jaumetruyols@paucasesnovescifp.cat', 'jaume1234', '666333222', FALSE),
+	(2, '22222222B', 'Jaume Truyols Sosa', 'jaumetruyols@paucasesnovescifp.cat', 'jaume1234', '666333222', TRUE),
 	(3, '33333333C', 'Isaac Palou Gijón', 'isaacpalou@paucasesnovescifp.cat', 'isaac1234', '666111999', TRUE),
-	(4 '44444444D', 'Maria Ferrer Bleda', 'mariamargalidaferrer@paucasesnovescifp.cat', 'maria1234', '666888777' FALSE);
+	(4 '44444444D', 'Maria Ferrer Bleda', 'mariamargalidaferrer@paucasesnovescifp.cat', 'maria1234', '666888777' TRUE);
 
-INSERT INTO `ALLOTJAMENTS` (`ID_ALLOTJAMENT`,`NOM_COMERCIAL`, `NUM_REGISTRE`, `DESCRIPCIO`, `LLITS`, `PERSONES`, `BANYS`,
-							`FOTOGRAFIES`, `ADREÇA`, `DESTACAT`, `VALORACIO_GLOBAL`, `FK_ID_MUNICIPI`, `FK_ID_TIPUS`,
-							`FK_ID_SERVEI`, `FK_ID_VACANCES`, `FK_ID_CATEGORIA`, `FK_ID_USUARI`) VALUES
+INSERT INTO `CATEGORIA`(`ID_CATEGORIA`,`NOM_CATEGORIA`,`TARIFA`) VALUES
+	(1,'Luxe',FALSE),
+	(2,'Normal',FALSE),
+	(3,'Basica',FALSE);
+
+INSERT INTO `ALLOTJAMENTS` (`ID_ALLOTJAMENT`,`NOM_COMERCIAL`, `NUM_REGISTRE`, `DESCRIPCIO`, `LLITS`, `PERSONES`, `BANYS`,`FOTOGRAFIES`, `ADREÇA`, `DESTACAT`, `VALORACIO_GLOBAL`, `FK_ID_MUNICIPI`, `FK_ID_TIPUS`,`FK_ID_SERVEI`, `FK_ID_VACANCES`, `FK_ID_CATEGORIA`, `FK_ID_USUARI`) VALUES
 	();
