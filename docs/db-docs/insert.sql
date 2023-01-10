@@ -142,4 +142,4 @@ INSERT INTO `CATEGORIA`(`ID_CATEGORIA`,`NOM_CATEGORIA`,`TARIFA`) VALUES
 	(3,'Basica',FALSE);
 
 INSERT INTO `ALLOTJAMENTS` (`ID_ALLOTJAMENT`,`NOM_COMERCIAL`, `NUM_REGISTRE`, `DESCRIPCIO`, `LLITS`, `PERSONES`, `BANYS`,`FOTOGRAFIES`, `ADREÇA`, `DESTACAT`, `VALORACIO_GLOBAL`, `FK_ID_MUNICIPI`, `FK_ID_TIPUS`,`FK_ID_SERVEI`, `FK_ID_VACANCES`, `FK_ID_CATEGORIA`, `FK_ID_USUARI`) VALUES
-	();
+	(1,ProvaAllotjament1,'provaA123','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec dictum nibh. Nunc blandit porta urna et finibus. Aenean at purus tristique, accumsan augue vel, accumsan tortor.',3,6,2,);
