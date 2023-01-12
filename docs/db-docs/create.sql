@@ -1,160 +1,179 @@
--- Active: 1671469511724@@127.0.0.1@3306@etvdb
-DROP DATABASE IF EXISTS ETVDB;
-CREATE DATABASE IF NOT EXISTS ETVDB; 
+drop database if exists ETVDB;
+create database if not exists ETVDB;
 
-USE ETVDB;
+use ETVDB;
 
-CREATE TABLE `IDIOMES`(
-    `ID_IDIOMA` INT NOT NULL AUTO_INCREMENT,
-    `NOM_IDIOMA` VARCHAR(50) NOT NULL,
-    PRIMARY KEY(`ID_IDIOMA`)
-); 
-
-CREATE TABLE `TIPUS`(
-    `ID_TIPUS` INT NOT NULL AUTO_INCREMENT,
-    `NOM_TIPUS` VARCHAR(50) NOT NULL,
-    PRIMARY KEY(`ID_TIPUS`)
-); 
-
-CREATE TABLE `SERVEIS`(
-    `ID_SERVEI` INT NOT NULL AUTO_INCREMENT,
-    `NOM_SERVEI` VARCHAR(50) NOT NULL,
-    PRIMARY KEY(`ID_SERVEI`)
-); 
-
-CREATE TABLE `VACANCES`(
-    `ID_VACANCES` INT NOT NULL AUTO_INCREMENT,
-    `NOM_VACANCES` VARCHAR(50) NOT NULL,
-    PRIMARY KEY(`ID_VACANCES`)
-); 
-
-CREATE TABLE `TRADUCCIO_TIPUS`(
-    `FK_ID_TIPUS` INT NOT NULL,
-    `FK_ID_IDIOMA` INT NOT NULL,
-    `TRADUCCIO_TIPUS` VARCHAR(50) NOT NULL,
-    PRIMARY KEY(`FK_ID_TIPUS`, `FK_ID_IDIOMA`),
-    FOREIGN KEY(`FK_ID_TIPUS`) REFERENCES `TIPUS`(`ID_TIPUS`),
-    FOREIGN KEY(`FK_ID_IDIOMA`) REFERENCES `IDIOMES`(`ID_IDIOMA`)
-); 
-
-CREATE TABLE `TRADUCCIO_VACANCES`(
-    `FK_ID_VACANCES` INT NOT NULL,
-    `FK_ID_IDIOMA` INT NOT NULL,
-    `TRADUCCIO_VAC` VARCHAR(50) NOT NULL,
-    PRIMARY KEY(`FK_ID_VACANCES`, `FK_ID_IDIOMA`),
-    FOREIGN KEY(`FK_ID_VACANCES`) REFERENCES `VACANCES`(`ID_VACANCES`),
-    FOREIGN KEY(`FK_ID_IDIOMA`) REFERENCES `IDIOMES`(`ID_IDIOMA`)
-); 
-
-CREATE TABLE `TRADUCCIO_SERVEIS`(
-    `FK_ID_SERVEI` INT NOT NULL,
-    `FK_ID_IDIOMA` INT NOT NULL,
-    `TRADUCCIO_SERVEI` VARCHAR(50) NOT NULL,
-    PRIMARY KEY(`FK_ID_SERVEI`, `FK_ID_IDIOMA`),
-    FOREIGN KEY(`FK_ID_SERVEI`) REFERENCES `SERVEIS`(`ID_SERVEI`),
-    FOREIGN KEY(`FK_ID_IDIOMA`) REFERENCES `IDIOMES`(`ID_IDIOMA`)
-); 
-
-CREATE TABLE `MUNICIPIS`(
-    `ID_MUNICIPI` INT NOT NULL AUTO_INCREMENT,
-    `NOM_MUNICIPI` VARCHAR(50) NOT NULL,
-    PRIMARY KEY(`ID_MUNICIPI`)
-); 
-
-CREATE TABLE `USUARIS`(
-    `ID_USUARI` INT NOT NULL AUTO_INCREMENT,
-    `DNI` VARCHAR(9) NOT NULL,
-    `NOM_COMPLET` VARCHAR(50) NOT NULL,
-    `CORREU_ELECTRONIC` VARCHAR(50) NOT NULL,
-    `CONTRASENYA` VARCHAR(50) NOT NULL,
-    `TELEFON` VARCHAR(9) NOT NULL,
-    `ADMINISTRADOR` BOOLEAN NOT NULL,
-    PRIMARY KEY(`ID_USUARI`)
-); 
-
-CREATE TABLE `CATEGORIA`(
-    `ID_CATEGORIA` INT NOT NULL AUTO_INCREMENT,
-    `NOM_CATEGORIA` VARCHAR(50) NOT NULL,
-    `TARIFA` FLOAT NOT NULL,
-    PRIMARY KEY(`ID_CATEGORIA`)
-); 
-
-CREATE TABLE `ALLOTJAMENTS`(
-    `ID_ALLOTJAMENT` INT NOT NULL AUTO_INCREMENT,
-    `NOM_COMERCIAL` VARCHAR(50) NOT NULL,
-    `NUM_REGISTRE` VARCHAR(50) NOT NULL,
-    `DESCRIPCIO` VARCHAR(500) NOT NULL,
-    `LLITS` INT NOT NULL,
-    `PERSONES` INT NOT NULL,
-    `BANYS` INT NOT NULL,
-    `FOTOGRAFIES` VARCHAR(50) NOT NULL,
-    `ADREÇA` VARCHAR(50) NOT NULL,
-    `DESTACAT` BOOLEAN NOT NULL,
-    `VALORACIO_GLOBAL` INT NOT NULL,
-    `FK_ID_MUNICIPI` INT NOT NULL,
-    `FK_ID_TIPUS` INT NOT NULL,
-    `FK_ID_VACANCES` INT NOT NULL,
-    `FK_ID_CATEGORIA` INT NOT NULL,
-    `FK_ID_USUARI` INT NOT NULL,
-    PRIMARY KEY(`ID_ALLOTJAMENT`),
-    FOREIGN KEY(`FK_ID_MUNICIPI`) REFERENCES `MUNICIPIS`(`ID_MUNICIPI`),
-    FOREIGN KEY(`FK_ID_TIPUS`) REFERENCES `TIPUS`(`ID_TIPUS`),
-    FOREIGN KEY(`FK_ID_VACANCES`) REFERENCES `VACANCES`(`ID_VACANCES`),
-    FOREIGN KEY(`FK_ID_CATEGORIA`) REFERENCES `CATEGORIA`(`ID_CATEGORIA`),
-    FOREIGN KEY(`FK_ID_USUARI`) REFERENCES `USUARIS`(`ID_USUARI`)
-); 
-
-CREATE TABLE `RESERVA`(
-    `ID_RESERVA` INT NOT NULL AUTO_INCREMENT,
-    `FK_ID_USUARI` INT NOT NULL,
-    `FK_ID_ALLOTJAMENT` INT NOT NULL,
-    `DATA_INICIAL` DATE NOT NULL,
-    `DATA_FINAL` DATE NOT NULL,
-    `CONFIRMADA` BOOLEAN NOT NULL,
-    PRIMARY KEY(`ID_RESERVA`),
-    FOREIGN KEY(`FK_ID_USUARI`) REFERENCES `USUARIS` (`ID_USUARI`),
-    FOREIGN KEY(`FK_ID_ALLOTJAMENT`) REFERENCES `ALLOTJAMENTS` (`ID_ALLOTJAMENT`)
-); 
-
-CREATE TABLE `COMENTARIS`(
-    `ID_COMENTARI` INT NOT NULL AUTO_INCREMENT,
-    `DESCRIPCIO` VARCHAR(500) NOT NULL,
-    `DATA` DATE NOT NULL,
-    `HORA` TIME NOT NULL,
-    `FK_ID_USUARI` INT NOT NULL,
-    `FK_ID_ALLOTJAMENT` INT NOT NULL,
-    PRIMARY KEY(`ID_COMENTARI`),
-    FOREIGN KEY(`FK_ID_USUARI`) REFERENCES `USUARIS`(`ID_USUARI`),
-    FOREIGN KEY(`FK_ID_ALLOTJAMENT`) REFERENCES `ALLOTJAMENTS`(`ID_ALLOTJAMENT`)
-); 
-
-CREATE TABLE `VALORACIONS`(
-    `ID_VALORACIO` INT NOT NULL AUTO_INCREMENT,
-    `PUNTUACIO` INT NOT NULL,
-    `FK_ID_USUARI` INT NOT NULL,
-    `FK_ID_ALLOTJAMENT` INT NOT NULL,
-    PRIMARY KEY(`ID_VALORACIO`),
-    FOREIGN KEY(`FK_ID_USUARI`) REFERENCES `USUARIS`(`ID_USUARI`),
-    FOREIGN KEY(`FK_ID_ALLOTJAMENT`) REFERENCES `ALLOTJAMENTS`(`ID_ALLOTJAMENT`)
-); 
-
-CREATE TABLE `ALLOTJAMENTS_SERVEIS`(
-    `FK_ID_ALLOT` INT NOT NULL,
-    `FK_ID_SERVEI` INT NOT NULL,
-    PRIMARY KEY(`FK_ID_ALLOT`, `FK_ID_SERVEI`),
-    FOREIGN KEY(`FK_ID_ALLOT`) REFERENCES `ALLOTJAMENTS`(`ID_ALLOTJAMENT`),
-    FOREIGN KEY(`FK_ID_SERVEI`) REFERENCES `SERVEIS`(`ID_SERVEI`)
+create table `IDIOMES`
+(
+    `ID_IDIOMA`  INT         not null auto_increment,
+    `NOM_IDIOMA` VARCHAR(50) not null,
+    primary key (`ID_IDIOMA`)
 );
 
-CREATE TABLE 'FOTOGRAFIES'(
-    'ID_FOTO' INT NOT NULL AUTO_INCREMENT,
-    'FOTO' VARCHAR(50) NOT NULL,
-    'FK_ID_ALLOTJAMENT' INT NOT NULL,
-    PRIMARY KEY('ID_FOTO'),
-    FOREIGN KEY('FK_ID_ALLOTJAMENT') REFERENCES 'ALLOTJAMENTS'('ID_ALLOTJAMENT')
+create table `TIPUS`
+(
+    `ID_TIPUS`  INT         not null auto_increment,
+    `NOM_TIPUS` VARCHAR(50) not null,
+    primary key (`ID_TIPUS`)
 );
 
-CREATE TRIGGER `CALCULAR_VALORACIO_GLOBAL` AFTER INSERT ON `VALORACIONS` FOR EACH ROW
-BEGIN
-    UPDATE ALLOTJAMENTS SET VALORACIO_GLOBAL = (SELECT AVG(PUNTUACIO) FROM VALORACIONS WHERE FK_ID_ALLOTJAMENT = NEW.FK_ID_ALLOTJAMENT) WHERE ID_ALLOTJAMENT = NEW.FK_ID_ALLOTJAMENT;
-END;
+create table `SERVEIS`
+(
+    `ID_SERVEI`  INT         not null auto_increment,
+    `NOM_SERVEI` VARCHAR(50) not null,
+    primary key (`ID_SERVEI`)
+);
+
+create table `VACANCES`
+(
+    `ID_VACANCES`  INT         not null auto_increment,
+    `NOM_VACANCES` VARCHAR(50) not null,
+    primary key (`ID_VACANCES`)
+);
+
+create table `TRADUCCIO_TIPUS`
+(
+    `FK_ID_TIPUS`     INT         not null,
+    `FK_ID_IDIOMA`    INT         not null,
+    `TRADUCCIO_TIPUS` VARCHAR(50) not null,
+    primary key (`FK_ID_TIPUS`, `FK_ID_IDIOMA`),
+    foreign key (`FK_ID_TIPUS`) references `TIPUS` (`ID_TIPUS`),
+    foreign key (`FK_ID_IDIOMA`) references `IDIOMES` (`ID_IDIOMA`)
+);
+
+create table `TRADUCCIO_VACANCES`
+(
+    `FK_ID_VACANCES` INT         not null,
+    `FK_ID_IDIOMA`   INT         not null,
+    `TRADUCCIO_VAC`  VARCHAR(50) not null,
+    primary key (`FK_ID_VACANCES`, `FK_ID_IDIOMA`),
+    foreign key (`FK_ID_VACANCES`) references `VACANCES` (`ID_VACANCES`),
+    foreign key (`FK_ID_IDIOMA`) references `IDIOMES` (`ID_IDIOMA`)
+);
+
+create table `TRADUCCIO_SERVEIS`
+(
+    `FK_ID_SERVEI`     INT         not null,
+    `FK_ID_IDIOMA`     INT         not null,
+    `TRADUCCIO_SERVEI` VARCHAR(50) not null,
+    primary key (`FK_ID_SERVEI`, `FK_ID_IDIOMA`),
+    foreign key (`FK_ID_SERVEI`) references `SERVEIS` (`ID_SERVEI`),
+    foreign key (`FK_ID_IDIOMA`) references `IDIOMES` (`ID_IDIOMA`)
+);
+
+create table `MUNICIPIS`
+(
+    `ID_MUNICIPI`  INT         not null auto_increment,
+    `NOM_MUNICIPI` VARCHAR(50) not null,
+    primary key (`ID_MUNICIPI`)
+);
+
+create table `USUARIS`
+(
+    `ID_USUARI`         INT         not null auto_increment,
+    `DNI`               VARCHAR(9)  not null,
+    `NOM_COMPLET`       VARCHAR(50) not null,
+    `CORREU_ELECTRONIC` VARCHAR(50) not null,
+    `CONTRASENYA`       VARCHAR(50) not null,
+    `TELEFON`           VARCHAR(9)  not null,
+    `ADMINISTRADOR`     BOOLEAN     not null,
+    primary key (`ID_USUARI`)
+);
+
+create table `CATEGORIA`
+(
+    `ID_CATEGORIA`  INT         not null auto_increment,
+    `NOM_CATEGORIA` VARCHAR(50) not null,
+    `TARIFA`        FLOAT       not null,
+    primary key (`ID_CATEGORIA`)
+);
+
+create table `ALLOTJAMENTS`
+(
+    `ID_ALLOTJAMENT`   INT          not null auto_increment,
+    `NOM_COMERCIAL`    VARCHAR(50)  not null,
+    `NUM_REGISTRE`     VARCHAR(50)  not null,
+    `DESCRIPCIO`       VARCHAR(500) not null,
+    `LLITS`            INT          not null,
+    `PERSONES`         INT          not null,
+    `BANYS`            INT          not null,
+    `ADREÇA`           VARCHAR(50)  not null,
+    `DESTACAT`         BOOLEAN      not null,
+    `VALORACIO_GLOBAL` INT default null,
+    `FK_ID_MUNICIPI`   INT          not null,
+    `FK_ID_TIPUS`      INT          not null,
+    `FK_ID_VACANCES`   INT          not null,
+    `FK_ID_CATEGORIA`  INT          not null,
+    `FK_ID_USUARI`     INT          not null,
+    primary key (`ID_ALLOTJAMENT`),
+    foreign key (`FK_ID_MUNICIPI`) references `MUNICIPIS` (`ID_MUNICIPI`),
+    foreign key (`FK_ID_TIPUS`) references `TIPUS` (`ID_TIPUS`),
+    foreign key (`FK_ID_VACANCES`) references `VACANCES` (`ID_VACANCES`),
+    foreign key (`FK_ID_CATEGORIA`) references `CATEGORIA` (`ID_CATEGORIA`),
+    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`)
+);
+
+create table `RESERVA`
+(
+    `ID_RESERVA`        INT     not null auto_increment,
+    `FK_ID_USUARI`      INT     not null,
+    `FK_ID_ALLOTJAMENT` INT     not null,
+    `DATA_INICIAL`      DATE    not null,
+    `DATA_FINAL`        DATE    not null,
+    `CONFIRMADA`        BOOLEAN not null,
+    primary key (`ID_RESERVA`),
+    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`),
+    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`)
+);
+
+create table `COMENTARIS`
+(
+    `ID_COMENTARI`      INT          not null auto_increment,
+    `DESCRIPCIO`        VARCHAR(500) not null,
+    `DATA`              DATE         not null,
+    `HORA`              TIME         not null,
+    `FK_ID_USUARI`      INT          not null,
+    `FK_ID_ALLOTJAMENT` INT          not null,
+    primary key (`ID_COMENTARI`),
+    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`),
+    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`)
+);
+
+create table `VALORACIONS`
+(
+    `ID_VALORACIO`      INT not null auto_increment,
+    `PUNTUACIO`         INT not null,
+    `FK_ID_USUARI`      INT not null,
+    `FK_ID_ALLOTJAMENT` INT not null,
+    primary key (`ID_VALORACIO`),
+    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`),
+    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`)
+);
+
+create table `ALLOTJAMENTS_SERVEIS`
+(
+    `FK_ID_ALLOT`  INT not null,
+    `FK_ID_SERVEI` INT not null,
+    primary key (`FK_ID_ALLOT`, `FK_ID_SERVEI`),
+    foreign key (`FK_ID_ALLOT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`),
+    foreign key (`FK_ID_SERVEI`) references `SERVEIS` (`ID_SERVEI`)
+);
+
+create table `FOTOGRAFIES`
+(
+    `ID_FOTO`           INT         not null auto_increment,
+    `FOTO`              VARCHAR(50) not null,
+    `FK_ID_ALLOTJAMENT` INT         not null,
+    primary key (`ID_FOTO`, `FK_ID_ALLOTJAMENT`),
+    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`)
+);
+
+create trigger `CALCULAR_VALORACIO_GLOBAL`
+    after insert
+    on `VALORACIONS`
+    for each row
+begin
+    update ALLOTJAMENTS
+    set VALORACIO_GLOBAL = (select avg(PUNTUACIO) from VALORACIONS where FK_ID_ALLOTJAMENT = NEW.FK_ID_ALLOTJAMENT)
+    where ID_ALLOTJAMENT = NEW.FK_ID_ALLOTJAMENT;
+end;

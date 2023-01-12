@@ -45,11 +45,31 @@ class IdiomaController extends Controller
      */
     public function store(Request $request)
     {
-        $idioma= new Idioma;
-        $idioma->ID_IDIOMA=$request->ID_IDIOMA;
-        $idioma->NOM_IDIOMA=strtoupper($request->NOM_IDIOMA);
-        $idioma->save();
-        return response()->json(['status'=>'success','result'=>$idioma], 200);
+       $reglesvalidacio=[
+           'ID_IDIOMA' => 'required|integer',
+              'NOM_IDIOMA' => 'required|string',
+        ];
+        $missatges=[
+            'ID_IDIOMA.required' => 'El camp ID_IDIOMA és obligatori',
+            'ID_IDIOMA.integer' => 'El camp ID_IDIOMA ha de ser un número enter',
+            'NOM_IDIOMA.required' => 'El camp NOM_IDIOMA és obligatori',
+            'NOM_IDIOMA.string' => 'El camp NOM_IDIOMA ha de ser una cadena de caràcters',
+        ];
+        $validador = Validator::make($request->all(), $reglesvalidacio, $missatges);
+        if ($validador->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validador->errors()->all()
+            ], 400);
+        }
+        $tuple = new Idioma;
+        $tuple->ID_IDIOMA = $request->input('ID_IDIOMA');
+        $tuple->NOM_IDIOMA = $request->input('NOM_IDIOMA');
+        $tuple->save();
+        return response()->json([
+            'status' => 'success',
+            'data' => $tuple
+        ], 201);
     }
 
     /**
@@ -89,12 +109,29 @@ class IdiomaController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $tuples=Idioma::findOrFail($id);
-            $tuples->NOM_IDIOMA=strtoupper($request->NOM_IDIOMA);
-            $tuples->save();
-            return response()->json(['status'=>'success', 'result' => $tuples],200);
+            $tuples = Idioma::findOrFail($id);
+            $reglesValidacio = [
+                'ID_IDIOMA' => ['filled', 'unique:ID_IDIOMA,' . $id],
+                'NOM_IDIOMA' => ['filled', 'string', 'max:50']
+            ];
+            $missatge = [
+                'ID_IDIOMA.filled' => 'El camp ID_IDIOMA és obligatori',
+                'ID_IDIOMA.unique' => 'Aquest ID_IDIOMA ja existeix',
+                'NOM_IDIOMA.filled' => 'El camp NOM_IDIOMA és obligatori',
+                'NOM_IDIOMA.string' => 'El camp NOM_IDIOMA ha de ser de tipus string',
+                'NOM_IDIOMA.max' => 'El camp NOM_IDIOMA no pot tenir més de 50 caràcters'
+            ];
+            $validacio = Validator::make($request->all(), $reglesValidacio, $missatge);
+            if ($validacio->fails()) {
+                return response()->json(['status' => 'error', 'result' => $validacio->errors()], 400);
+            } else {
+                $tuples->ID_IDIOMA = $request->ID_IDIOMA;
+                $tuples->NOM_IDIOMA = strtoupper($request->NOM_IDIOMA);
+                $tuples->save();
+                return response()->json(['status' => 'success', 'result' => $tuples], 200);
+            }
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status'=>'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'],404);
+            return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'], 404);
         }
     }
 

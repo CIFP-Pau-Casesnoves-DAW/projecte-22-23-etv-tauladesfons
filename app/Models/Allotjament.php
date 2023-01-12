@@ -26,7 +26,6 @@ class Allotjament extends Model
         'VALORACIO_GLOBAL',
         'FK_ID_MUNICIPI',
         'FK_ID_TIPUS',
-        'FK_ID_SERVEI',
         'FK_ID_VACANCES',
         'FK_ID_CATEGORIA',
         'FK_ID_USUARI' ];
@@ -37,10 +36,6 @@ class Allotjament extends Model
     public function tipus()
     {
         return $this->belongsTo('App\Models\Tipus', 'FK_ID_TIPUS', 'ID_TIPUS');
-    }
-    public function servei()
-    {
-        return $this->belongsTo('App\Models\Servei', 'FK_ID_SERVEI', 'ID_SERVEI');
     }
     public function vacances()
     {
