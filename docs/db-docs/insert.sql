@@ -16,11 +16,13 @@ INSERT INTO `TIPUS`(`NOM_TIPUS`) VALUES
 	('Bar'),
 	('Gimnas'),
 	('Spa');
+
 INSERT INTO `SERVEIS`(`ID_SERVEI`,`NOM_SERVEI`) VALUES
 	(1,'Platja'),
 	(2,'Jardí'),
 	(3,'Wifi'),
 	(4,'Ascensor');
+
 INSERT INTO `VACANCES` (`ID_VACANCES`, `NOM_VACANCES`) VALUES
 	(1, 'Platja'),
 	(2, 'Muntanya'),
@@ -56,11 +58,13 @@ INSERT INTO `TRADUCCIO_VACANCES` (`FK_ID_VACANCES`, `FK_ID_IDIOMA`, `TRADUCCIO_V
 	(5, 1, 'Cultural'),
 	(5, 2, 'Cultural'),
 	(5, 3, 'Cultural');
+
 INSERT INTO `TRADUCCIO_SERVEIS`(`FK_ID_SERVEI`,`FK_ID_IDIOMA`,`TRADUCCIO_SERVEI`) VALUES
 	(1,1,'Playa'),(1,2,'Platja'),(1,3,'Beach'),
 	(2,1, 'Jardín'),(2,2,'Jardí'),(2,3,'Garden'),
 	(3,1,'WiFi'),(3,2,'WiFi'),(3,3,'WiFi'),
 	(4,1,'Ascensor'),(4,2, 'Ascensor'),(4,3,'Lift');
+
 INSERT INTO `MUNICIPIS` (`ID_MUNICIPI`, `NOM_MUNICIPI`) VALUES
 	(1, 'Alaior'),
 	(2, 'Alaró'),
@@ -134,12 +138,41 @@ INSERT INTO `USUARIS` (`ID_USUARI`, `DNI`, `NOM_COMPLET`, `CORREU_ELECTRONIC`, `
 	(1, '11111111A', 'Joan Toni Ramon Crespí', 'joanantoniramon@paucasesnovescifp.cat', 'joantoni1234', '666555444', TRUE),
 	(2, '22222222B', 'Jaume Truyols Sosa', 'jaumetruyols@paucasesnovescifp.cat', 'jaume1234', '666333222', TRUE),
 	(3, '33333333C', 'Isaac Palou Gijón', 'isaacpalou@paucasesnovescifp.cat', 'isaac1234', '666111999', TRUE),
-	(4 '44444444D', 'Maria Ferrer Bleda', 'mariamargalidaferrer@paucasesnovescifp.cat', 'maria1234', '666888777' TRUE);
+	(4 '44444444D', 'Maria Ferrer Bleda', 'mariamargalidaferrer@paucasesnovescifp.cat', 'maria1234', '666888777', TRUE);
 
 INSERT INTO `CATEGORIA`(`ID_CATEGORIA`,`NOM_CATEGORIA`,`TARIFA`) VALUES
 	(1,'Luxe',FALSE),
 	(2,'Normal',FALSE),
 	(3,'Basica',FALSE);
 
-INSERT INTO `ALLOTJAMENTS` (`ID_ALLOTJAMENT`,`NOM_COMERCIAL`, `NUM_REGISTRE`, `DESCRIPCIO`, `LLITS`, `PERSONES`, `BANYS`,`FOTOGRAFIES`, `ADREÇA`, `DESTACAT`, `VALORACIO_GLOBAL`, `FK_ID_MUNICIPI`, `FK_ID_TIPUS`,`FK_ID_SERVEI`, `FK_ID_VACANCES`, `FK_ID_CATEGORIA`, `FK_ID_USUARI`) VALUES
-	(1,ProvaAllotjament1,'provaA123','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec dictum nibh. Nunc blandit porta urna et finibus. Aenean at purus tristique, accumsan augue vel, accumsan tortor.',3,6,2,);
+INSERT INTO `ALLOTJAMENTS` (`ID_ALLOTJAMENT`,`NOM_COMERCIAL`, `NUM_REGISTRE`, `DESCRIPCIO`, `LLITS`, `PERSONES`, `BANYS`, `ADREÇA`, `DESTACAT`, `FK_ID_MUNICIPI`, `FK_ID_TIPUS`,`FK_ID_SERVEI`, `FK_ID_VACANCES`, `FK_ID_CATEGORIA`, `FK_ID_USUARI`) VALUES
+	(1,ProvaAllotjament1,'provaA123','Lorem ipsum dolor sit amet, consectetur adipiscing elit.',3,6,2,'C/Prova, 1', TRUE, 1, 1, 1, 1, 1, 1);
+	(2,ProvaAllotjament2,'provaB456','Nulla nec dictum nibh.',1,2,1,'C/Prova, 2', FALSE, 2, 2, 2, 2, 2, 2);
+
+INSERT INTO `RESERVA` (`ID_RESERVA`, `FK_ID_USUARI`, `FK_ID_ALLOTJAMENT`, `DATA_INICIAL`, `DATA_FINAL`, `CONFIRMADA`) VALUES
+	(1, 1, 1, 2022-03-13, 2022-03-15, TRUE),
+	(2, 2, 1, 2022-04-01, 2022-04-05, TRUE),
+	(3, 3, 1, 2023-06-14, 2023-06-18, FALSE);
+
+INSERT INTO `COMENTARIS` (`ID_COMENTARI`, `DESCRIPCIO`, `DATA`, `HORA`, `FK_ID_USUARI`, `FK_ID_ALLOTJAMENT`) VALUES
+	(1, 'Una estància meravellosa. Repetirem segur.', 2022-03-16, 12:25:00, 1, 1),
+	(2, 'Estava molt brut. Ens vàrem queixar i no ens van donar cap solució.', 2022-04-06, 21:30:07, 2, 1);
+
+INSERT INTO `VALORACIONS` (`ID_VALORACIO`, `PUNTUACIO`, `FK_ID_USUARI`, `FK_ID_ALLOTJAMENT`) VALUES
+	(1, 10, 1, 1),
+	(2, 9, 1, 2),
+	(3, 4, 2, 1),
+	(4, 5, 2, 2),
+	(5, 6, 3, 1),
+	(6, 3, 3, 2),
+	(7, 8, 4, 1),
+	(8, 9, 4, 2);
+
+INSERT INTO `ALLOTJAMENTS_SERVEIS` (`FK_ID_ALLOT`, `FK_ID_SERVEI`) VALUES
+	(1, 1),
+	(1, 2),
+	(1, 3),
+	(1, 4),
+	(2, 1),
+	(2, 2),
+	(2, 3);
