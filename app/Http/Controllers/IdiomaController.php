@@ -88,7 +88,14 @@ class IdiomaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $tuples=Idioma::findOrFail($id);
+            $tuples->NOM_IDIOMA=strtoupper($request->NOM_IDIOMA);
+            $tuples->save();
+            return response()->json(['status'=>'success', 'result' => $tuples],200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['status'=>'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'],404);
+        }
     }
 
     /**

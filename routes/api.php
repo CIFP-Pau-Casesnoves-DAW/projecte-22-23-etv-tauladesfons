@@ -46,30 +46,40 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/', [TipusController::class, 'index']);
     Route::get('/{id}', [TipusController::class, 'show']);
     Route::post('', [TipusController::class, 'store']);
+    Route::put('/{id}', [TipusController::class, 'update']);
+    Route::delete('/{id}', [TipusController::class, 'destroy']);
     });
     //ruta de municipis
     Route::group(['prefix' => 'municipis'], function () {
     Route::get('/', [MunicipiController::class, 'index']);
     Route::get('/{id}', [MunicipiController::class, 'show']);
     Route::post('', [MunicipiController::class, 'store']);
+    Route::put('/{id}', [MunicipiController::class, 'update']);
+    Route::delete('/{id}', [MunicipiController::class, 'destroy']);
     });
     //ruta de allotjaments
     Route::group(['prefix' => 'allotjaments'], function () {
     Route::get('/', [AllotjamentController::class, 'index']);
     Route::get('/{id}', [AllotjamentController::class, 'show']);
     Route::post('', [AllotjamentController::class, 'store']);
+    Route::put('/{id}', [AllotjamentController::class, 'update']);
+    Route::delete('/{id}', [AllotjamentController::class, 'destroy']);
     });
     //ruta de allotjament servei
     Route::group(['prefix' => 'allotjaments_serveis'], function () {
     Route::get('/', [Allotjament_serveiController::class, 'index']);
     Route::get('/{id}', [Allotjament_serveiController::class, 'show']);
     Route::post('', [Allotjament_serveiController::class, 'store']);
+    Route::put('/{id}', [Allotjament_serveiController::class, 'update']);
+    Route::delete('/{id}', [Allotjament_serveiController::class, 'destroy']);
     });
-    //ruta de Categorias
+    //ruta de categories
     Route::group(['prefix' => 'categories'], function () {
     Route::get('/', [CategoriaController::class, 'index']);
     Route::get('/{id}', [CategoriaController::class, 'show']);
     Route::post('', [CategoriaController::class, 'store']);
+    Route::put('/{id}', [CategoriaController::class, 'update']);
+    Route::delete('/{id}', [CategoriaController::class, 'destroy']);
     });
     //ruta de comentaris
     Route::group(['prefix' => 'comentaris'], function () {
@@ -126,8 +136,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('', [ValoracioController::class, 'store']);
     });
     //ruta de login
-    Route::post('login', [LoginController::class, 'login']);
-    //ruta de logout
-    Route::post('/logout', [LoginController::class, 'logout']);
+    Route::group(['prefix' => 'login'], function () {
+    Route::get('/', [LoginController::class, 'index']);
+    Route::post('', [LoginController::class, 'login']);
+    });
 
 
