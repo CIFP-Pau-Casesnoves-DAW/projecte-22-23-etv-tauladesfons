@@ -145,9 +145,9 @@ INSERT INTO `CATEGORIA`(`ID_CATEGORIA`,`NOM_CATEGORIA`,`TARIFA`) VALUES
 	(2,'Normal',FALSE),
 	(3,'Basica',FALSE);
 
-INSERT INTO `ALLOTJAMENTS` (`ID_ALLOTJAMENT`,`NOM_COMERCIAL`, `NUM_REGISTRE`, `DESCRIPCIO`, `LLITS`, `PERSONES`, `BANYS`, `ADREÇA`, `DESTACAT`, `FK_ID_MUNICIPI`, `FK_ID_TIPUS`,`FK_ID_SERVEI`, `FK_ID_VACANCES`, `FK_ID_CATEGORIA`, `FK_ID_USUARI`) VALUES
-	(1,ProvaAllotjament1,'provaA123','Lorem ipsum dolor sit amet, consectetur adipiscing elit.',3,6,2,'C/Prova, 1', TRUE, 1, 1, 1, 1, 1, 1);
-	(2,ProvaAllotjament2,'provaB456','Nulla nec dictum nibh.',1,2,1,'C/Prova, 2', FALSE, 2, 2, 2, 2, 2, 2);
+INSERT INTO `ALLOTJAMENTS` (`ID_ALLOTJAMENT`,`NOM_COMERCIAL`, `NUM_REGISTRE`, `DESCRIPCIO`, `LLITS`, `PERSONES`, `BANYS`, `ADREÇA`, `DESTACAT`, `FK_ID_MUNICIPI`, `FK_ID_TIPUS`, `FK_ID_VACANCES`, `FK_ID_CATEGORIA`, `FK_ID_USUARI`) VALUES
+	(1,ProvaAllotjament1,'provaA123','Lorem ipsum dolor sit amet, consectetur adipiscing elit.',3,6,2,'C/Prova, 1', TRUE, 1, 1, 1, 1, 1);
+	(2,ProvaAllotjament2,'provaB456','Nulla nec dictum nibh.',1,2,1,'C/Prova, 2', FALSE, 2, 2, 2, 2, 2);
 
 INSERT INTO `RESERVA` (`ID_RESERVA`, `FK_ID_USUARI`, `FK_ID_ALLOTJAMENT`, `DATA_INICIAL`, `DATA_FINAL`, `CONFIRMADA`) VALUES
 	(1, 1, 1, 2022-03-13, 2022-03-15, TRUE),
