@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 /**
- * @OA\Info(title="API Reserva", version="0.1")
+ * @OA\Info(title="API TauladesFons", version="0.1")
  * @OA\Server(url="http://localhost:8000/api")
  * @OA\Tag(name="Reserva")
  *
@@ -21,8 +21,8 @@ class ReservaController extends Controller
      * @OA\Get(
      *     path="/reserves",
      *     tags={"Reserva"},
-     *     summary="Get all reserves",
-     *     description="Returns all reserves",
+     *     summary="Obtiene todas las reservas",
+     *     description="Devuelve todas las reservas",
      *     operationId="index",
      * @OA\Response(
      *     response=200,
@@ -56,8 +56,8 @@ class ReservaController extends Controller
      * @OA\Post(
      *     path="/reserves",
      *     tags={"Reserva"},
-     *     summary="Add a new reserva",
-     *     description="Adds a new reserva",
+     *     summary="Añaade una nueva reserva",
+     *     description="Añade una nueva reserva",
      *     operationId="store",
      *     @OA\RequestBody(
      *     required=true,
@@ -157,6 +157,48 @@ class ReservaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *     path="/reserves/{id}",
+     *     tags={"Reserva"},
+     *     summary="Mostra una reserva",
+     *     description="Mostra una reserva",
+     *     operationId="show",
+     *     @OA\Parameter(
+     *     description="ID de la reserva",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer",
+     *     format="int64",
+     *     ),
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="status", type="string", example="success"),
+     *     @OA\Property(property="result", type="object",
+     *     @OA\Property(property="ID_RESERVA", type="integer", example="1"),
+     *     @OA\Property(property="FK_ID_CLIENT", type="integer", example="1"),
+     *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", example="1"),
+     *     @OA\Property(property="DATA_INICIAL", type="string", example="2020-01-01"),
+     *     @OA\Property(property="DATA_FINAL", type="string", example="2020-01-01"),
+     *     @OA\Property(property="CONFIRMADA", type="boolean", example="1"),
+     *     ),
+     *     ),
+     *     ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Not found",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="status", type="string", example="error"),
+     *     @OA\Property(property="result", type="string", example="No existeix aquesta reserva"),
+     *     ),
+     *     )
+     *    )
+     */
     public function show($id)
     {
         try {
@@ -184,6 +226,61 @@ class ReservaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Put(
+     *    path="/put/{id}",
+     *     tags={"Reserva"},
+     *     summary="Actualitza una reserva",
+     *     description="Actualitza una reserva",
+     *     operationId="update",
+     *     @OA\Parameter(
+     *     description="ID de la reserva",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer",
+     *     format="int64",
+     *     ),
+     *     ),
+     *     @OA\RequestBody(
+     *     required=true,
+     *     description="Dades de la reserva",
+     *     @OA\JsonContent(
+     *     required={"ID_RESERVA","FK_ID_CLIENT","FK_ID_ALLOTJAMENT","DATA_INICIAL","DATA_FINAL","CONFIRMADA"},
+     *     @OA\Property(property="ID_RESERVA", type="integer", example="1"),
+     *     @OA\Property(property="FK_ID_CLIENT", type="integer", example="1"),
+     *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", example="1"),
+     *     @OA\Property(property="DATA_INICIAL", type="string", example="2020-01-01"),
+     *     @OA\Property(property="DATA_FINAL", type="string", example="2020-01-01"),
+     *     @OA\Property(property="CONFIRMADA", type="boolean", example="1"),
+     *     ),
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="status", type="string", example="success"),
+     *     @OA\Property(property="result", type="object",
+     *     @OA\Property(property="ID_RESERVA", type="integer", example="1"),
+     *     @OA\Property(property="FK_ID_CLIENT", type="integer", example="1"),
+     *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", example="1"),
+     *     @OA\Property(property="DATA_INICIAL", type="string", example="2020-01-01"),
+     *     @OA\Property(property="DATA_FINAL", type="string", example="2020-01-01"),
+     *     @OA\Property(property="CONFIRMADA", type="boolean", example="1"),
+     *     ),
+     *     ),
+     *     ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Not found",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="status", type="string", example="error"),
+     *     @OA\Property(property="result", type="string", example="No existeix aquesta reserva"),
+     *     ),
+     *     ),
+     *     )
      */
     public function update(Request $request, $id)
     {
@@ -227,6 +324,40 @@ class ReservaController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Delete(
+     *    path="/destroy/{id}",
+     *     tags={"Reserva"},
+     *     summary="Elimina una reserva",
+     *     description="Elimina una reserva",
+     *     operationId="destroy",
+     *     @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="ID de la reserva",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     *    ),
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="status", type="string", example="success"),
+     *     @OA\Property(property="result", type="string", example="Reserva eliminada correctament"),
+     *     ),
+     *     ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Not found",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="status", type="string", example="error"),
+     *     @OA\Property(property="result", type="string", example="No existeix aquesta reserva"),
+     *     )
+     *    )
+     * )
      */
     public function destroy($id)
     {
