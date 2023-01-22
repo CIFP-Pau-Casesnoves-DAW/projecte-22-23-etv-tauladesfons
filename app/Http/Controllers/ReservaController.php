@@ -187,7 +187,39 @@ class ReservaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $reglesvalidacio = [
+            'ID_RESERVA' => 'required',
+            'FK_ID_CLIENT' => 'required',
+            'FK_ID_ALLOTJAMENT' => 'required',
+            'DATA_INICIAL' => 'required|date_format:Y-m-d',
+            'DATA_FINAL' => 'required|date_format:Y-m-d',
+            'CONFIRMADA' => 'required|boolean'
+        ];
+        $missatges = [
+            'ID_RESERVA.required' => 'El camp ID_RESERVA és obligatori',
+            'FK_ID_CLIENT.required' => 'El camp FK_ID_CLIENT és obligatori',
+            'FK_ID_ALLOTJAMENT.required' => 'El camp FK_ID_ALLOTJAMENT és obligatori',
+            'DATA_INICIAL.required' => 'El camp DATA_INICIAL és obligatori',
+            'DATA_INICIAL.date_format' => 'El camp DATA_INICIAL ha de tenir el format Y-m-d',
+            'DATA_FINAL.required' => 'El camp DATA_FINAL és obligatori',
+            'DATA_FINAL.date_format' => 'El camp DATA_FINAL ha de tenir el format Y-m-d',
+            'CONFIRMADA.required' => 'El camp CONFIRMADA és obligatori',
+            'CONFIRMADA.boolean' => 'El camp CONFIRMADA ha de ser un booleà'
+        ];
+        $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
+        if ($validator->fails()) {
+            return response()->json(['status'=>'error','result'=>$validator->errors()], 400);
+        }else {
+            $reserves= Reserva::findOrFail($id);
+            $reserves->ID_RESERVA=$request->input('ID_RESERVA');
+            $reserves->FK_ID_CLIENT=$request->input('FK_ID_CLIENT');
+            $reserves->FK_ID_ALLOTJAMENT=$request->input('FK_ID_ALLOTJAMENT');
+            $reserves->DATA_INICIAL=$request->input('DATA_INICIAL');
+            $reserves->DATA_FINAL=$request->input('DATA_FINAL');
+            $reserves->CONFIRMADA=$request->input('CONFIRMADA');
+            $reserves->save();
+            return response()->json(['status'=>'success','result'=>$reserves], 200);
+        }
     }
 
     /**
@@ -198,6 +230,12 @@ class ReservaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $tuples=Reserva::findOrFail($id);
+            $tuples->delete();
+            return response()->json(['status'=>'success', 'result' => 'Reserva eliminada correctament'],200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['status'=>'error', 'result' => 'No existeix aquesta reserva'],404);
+        }
     }
 }
