@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Municipi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class MunicipiController extends Controller
 {
@@ -39,11 +40,30 @@ class MunicipiController extends Controller
      */
     public function store(Request $request)
     {
-        $municipis = new Municipi();
-        $municipis->ID_MUNICIPI = $request->ID_MUNICIPI;
-        $municipis->NOM_MUNICIPI = strtoupper($request->NOM_MUNICIPI);
-        $municipis->save();
-        return response()->json(['status' => 'success', 'result' => $municipis], 200);
+        $reglesvalidacio = [
+            'ID_MUNICIPI' => 'required|integer',
+            'NOM_MUNICIPI' => 'required|string|max:50',
+        ];
+        $missatges = [
+            'ID_MUNICIPI.required' => 'El camp ID_MUNICIPI és obligatori',
+            'ID_MUNICIPI.integer' => 'El camp ID_MUNICIPI ha de ser un número enter',
+            'NOM_MUNICIPI.required' => 'El camp NOM_MUNICIPI és obligatori',
+            'NOM_MUNICIPI.string' => 'El camp NOM_MUNICIPI ha de ser una cadena de caràcters',
+            'NOM_MUNICIPI.max' => 'El camp NOM_MUNICIPI no pot tenir més de 50 caràcters',
+        ];
+        $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
+        if ($validacio->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validacio->errors()
+            ], 400);
+        } else {
+            $tuples = Municipi::create($request->all());
+            return response()->json([
+                'status' => 'success',
+                'data' => $tuples
+            ], 200);
+        }
     }
 
     /**
@@ -88,7 +108,38 @@ class MunicipiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $reglesvalidacio = [
+            'ID_MUNICIPI' => 'required|integer',
+            'NOM_MUNICIPI' => 'required|string|max:50',
+        ];
+        $missatges = [
+            'ID_MUNICIPI.required' => 'El camp ID_MUNICIPI és obligatori',
+            'ID_MUNICIPI.integer' => 'El camp ID_MUNICIPI ha de ser un número enter',
+            'NOM_MUNICIPI.required' => 'El camp NOM_MUNICIPI és obligatori',
+            'NOM_MUNICIPI.string' => 'El camp NOM_MUNICIPI ha de ser una cadena de caràcters',
+            'NOM_MUNICIPI.max' => 'El camp NOM_MUNICIPI no pot tenir més de 50 caràcters',
+        ];
+        $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
+        if ($validacio->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validacio->errors()
+            ], 400);
+        } else {
+            try {
+                $municipis = Municipi::findOrFail($id);
+                $municipis->update($request->all());
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $municipis
+                ], 200);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Municipi not found'
+                ], 404);
+            }
+        }
     }
 
     /**
@@ -99,6 +150,11 @@ class MunicipiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tuples = Municipi::finorFail($id);
+        $tuples->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Municipi deleted'
+        ], 200);
     }
 }
