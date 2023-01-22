@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tipus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TipusController extends Controller
 {
@@ -39,11 +40,33 @@ class TipusController extends Controller
      */
     public function store(Request $request)
     {
-        $tipus = new Tipus();
-        $tipus->ID_TIPUS = $request->ID_TIPUS;
-        $tipus->NOM_TIPUS = strtoupper($request->NOM_TIPUS);
-        $tipus->save();
-        return response()->json(['status' => 'success', 'result' => $tipus], 200);
+        $reglesvalidacio = [
+            'ID_TIPUS' => 'required|integer',
+            'NOM_TIPUS' => 'required|string|max:255',
+        ];
+        $missatge= [
+            'ID_TIPUS.required' => 'El camp ID_TIPUS és obligatori',
+            'ID_TIPUS.integer' => 'El camp ID_TIPUS ha de ser un enter',
+            'NOM_TIPUS.required' => 'El camp NOM_TIPUS és obligatori',
+            'NOM_TIPUS.string' => 'El camp NOM_TIPUS ha de ser una cadena de caràcters',
+            'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 255 caràcters',
+        ];
+        $validacio= Validator::make($request->all(), $reglesvalidacio, $missatge);
+        if ($validacio->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validacio->errors()
+            ], 400);
+        } else {
+            $tuple = new Tipus();
+            $tuple->ID_TIPUS = $request->input('ID_TIPUS');
+            $tuple->NOM_TIPUS = $request->input('NOM_TIPUS');
+            $tuple->save();
+            return response()->json([
+                'status' => 'success',
+                'data' => $tuple
+            ], 201);
+        }
     }
 
     /**
@@ -88,7 +111,31 @@ class TipusController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $reglesvalidacio = [
+            'ID_TIPUS' => 'required|integer',
+            'NOM_TIPUS' => 'required|string|max:255',
+        ];
+        $missatge= [
+            'ID_TIPUS.required' => 'El camp ID_TIPUS és obligatori',
+            'ID_TIPUS.integer' => 'El camp ID_TIPUS ha de ser un enter',
+            'NOM_TIPUS.required' => 'El camp NOM_TIPUS és obligatori',
+            'NOM_TIPUS.string' => 'El camp NOM_TIPUS ha de ser una cadena de caràcters',
+            'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 255 caràcters',
+        ];
+        $validacio= Validator::make($request->all(), $reglesvalidacio, $missatge);
+        if ($validacio->fails()) {
+            $tuples=Tipus::findOrFail($id);
+            $tuples->update($request->all());
+            return response()->json([
+                'status' => 'success',
+                'data' => $tuples
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'data' => $validacio->errors()
+            ], 400);
+        }
     }
 
     /**
@@ -99,6 +146,11 @@ class TipusController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tuples=Tipus::findOrFail($id);
+        $tuples->delete();
+        return response()->json([
+            'status' => 'deleted',
+            'data' => $tuples
+        ], 200);
     }
 }
