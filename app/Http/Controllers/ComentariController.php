@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comentari;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ComentariController extends Controller
 {
@@ -36,13 +37,40 @@ class ComentariController extends Controller
      */
     public function store(Request $request)
     {
-        $comentaris = new Comentari();
-        $comentaris->ID_COMENTARI = $request->ID_COMENTARI;
-        $comentaris->DESCRIPCIO = $request->DESCRIPCIO;
-        $comentaris->DATA = $request->DATA;
-        $comentaris->HORA = $request->HORA;
-        $comentaris->FK_ID_USUARI = $request->FK_ID_USUARI;
-        $comentaris->FK_ID_ALLOTJAMENT = $request->FK_ID_ALLOTJAMENT;
+        $reglesvalidacio = [
+            'ID_COMENTARI' => 'required',
+            'DESCRIPCIO' => 'required|max:255',
+            'HORA' => 'required|date_format:H:i:s',
+            'DATA' => 'required|date_format:Y-m-d',
+            'FK_ID_USUARI' => 'required',
+            'FK_ID_ALLOTJAMENT' => 'required'
+
+        ];
+        $missatges = [
+            'ID_COMENTARI.required' => 'El camp ID_COMENTARI és obligatori',
+            'DESCRIPCIO.required' => 'El camp DESCRIPCIO és obligatori',
+            'DESCRIPCIO.max' => 'El camp DESCRIPCIO no pot tenir més de 255 caràcters',
+            'HORA.required' => 'El camp HORA és obligatori',
+            'HORA.date_format' => 'El camp HORA no té el format correcte',
+            'DATA.required' => 'El camp DATA és obligatori',
+            'DATA.date_format' => 'El camp DATA no té el format correcte',
+            'FK_ID_USUARI.required' => 'El camp FK_ID_USUARI és obligatori',
+            'FK_ID_ALLOTJAMENT.required' => 'El camp FK_ID_ALLOTJAMENT és obligatori'
+        ];
+        $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        } else {
+            $comentaris = new Comentari();
+            $comentaris->ID_COMENTARI = $request->input('ID_COMENTARI');
+            $comentaris->DESCRIPCIO = $request->input('DESCRIPCIO');
+            $comentaris->HORA = $request->input('HORA');
+            $comentaris->DATA = $request->input('DATA');
+            $comentaris->FK_ID_USUARI = $request->input('FK_ID_USUARI');
+            $comentaris->FK_ID_ALLOTJAMENT = $request->input('FK_ID_ALLOTJAMENT');
+            $comentaris->save();
+            return response()->json(['status' => 'Comentari creat correctament'], 201);
+        }
     }
 
     /**
@@ -57,7 +85,7 @@ class ComentariController extends Controller
             $comentaris = Comentari::findOrFail($id);
             return response()->json($comentaris);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Comentari not found'], 404);
+            return response()->json(['error' => 'Comentari no trobat'], 404);
         }
     }
 
@@ -81,7 +109,44 @@ class ComentariController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $reglesvalidacio = [
+            'ID_COMENTARI' => 'required',
+            'DESCRIPCIO' => 'required|max:255',
+            'HORA' => 'required|date_format:H:i:s',
+            'DATA' => 'required|date_format:Y-m-d',
+            'FK_ID_USUARI' => 'required',
+            'FK_ID_ALLOTJAMENT' => 'required'
+
+        ];
+        $missatges = [
+            'ID_COMENTARI.required' => 'El camp ID_COMENTARI és obligatori',
+            'DESCRIPCIO.required' => 'El camp DESCRIPCIO és obligatori',
+            'DESCRIPCIO.max' => 'El camp DESCRIPCIO no pot tenir més de 255 caràcters',
+            'HORA.required' => 'El camp HORA és obligatori',
+            'HORA.date_format' => 'El camp HORA no té el format correcte',
+            'DATA.required' => 'El camp DATA és obligatori',
+            'DATA.date_format' => 'El camp DATA no té el format correcte',
+            'FK_ID_USUARI.required' => 'El camp FK_ID_USUARI és obligatori',
+            'FK_ID_ALLOTJAMENT.required' => 'El camp FK_ID_ALLOTJAMENT és obligatori'
+        ];
+        $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        } else {
+            try {
+                $comentaris = Comentari::findOrFail($id);
+                $comentaris->ID_COMENTARI = $request->input('ID_COMENTARI');
+                $comentaris->DESCRIPCIO = $request->input('DESCRIPCIO');
+                $comentaris->HORA = $request->input('HORA');
+                $comentaris->DATA = $request->input('DATA');
+                $comentaris->FK_ID_USUARI = $request->input('FK_ID_USUARI');
+                $comentaris->FK_ID_ALLOTJAMENT = $request->input('FK_ID_ALLOTJAMENT');
+                $comentaris->save();
+                return response()->json(['status' => 'Comentari actualitzat correctament'], 200);
+            } catch (ModelNotFoundException $e) {
+                return response()->json(['error' => 'Comentari no trobat'], 404);
+            }
+        }
     }
 
     /**
@@ -92,6 +157,12 @@ class ComentariController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $comentaris = Comentari::findOrFail($id);
+            $comentaris->delete();
+            return response()->json(['status' => 'Comentari eliminat correctament'], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Comentari no trobat'], 404);
+        }
     }
 }
