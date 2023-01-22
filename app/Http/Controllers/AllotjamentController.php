@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Allotjament;
+use Exception;
 use Illuminate\Http\Request;
 
 class AllotjamentController extends Controller
@@ -36,26 +37,91 @@ class AllotjamentController extends Controller
      */
     public function store(Request $request)
     {
-        $allotjaments = new Allotjament();
-        $allotjaments->ID_ALLOTJAMENT = $request->ID_ALLOTJAMENT;
-        $allotjaments->NOM_COMERCIAL = $request->NOM_COMERCIAL;
-        $allotjaments->NUM_REGISTRE = $request->NUM_REGISTRE;
-        $allotjaments->DESCRIPCIO = $request->DESCRIPCIO;
-        $allotjaments->LLITS = $request->LLITS;
-        $allotjaments->PERSONES = $request->PERSONES;
-        $allotjaments->BANYS = $request->BANYS;
-        $allotjaments->FOTOGRAFIES = $request->FOTOGRAFIES;
-        $allotjaments->ADRECA = $request->ADRECA;
-        $allotjaments->DESTACAT = $request->DESTACAT;
-        $allotjaments->VALORACIO_GLOBAL = $request->VALORACIO_GLOBAL;
-        $allotjaments->FK_ID_MUNICIPI = $request->FK_ID_MUNICIPI;
-        $allotjaments->FK_ID_TIPUS = $request->FK_ID_TIPUS;
-        $allotjaments->FK_ID_SERVEI = $request->FK_ID_SERVEI;
-        $allotjaments->FK_ID_VACANCES = $request->FK_ID_VACANCES;
-        $allotjaments->FK_ID_CATEGORIA = $request->FK_ID_CATEGORIA;
-        $allotjaments->FK_ID_USUARI = $request->FK_ID_USUARI;
-        $allotjaments->save();
-        return response()->json($allotjaments);
+
+        $reglesvalidacio = [
+            'ID_ALLOTJAMENT' => 'required|integer',
+            'NOM_COMERCIAL' => 'required|string|max:255',
+            'NUM_REGISTRE' => 'required|integer',
+            'DESCRIPCIO' => 'required|string|max:255',
+            'LLITS' => 'required|integer',
+            'PERSONES' => 'required|integer',
+            'BANYS' => 'required|integer',
+            'FOTOGRAFIES' => 'required|string|max:255',
+            'ADRECA' => 'required|string|max:255',
+            'DESTACAT' => 'required|integer',
+            'VALORACIO_GLOBAL' => 'required|integer',
+            'FK_ID_MUNICIPI' => 'required|integer',
+            'FK_ID_TIPUS' => 'required|integer',
+            'FK_ID_SERVEI' => 'required|integer',
+            'FK_ID_VACANCES' => 'required|integer',
+            'FK_ID_CATEGORIA' => 'required|integer',
+            'FK_ID_USUARI' => 'required|integer',
+        ];
+        $missatges = [
+            'ID_ALLOTJAMENT.required' => 'El camp ID_ALLOTJAMENT és obligatori.',
+            'ID_ALLOTJAMENT.integer' => 'El camp ID_ALLOTJAMENT ha de ser un número enter.',
+            'NOM_COMERCIAL.required' => 'El camp NOM_COMERCIAL és obligatori.',
+            'NOM_COMERCIAL.string' => 'El camp NOM_COMERCIAL ha de ser una cadena de caràcters.',
+            'NOM_COMERCIAL.max' => 'El camp NOM_COMERCIAL no pot tenir més de 255 caràcters.',
+            'NUM_REGISTRE.required' => 'El camp NUM_REGISTRE és obligatori.',
+            'NUM_REGISTRE.integer' => 'El camp NUM_REGISTRE ha de ser un número enter.',
+            'DESCRIPCIO.required' => 'El camp DESCRIPCIO és obligatori.',
+            'DESCRIPCIO.string' => 'El camp DESCRIPCIO ha de ser una cadena de caràcters.',
+            'DESCRIPCIO.max' => 'El camp DESCRIPCIO no pot tenir més de 255 caràcters.',
+            'LLITS.required' => 'El camp LLITS és obligatori.',
+            'LLITS.integer' => 'El camp LLITS ha de ser un número enter.',
+            'PERSONES.required' => 'El camp PERSONES és obligatori.',
+            'PERSONES.integer' => 'El camp PERSONES ha de ser un número enter.',
+            'BANYS.required' => 'El camp BANYS és obligatori.',
+            'BANYS.integer' => 'El camp BANYS ha de ser un número enter.',
+            'FOTOGRAFIES.required' => 'El camp FOTOGRAFIES és obligatori.',
+            'FOTOGRAFIES.string' => 'El camp FOTOGRAFIES ha de ser una cadena de caràcters.',
+            'FOTOGRAFIES.max' => 'El camp FOTOGRAFIES no pot tenir més de 255 caràcters.',
+            'ADRECA.required' => 'El camp ADRECA és obligatori.',
+            'ADRECA.string' => 'El camp ADRECA ha de ser una cadena de caràcters.',
+            'ADRECA.max' => ' El camp ADRECA no pot tenir més de 255 caràcters.',
+            'DESTACAT.required' => 'El camp DESTACAT és obligatori.',
+            'DESTACAT.integer' => 'El camp DESTACAT ha de ser un número enter.',
+            'VALORACIO_GLOBAL.required' => 'El camp VALORACIO_GLOBAL és obligatori.',
+            'VALORACIO_GLOBAL.integer' => 'El camp VALORACIO_GLOBAL ha de ser un número enter.',
+            'FK_ID_MUNICIPI.required' => 'El camp FK_ID_MUNICIPI és obligatori.',
+            'FK_ID_MUNICIPI.integer' => 'El camp FK_ID_MUNICIPI ha de ser un número enter.',
+            'FK_ID_TIPUS.required' => 'El camp FK_ID_TIPUS és obligatori.',
+            'FK_ID_TIPUS.integer' => 'El camp FK_ID_TIPUS ha de ser un número enter.',
+            'FK_ID_SERVEI.required' => 'El camp FK_ID_SERVEI és obligatori.',
+            'FK_ID_SERVEI.integer' => 'El camp FK_ID_SERVEI ha de ser un número enter.',
+            'FK_ID_VACANCES.required' => 'El camp FK_ID_VACANCES és obligatori.',
+            'FK_ID_VACANCES.integer' => 'El camp FK_ID_VACANCES ha de ser un número enter.',
+            'FK_ID_CATEGORIA.required' => 'El camp FK_ID_CATEGORIA és obligatori.',
+            'FK_ID_CATEGORIA.integer' => 'El camp FK_ID_CATEGORIA ha de ser un número enter.',
+            'FK_ID_USUARI.required' => 'El camp FK_ID_USUARI és obligatori.',
+            'FK_ID_USUARI.integer' => 'El camp FK_ID_USUARI ha de ser un número enter.',
+        ];
+        $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
+        if ($validacio->fails()) {
+            return response()->json($validacio->errors(), 400);
+        } else {
+            $allotjament = new Allotjament();
+            $allotjament->ID_ALLOTJAMENT = $request->input('ID_ALLOTJAMENT');
+            $allotjament->NOM_COMERCIAL = $request->input('NOM_COMERCIAL');
+            $allotjament->NUM_REGISTRE = $request->input('NUM_REGISTRE');
+            $allotjament->DESCRIPCIO = $request->input('DESCRIPCIO');
+            $allotjament->LLITS = $request->input('LLITS');
+            $allotjament->PERSONES = $request->input('PERSONES');
+            $allotjament->BANYS = $request->input('BANYS');
+            $allotjament->FOTOGRAFIES = $request->input('FOTOGRAFIES');
+            $allotjament->ADRECA = $request->input('ADRECA');
+            $allotjament->DESTACAT = $request->input('DESTACAT');
+            $allotjament->VALORACIO_GLOBAL = $request->input('VALORACIO_GLOBAL');
+            $allotjament->FK_ID_MUNICIPI = $request->input('FK_ID_MUNICIPI');
+            $allotjament->FK_ID_TIPUS = $request->input('FK_ID_TIPUS');
+            $allotjament->FK_ID_SERVEI = $request->input('FK_ID_SERVEI');
+            $allotjament->FK_ID_VACANCES = $request->input('FK_ID_VACANCES');
+            $allotjament->FK_ID_CATEGORIA = $request->input('FK_ID_CATEGORIA');
+            $allotjament->FK_ID_USUARI = $request->input('FK_ID_USUARI');
+            $allotjament->save();
+            return response()->json($allotjament, 201);
+        }
 
     }
     /**
@@ -94,7 +160,77 @@ class AllotjamentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $reglesvalidacio = [
+            'ID_ALLOTJAMENT' => 'required|integer',
+            'NOM_COMERCIAL' => 'required|string|max:255',
+            'NUM_REGISTRE' => 'required|string|max:255',
+            'DESCRIPCIO' => 'required|string|max:255',
+            'LLITS' => 'required|integer',
+            'PERSONES' => 'required|integer',
+            'BANYS' => 'required|integer',
+            'FOTOGRAFIES' => 'required|string|max:255',
+            'ADRECA' => 'required|string|max:255',
+            'DESTACAT' => 'required|integer',
+            'VALORACIO_GLOBAL' => 'required|integer',
+            'FK_ID_MUNICIPI' => 'required|integer',
+            'FK_ID_TIPUS' => 'required|integer',
+            'FK_ID_SERVEI' => 'required|integer',
+            'FK_ID_VACANCES' => 'required|integer',
+            'FK_ID_CATEGORIA' => 'required|integer',
+            'FK_ID_USUARI' => 'required|integer',
+        ];
+        $missatges = [
+            'ID_ALLOTJAMENT.required' => 'El camp ID_ALLOTJAMENT és obligatori.',
+            'ID_ALLOTJAMENT.integer' => 'El camp ID_ALLOTJAMENT ha de ser un número enter.',
+            'NOM_COMERCIAL.required' => 'El camp NOM_COMERCIAL és obligatori.',
+            'NOM_COMERCIAL.string' => 'El camp NOM_COMERCIAL ha de ser una cadena de text.',
+            'NOM_COMERCIAL.max' => 'El camp NOM_COMERCIAL no pot tenir més de 255 caràcters.',
+            'NUM_REGISTRE.required' => 'El camp NUM_REGISTRE és obligatori.',
+            'NUM_REGISTRE.string' => 'El camp NUM_REGISTRE ha de ser una cadena de text.',
+            'NUM_REGISTRE.max' => 'El camp NUM_REGISTRE no pot tenir més de 255 caràcters.',
+            'DESCRIPCIO.required' => 'El camp DESCRIPCIO és obligatori.',
+            'DESCRIPCIO.string' => 'El camp DESCRIPCIO ha de ser una cadena de text.',
+            'DESCRIPCIO.max' => 'El camp DESCRIPCIO no pot tenir més de 255 caràcters.',
+            'LLITS.required' => 'El camp LLITS és obligatori.',
+            'LLITS.integer' => 'El camp LLITS ha de ser un número enter.',
+            'PERSONES.required' => 'El camp PERSONES és obligatori.',
+            'PERSONES.integer' => 'El camp PERSONES ha de ser un número enter.',
+            'BANYS.required' => 'El camp BANYS és obligatori.',
+            'BANYS.integer' => 'El camp BANYS ha de ser un número enter.',
+            'FOTOGRAFIES.required' => 'El camp FOTOGRAFIES és obligatori.',
+            'FOTOGRAFIES.string' => 'El camp FOTOGRAFIES ha de ser una cadena de text.',
+            'FOTOGRAFIES.max' => 'El camp FOTOGRAFIES no pot tenir més de 255 caràcters.',
+            'ADRECA.required' => 'El camp ADRECA és obligatori.',
+            'ADRECA.string' => 'El camp ADRECA ha de ser una cadena de text.',
+            'ADRECA.max' => 'El camp ADRECA no pot tenir més de 255 caràcters.',
+            'DESTACAT.required' => 'El camp DESTACAT és obligatori.',
+            'DESTACAT.integer' => 'El camp DESTACAT ha de ser un número enter.',
+            'VALORACIO_GLOBAL.required' => 'El camp VALORACIO_GLOBAL és obligatori.',
+            'VALORACIO_GLOBAL.integer' => 'El camp VALORACIO_GLOBAL ha de ser un número enter.',
+            'FK_ID_MUNICIPI.required' => 'El camp FK_ID_MUNICIPI és obligatori.',
+            'FK_ID_MUNICIPI.integer' => 'El camp FK_ID_MUNICIPI ha de ser un número enter.',
+            'FK_ID_TIPUS.required' => 'El camp FK_ID_TIPUS és obligatori.',
+            'FK_ID_TIPUS.integer' => 'El camp FK_ID_TIPUS ha de ser un número enter.',
+            'FK_ID_SERVEI.required' => 'El camp FK_ID_SERVEI és obligatori.',
+            'FK_ID_SERVEI.integer' => 'El camp FK_ID_SERVEI ha de ser un número enter.',
+            'FK_ID_VACANCES.required' => 'El camp FK_ID_VACANCES és obligatori.',
+            'FK_ID_VACANCES.integer' => 'El camp FK_ID_VACANCES ha de ser un número enter.',
+            'FK_ID_CATEGORIA.required' => 'El camp FK_ID_CATEGORIA és obligatori.',
+            'FK_ID_CATEGORIA.integer' => 'El camp FK_ID_CATEGORIA ha de ser un número enter.',
+            'FK_ID_USUARI.required' => 'El camp FK_ID_USUARI és obligatori.',
+            'FK_ID_USUARI.integer' => 'El camp FK_ID_USUARI ha de ser un número enter.',
+        ];
+       $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
+        $tuples=Allotjament::where('ID_ALLOTJAMENT', $id)->update($request->except(['_token']));
+        if ($validacio->fails()) {
+            return response()->json([
+                'error' => $validacio->errors()->all()
+            ]);
+         } else {
+            return response()->json([
+                'success' => 'Allotjament modificat correctament'
+            ]);
+            }
     }
 
     /**
@@ -105,6 +241,15 @@ class AllotjamentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $tuples = Allotjament::where('ID_ALLOTJAMENT', $id)->delete();
+            return  response()->json([
+                'success' => 'Allotjament eliminat correctament'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'No s\'ha pogut eliminar l\'allotjament'
+            ]);
+             }
     }
 }
