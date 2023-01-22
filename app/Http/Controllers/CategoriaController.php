@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class CategoriaController extends Controller
 {
@@ -31,17 +34,35 @@ class CategoriaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
-        $categories = new Categoria();
-        $categories->ID_CATEGORIA = $request->ID_CATEGORIA;
-        $categories->NOM_CATEGORIA = $request->NOM_CATEGORIA;
-        $categories->TARIFA = $request->TARIFA;
-        $categories->save();
-        return response()->json($categories);
+        $reglesvalidacio = [
+            'ID_CATEGORIA' => 'required',
+            'NOM_CATEGORIA' => 'required|max:50',
+            'TARIFA' => 'required|numeric'
+        ];
+        $missatges = [
+            'ID_CATEGORIA.required' => 'El camp ID_CATEGORIA és obligatori',
+            'NOM_CATEGORIA.required' => 'El camp NOM_CATEGORIA és obligatori',
+            'NOM_CATEGORIA.max' => 'El camp NOM_CATEGORIA no pot tenir més de 50 caràcters',
+            'TARIFA.required' => 'El camp TARIFA és obligatori',
+            'TARIFA.numeric' => 'El camp TARIFA ha de ser numèric'
+        ];
+        $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        } else {
+            $categoria = new Categoria();
+            $categoria->ID_CATEGORIA = $request->input('ID_CATEGORIA');
+            $categoria->NOM_CATEGORIA = $request->input('NOM_CATEGORIA');
+            $categoria->TARIFA = $request->input('TARIFA');
+            $categoria->save();
+            return response()->json(['status' => 'Categoria creada correctament'], 201);
+        }
     }
 
     /**
@@ -80,7 +101,29 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $reglesvalidacio = [
+            'ID_CATEGORIA' => 'required',
+            'NOM_CATEGORIA' => 'required|max:50',
+            'TARIFA' => 'required|numeric'
+        ];
+        $missatges = [
+            'ID_CATEGORIA.required' => 'El camp ID_CATEGORIA és obligatori',
+            'NOM_CATEGORIA.required' => 'El camp NOM_CATEGORIA és obligatori',
+            'NOM_CATEGORIA.max' => 'El camp NOM_CATEGORIA no pot tenir més de 50 caràcters',
+            'TARIFA.required' => 'El camp TARIFA és obligatori',
+            'TARIFA.numeric' => 'El camp TARIFA ha de ser numèric'
+        ];
+        $validator = Validator::make($request->all(), $reglesvalidacio);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        } else {
+            $categoria = Categoria::findOrFail($id);
+            $categoria->ID_CATEGORIA = $request->input('ID_CATEGORIA');
+            $categoria->NOM_CATEGORIA = $request->input('NOM_CATEGORIA');
+            $categoria->TARIFA = $request->input('TARIFA');
+            $categoria->save();
+            return response()->json(['status' => 'Categoria actualitzada correctament'], 200);
+        }
     }
 
     /**
@@ -91,6 +134,12 @@ class CategoriaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $categoria = Categoria::findOrFail($id);
+            $categoria->delete();
+            return response()->json(['status' => 'Categoria eliminada correctament'], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Categoria not found'], 404);
+        }
     }
 }
