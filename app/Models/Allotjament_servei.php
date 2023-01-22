@@ -9,7 +9,7 @@ class Allotjament_servei extends Model
 {
     use HasFactory;
     protected $table = 'ALLOTJAMENTS_SERVEIS';
-    protected $primaryKey = 'FK_ID_ALLOT, FK_ID_SERVEI';
+    protected $primaryKey = ['FK_ID_ALLOT, FK_ID_SERVEI'];
     public $incrementing = false;
     public $timestamps = false;
     protected $fillable = [
