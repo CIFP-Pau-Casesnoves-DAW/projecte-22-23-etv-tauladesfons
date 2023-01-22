@@ -5,15 +5,45 @@ namespace App\Http\Controllers;
 use App\Models\Categoria;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use OpenApi\Annotations as OA;
 
+/**
+ *
+ *
+ * @OA\Tag(name="Categories")
+ *
+ *
+ */
 class CategoriaController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
+     * @OA\Get(
+     *     path="/categories",
+     *     summary="Llista de categories",
+     *     tags={"Categories"},
+     *     @OA\Response(
+     *     response=200,
+     *     description="Llista de categories",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Categoria")
+     *    )
+     *  )
+     * )
+     * @OA\Schema(
+     *     schema="Categoria",
+     *     type="object",
+     *     @OA\Property(property="ID_CATEGORIA", type="integer"),
+     *     @OA\Property(property="NOM_CATEGORIA", type="string"),
+     *     @OA\Property(property="TARIFA", type="number")
+     * )
+     *
      */
     public function index()
     {
@@ -24,7 +54,7 @@ class CategoriaController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -35,8 +65,24 @@ class CategoriaController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      * @throws ValidationException
+     * @OA\Post(
+     *     path="/categories",
+     *     summary="Crea una categoria",
+     *     tags={"Categories"},
+     *     @OA\RequestBody(
+     *     description="Dades de la categoria",
+     *     required=true,
+     *     @OA\JsonContent(ref="#/components/schemas/Categoria")
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Categoria creada",
+     *     @OA\JsonContent(ref="#/components/schemas/Categoria")
+     * )
+     * )
+     *
      */
     public function store(Request $request)
     {
@@ -69,7 +115,30 @@ class CategoriaController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
+     * @OA\Get(
+     *     path="/categories/{id}",
+     *     summary="Mostra una categoria",
+     *     tags={"Categories"},
+     *     @OA\Parameter(
+     *     description="ID de la categoria",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Categoria",
+     *     @OA\JsonContent(ref="#/components/schemas/Categoria")
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Categoria no trobada"
+     * )
+     * )
      */
     public function show($id)
     {
@@ -85,7 +154,7 @@ class CategoriaController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
@@ -97,7 +166,36 @@ class CategoriaController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
+     *
+     * @OA\Put(
+     *     path="/categories/{id}",
+     *     summary="Actualitza una categoria",
+     *     tags={"Categories"},
+     *     @OA\Parameter(
+     *     description="ID de la categoria",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     * )
+     * ),
+     *     @OA\RequestBody(
+     *     description="Dades de la categoria",
+     *     required=true,
+     *     @OA\JsonContent(ref="#/components/schemas/Categoria")
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Categoria actualitzada",
+     *     @OA\JsonContent(ref="#/components/schemas/Categoria")
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Categoria no trobada"
+     * )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -129,10 +227,32 @@ class CategoriaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     * @OA\Delete(
+     *     path="/categories/{id}",
+     *     summary="Elimina una categoria",
+     *     tags={"Categories"},
+     *     @OA\Parameter(
+     *     description="ID de la categoria",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Categoria eliminada"
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Categoria no trobada"
+     * )
+     * )
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         try {
             $categoria = Categoria::findOrFail($id);
@@ -140,6 +260,6 @@ class CategoriaController extends Controller
             return response()->json(['status' => 'Categoria eliminada correctament'], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Categoria not found'], 404);
-        }
+    }
     }
 }
