@@ -57,10 +57,10 @@ class ValoracioController extends Controller
             return response()->json($validacio->errors(), 400);
         } else {
             $valoracions= new Valoracio();
-            $valoracions->ID_VALORACIO=$request->ID_VALORACIO = $request->input('ID_VALORACIO');
-            $valoracions->PUNTUACIO=$request->PUNTUACIO = $request->input('PUNTUACIO');
-            $valoracions->FK_ID_USUARI=$request->FK_ID_USUARI = $request->input('FK_ID_USUARI');
-            $valoracions->FK_ID_ALLOTJAMENT=$request->FK_ID_ALLOTJAMENT = $request->input('FK_ID_ALLOTJAMENT');
+            $valoracions->ID_VALORACIO=$request->input('ID_VALORACIO');
+            $valoracions->PUNTUACIO=$request->input('PUNTUACIO');
+            $valoracions->FK_ID_USUARI=$request->input('FK_ID_USUARI');
+            $valoracions->FK_ID_ALLOTJAMENT=$request->input('FK_ID_ALLOTJAMENT');
             $valoracions->save();
             return response()->json(['status'=>'success','result'=>$valoracions], 200);
         }
@@ -77,7 +77,7 @@ class ValoracioController extends Controller
         try {
             $valoracions=Valoracio::findOrFail($id);
             return response()->json(['status'=>'success','result'=>$valoracions], 200);
-        } catch (\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['status'=>'error','result'=>'No s\'ha trobat la valoració.'], 404);
         }
     }
