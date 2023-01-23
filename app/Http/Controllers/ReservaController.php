@@ -20,14 +20,26 @@ class ReservaController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @OA\Get(
      *     path="/reserves",
+     *     summary="Llista de reserves",
      *     tags={"Reserva"},
-     *     summary="Obtiene todas las reservas",
-     *     description="Devuelve todas las reservas",
-     *     operationId="index",
-     * @OA\Response(
+     *     @OA\Response(
      *     response=200,
-     *     description="Successful operation",
+     *     description="Llista de reserves",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Reserva")
      *    )
+     *  )
+     * )
+     * @OA\Schema(
+     *     schema="Reserva",
+     *     type="object",
+     *     @OA\Property(property="ID_RESERVA", type="integer"),
+     *     @OA\Property(property="FK_ID_USUARI", type="integer"),
+     *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer"),
+     *     @OA\Property(property="DATA_INICIAL", type="string"),
+     *     @OA\Property(property="DATA_FINAL", type="string"),
+     *     @OA\Property(property="CONFIRMADA", type="boolean")
      * )
      */
     public function index()
