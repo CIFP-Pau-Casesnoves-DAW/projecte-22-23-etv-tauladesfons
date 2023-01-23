@@ -169,7 +169,7 @@ class CategoriaController extends Controller
      * @return Response
      *
      * @OA\Put(
-     *     path="/categories/{id}",
+     *     path="/categories/put/{id}",
      *     summary="Actualitza una categoria",
      *     tags={"Categories"},
      *     @OA\Parameter(
@@ -230,8 +230,8 @@ class CategoriaController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @OA\Delete(
-     *     path="/categories/{id}",
-     *     summary="Elimina una categoria",
+     *     path="/categories/destroy/{id}",
+     *    summary="Elimina una categoria",
      *     tags={"Categories"},
      *     @OA\Parameter(
      *     description="ID de la categoria",
@@ -254,12 +254,8 @@ class CategoriaController extends Controller
      */
     public function destroy(int $id)
     {
-        try {
-            $categoria = Categoria::findOrFail($id);
-            $categoria->delete();
+       $categoria = Categoria::findOrFail($id);
+         $categoria->delete();
             return response()->json(['status' => 'Categoria eliminada correctament'], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Categoria not found'], 404);
-    }
     }
 }
