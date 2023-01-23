@@ -5,13 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Tipus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
+/** @OA\Tag(name="Tipus") */
 class TipusController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/tipus",
+     *     summary="Llista de tipus",
+     *     tags={"Tipus"},
+     *     @OA\Response(
+     *     response=200,
+     *     description="Llista de tipus",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Tipus")
+     *   )
+     * )
+     * )
+     * @OA\Schema(
+     *     schema="Tipus",
+     *     type="object",
+     *     @OA\Property(property="ID_TIPUS", type="integer"),
+     *     @OA\Property(property="NOM_TIPUS", type="string")
+     * )
      */
     public function index()
     {
@@ -37,6 +58,38 @@ class TipusController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/tipus",
+     *     summary="Crea un nou tipus",
+     *     tags={"Tipus"},
+     *      @OA\RequestBody(
+     *     required=true,
+     *     description="Dades del nou tipus",
+     *     @OA\JsonContent(
+     *     required={"ID_TIPUS", "NOM_TIPUS"},
+     *     @OA\Property(property="ID_TIPUS", type="integer"),
+     *     @OA\Property(property="NOM_TIPUS", type="string")
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Tipus creat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="data", ref="#/components/schemas/Tipus")
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=400,
+     *     description="Error de validació",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="message", type="string")
+     * )
+     * )
+     * )
      */
     public function store(Request $request)
     {
@@ -74,6 +127,38 @@ class TipusController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/tipus/{id}",
+     *     summary="Mostra un tipus",
+     *     tags={"Tipus"},
+     *     @OA\Parameter(
+     *     description="ID del tipus",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Tipus",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="data", ref="#/components/schemas/Tipus")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Tipus no trobat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="message", type="string")
+     * )
+     * )
+     * )
      */
     public function show($id)
     {
@@ -108,6 +193,43 @@ class TipusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *     path="/tipus/put/{id}",
+     *     summary="Actualitza un tipus",
+     *     tags={"Tipus"},
+     *     @OA\Parameter(
+     *     description="ID del tipus",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     * )
+     * ),
+     *     @OA\RequestBody(
+     *     description="Dades del tipus",
+     *     required=true,
+     *     @OA\JsonContent(ref="#/components/schemas/Tipus")
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Tipus actualitzat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="data", ref="#/components/schemas/Tipus")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=400,
+     *     description="Error de validació",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="errors", type="object")
+     * )
+     * )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -143,6 +265,39 @@ class TipusController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *     path="/tipus/destroy/{id}",
+     *     summary="Elimina un tipus",
+     *     tags={"Tipus"},
+     *     @OA\Parameter(
+     *     description="ID del tipus",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Tipus eliminat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="data", ref="#/components/schemas/Tipus")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Tipus no trobat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="message", type="string")
+     * )
+     * )
+     * )
+     *
      */
     public function destroy($id)
     {
