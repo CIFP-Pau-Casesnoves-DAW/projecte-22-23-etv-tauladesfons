@@ -5,6 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Allotjament;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
+
+/** @OA\Tag (
+ *     name="Allotjaments"
+ * )
+ */
 
 class AllotjamentController extends Controller
 {
@@ -12,6 +19,43 @@ class AllotjamentController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @OA\Get (
+     *     path="/allotjaments",
+     *     summary="Llista d'allotjaments",
+     *     tags={"Allotjaments"},
+     *     @OA\Response (
+     *     response=200,
+     *     description="Llista d'allotjaments",
+     *     @OA\JsonContent (
+     *     type="array",
+     *     @OA\Items (ref="#/components/schemas/Allotjament")
+     *   )
+     * )
+     * )
+     * @OA\Schema (
+     *     schema="Allotjament",
+     *     type="object",
+     *     @OA\Property (property="ID_ALLOTJAMENT", type="integer"),
+     *     @OA\Property (property="NOM_COMERCIAL", type="string"),
+     *     @OA\Property (property="NUM_REGISTRE", type="integer"),
+     *     @OA\Property (property="DESCRIPCIO", type="string"),
+     *     @OA\Property (property="LLITS", type="integer"),
+     *     @OA\Property (property="PERSONES", type="integer"),
+     *     @OA\Property (property="BANYS", type="integer"),
+     *     @OA\Property (property="FOTOGRAFIES", type="string"),
+     *     @OA\Property (property="ADRECA", type="string"),
+     *     @OA\Property (property="DESTACAT", type="boolean"),
+     *     @OA\Property (property="VALORACIO_GLOBAL", type="number"),
+     *     @OA\Property (property="FK_ID_MUNICIPI", type="integer"),
+     *      @OA\Property (property="FK_ID_TIPUS", type="integer"),
+     *     @OA\Property (property="FK_ID_SERVEI", type="integer"),
+     *     @OA\Property (property="FK_ID_VACANCES", type="integer"),
+     *     @OA\Property (property="FK_ID_CATEGORIA", type="integer"),
+     *     @OA\Property (property="FK_ID_USUARI", type="integer")
+     * )
+     *
+     *
+     *
      */
     public function index()
     {
@@ -19,21 +63,41 @@ class AllotjamentController extends Controller
         return response()->json($tuples);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Post (
+     *     path="/allotjaments",
+     *     summary="Crea un allotjament",
+     *     tags={"Allotjaments"},
+     *     @OA\RequestBody (
+     *     required=true,
+     *     description="Dades de l'allotjament",
+     *     @OA\JsonContent (
+     *     ref="#/components/schemas/Allotjament"
+     *   )
+     * ),
+     *     @OA\Response (
+     *     response=200,
+     *     description="Allotjament creat",
+     *     @OA\JsonContent (
+     *     ref="#/components/schemas/Allotjament"
+     *   )
+     * ),
+     *     @OA\Response (
+     *     response=400,
+     *     description="Error de validació",
+     *     @OA\JsonContent (
+     *     ref="#/components/schemas/Error"
+     *  )
+     * )
+     * )
      */
     public function store(Request $request)
     {
@@ -48,7 +112,7 @@ class AllotjamentController extends Controller
             'BANYS' => 'required|integer',
             'FOTOGRAFIES' => 'required|string|max:255',
             'ADRECA' => 'required|string|max:255',
-            'DESTACAT' => 'required|integer',
+            'DESTACAT' => 'required|boolean',
             'VALORACIO_GLOBAL' => 'required|integer',
             'FK_ID_MUNICIPI' => 'required|integer',
             'FK_ID_TIPUS' => 'required|integer',
@@ -81,7 +145,7 @@ class AllotjamentController extends Controller
             'ADRECA.string' => 'El camp ADRECA ha de ser una cadena de caràcters.',
             'ADRECA.max' => ' El camp ADRECA no pot tenir més de 255 caràcters.',
             'DESTACAT.required' => 'El camp DESTACAT és obligatori.',
-            'DESTACAT.integer' => 'El camp DESTACAT ha de ser un número enter.',
+            'DESTACAT.boolean' => 'El camp DESTACAT ha de ser un booleà.',
             'VALORACIO_GLOBAL.required' => 'El camp VALORACIO_GLOBAL és obligatori.',
             'VALORACIO_GLOBAL.integer' => 'El camp VALORACIO_GLOBAL ha de ser un número enter.',
             'FK_ID_MUNICIPI.required' => 'El camp FK_ID_MUNICIPI és obligatori.',
@@ -129,7 +193,45 @@ class AllotjamentController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+     *
+     * @OA\Get(
+     *      path="/allotjaments/{id}",
+     *     summary="Mostra un allotjament",
+     *     description="Mostra un allotjament",
+     *     tags={"Allotjaments"},
+     *     @OA\Parameter(
+     *     description="ID de l'allotjament",
+     *     in="path",
+     *     name="id",
+     *     required=true
+     *   ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Mostra un allotjament",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="ID_ALLOTJAMENT", type="integer"),
+     *     @OA\Property(property="NOM_COMERCIAL", type="string"),
+     *     @OA\Property(property="NUM_REGISTRE", type="string"),
+     *     @OA\Property(property="DESCRIPCIO", type="string"),
+     *     @OA\Property(property="LLITS", type="integer"),
+     *     @OA\Property(property="PERSONES", type="integer"),
+     *     @OA\Property(property="BANYS", type="integer"),
+     *     @OA\Property(property="FOTOGRAFIES", type="string"),
+     *     @OA\Property(property="ADRECA", type="string"),
+     *     @OA\Property(property="DESTACAT", type="integer"),
+     *     @OA\Property(property="VALORACIO_GLOBAL", type="integer"),
+     *     @OA\Property(property="FK_ID_MUNICIPI", type="integer"),
+     *     @OA\Property(property="FK_ID_TIPUS", type="integer"),
+     *     @OA\Property(property="FK_ID_SERVEI", type="integer"),
+     *     @OA\Property(property="FK_ID_VACANCES", type="integer"),
+     *     @OA\Property(property="FK_ID_CATEGORIA", type="integer"),
+     *     @OA\Property(property="FK_ID_USUARI", type="integer"),
+     *     ),
+     *     )
+     *
+     *
+     * )
+        */
     public function show($id)
     {
         try {
@@ -139,24 +241,70 @@ class AllotjamentController extends Controller
             return response()->json(['error' => 'No s\'ha trobat l\'allotjament'], 404);
         }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *     path="/allotjaments/put/{id}",
+     *     summary="Actualitza un allotjament",
+     *     description="Actualitza un allotjament",
+     *     tags={"Allotjaments"},
+     *     @OA\Parameter(
+     *     description="ID de l'allotjament",
+     *     in="path",
+     *     name="id",
+     *     required=true
+     *     ),
+     *     @OA\RequestBody(
+     *     description="Dades de l'allotjament",
+     *     required=true,
+     *     @OA\JsonContent(
+     *     @OA\Property(property="ID_ALLOTJAMENT", type="integer"),
+     *     @OA\Property(property="NOM_COMERCIAL", type="string"),
+     *     @OA\Property(property="NUM_REGISTRE", type="integer"),
+     *     @OA\Property(property="DESCRIPCIO", type="string"),
+     *     @OA\Property(property="LLITS", type="integer"),
+     *     @OA\Property(property="PERSONES", type="integer"),
+     *     @OA\Property(property="BANYS", type="integer"),
+     *     @OA\Property(property="FOTOGRAFIES", type="string"),
+     *     @OA\Property(property="ADRECA", type="string"),
+     *     @OA\Property(property="DESTACAT", type="boolean"),
+     *     @OA\Property(property="VALORACIO_GLOBAL", type="integer"),
+     *     @OA\Property(property="FK_ID_MUNICIPI", type="integer"),
+     *     @OA\Property(property="FK_ID_TIPUS", type="integer"),
+     *     @OA\Property(property="FK_ID_SERVEI", type="integer"),
+     *     @OA\Property(property="FK_ID_VACANCES", type="integer"),
+     *     @OA\Property(property="FK_ID_CATEGORIA", type="integer"),
+     *     @OA\Property(property="FK_ID_USUARI", type="integer"),
+     *     ),
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Actualitza un allotjament",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="ID_ALLOTJAMENT", type="integer"),
+     *     @OA\Property(property="NOM_COMERCIAL", type="string"),
+     *     @OA\Property(property="NUM_REGISTRE", type="integer"),
+     *     @OA\Property(property="DESCRIPCIO", type="string"),
+     *     @OA\Property(property="LLITS", type="integer"),
+     *     @OA\Property(property="PERSONES", type="integer"),
+     *     @OA\Property(property="BANYS", type="integer"),
+     *     @OA\Property(property="FOTOGRAFIES", type="string"),
+     *     @OA\Property(property="ADRECA", type="string"),
+     *     @OA\Property(property="DESTACAT", type="integer"),
+     *     @OA\Property(property="VALORACIO_GLOBAL", type="number"),
+     *     @OA\Property(property="FK_ID_MUNICIPI", type="integer"),
+     *     @OA\Property(property="FK_ID_TIPUS", type="integer"),
+     *     @OA\Property(property="FK_ID_SERVEI", type="integer"),
+     *     @OA\Property(property="FK_ID_VACANCES", type="integer"),
+     *     @OA\Property(property="FK_ID_CATEGORIA", type="integer"),
+     *     @OA\Property(property="FK_ID_USUARI", type="integer"),
+     *     ),
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -204,7 +352,7 @@ class AllotjamentController extends Controller
             'ADRECA.string' => 'El camp ADRECA ha de ser una cadena de text.',
             'ADRECA.max' => 'El camp ADRECA no pot tenir més de 255 caràcters.',
             'DESTACAT.required' => 'El camp DESTACAT és obligatori.',
-            'DESTACAT.integer' => 'El camp DESTACAT ha de ser un número enter.',
+            'DESTACAT.boolean' => 'El camp DESTACAT ha de ser un booleà.',
             'VALORACIO_GLOBAL.required' => 'El camp VALORACIO_GLOBAL és obligatori.',
             'VALORACIO_GLOBAL.integer' => 'El camp VALORACIO_GLOBAL ha de ser un número enter.',
             'FK_ID_MUNICIPI.required' => 'El camp FK_ID_MUNICIPI és obligatori.',
@@ -238,12 +386,40 @@ class AllotjamentController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *     path="/allojaments/destroy/{id}",
+     *     tags={"Allotjaments"},
+     *     summary="Elimina un allotjament",
+     *     description="Elimina un allotjament",
+     *     @OA\Response(
+     *     response=200,
+     *     description="Allotjament eliminat correctament"
+     * ),
+     *     @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="ID de l'allotjament",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="No s'ha pogut eliminar l'allotjament"
+     * )
+     * )
+     *
+     *
+     *
      */
+
     public function destroy($id)
     {
         try {
-            $tuples = Allotjament::where('ID_ALLOTJAMENT', $id)->delete();
-            return  response()->json([
+            $tuples = Allotjament::FindOrFail($id);
+            $tuples->delete();
+            return response()->json([
                 'success' => 'Allotjament eliminat correctament'
             ]);
         } catch (Exception $e) {

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reserva;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 /**
  * @OA\Info(title="API TauladesFons", version="0.1")
  * @OA\Server(url="http://localhost:8000/api")
- * @OA\Tag(name="Reserva")
+ * @OA\Tag(name="Reserves")
  *
  */
 class ReservaController extends Controller
@@ -21,7 +22,7 @@ class ReservaController extends Controller
      * @OA\Get(
      *     path="/reserves",
      *     summary="Llista de reserves",
-     *     tags={"Reserva"},
+     *     tags={"Reserves"},
      *     @OA\Response(
      *     response=200,
      *     description="Llista de reserves",
@@ -49,16 +50,6 @@ class ReservaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -67,7 +58,7 @@ class ReservaController extends Controller
      *
      * @OA\Post(
      *     path="/reserves",
-     *     tags={"Reserva"},
+     *     tags={"Reserves"},
      *     summary="Añaade una nueva reserva",
      *     description="Añade una nueva reserva",
      *     operationId="store",
@@ -172,7 +163,7 @@ class ReservaController extends Controller
     /**
      * @OA\Get(
      *     path="/reserves/{id}",
-     *     tags={"Reserva"},
+     *     tags={"Reserves"},
      *     summary="Mostra una reserva",
      *     description="Mostra una reserva",
      *     operationId="show",
@@ -222,17 +213,6 @@ class ReservaController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -242,7 +222,7 @@ class ReservaController extends Controller
     /**
      * @OA\Put(
      *    path="/reserves/put/{id}",
-     *     tags={"Reserva"},
+     *     tags={"Reserves"},
      *     summary="Actualitza una reserva",
      *     description="Actualitza una reserva",
      *     operationId="update",
@@ -340,7 +320,7 @@ class ReservaController extends Controller
     /**
      * @OA\Delete(
      *    path="/reserves/destroy/{id}",
-     *     tags={"Reserva"},
+     *     tags={"Reserves"},
      *     summary="Elimina una reserva",
      *     description="Elimina una reserva",
      *     operationId="destroy",
