@@ -5,13 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\Municipi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
+/**
+ *
+ *
+ * @OA\Tag(name="Municipis")
+ *
+ */
 class MunicipiController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/municipis",
+     *     summary="Llista de municipis",
+     *     tags={"Municipis"},
+     *     @OA\Response(
+     *     response=200,
+     *     description="Llista de municipis",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Municipi")
+     *   )
+     * )
+     * )
+     * @OA\Schema(
+     *     schema="Municipi",
+     *     type="object",
+     *     @OA\Property(property="ID_MUNICIPI", type="integer"),
+     *     @OA\Property(property="NOM_MUNICIPI", type="string")
+     * )
      */
     public function index()
     {
@@ -37,6 +63,29 @@ class MunicipiController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/municipis",
+     *     summary="Crea un municipi",
+     *     tags={"Municipis"},
+     *     @OA\RequestBody(
+     *     required=true,
+     *     description="Dades del municipi",
+     *     @OA\JsonContent(
+     *     required={"ID_MUNICIPI", "NOM_MUNICIPI"},
+     *     @OA\Property(property="ID_MUNICIPI", type="integer"),
+     *     @OA\Property(property="NOM_MUNICIPI", type="string")
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Municipi creat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="data", ref="#/components/schemas/Municipi")
+     * )
+     * )
+     * )
      */
     public function store(Request $request)
     {
@@ -71,6 +120,39 @@ class MunicipiController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/municipis/{id}",
+     *     summary="Mostra un municipi",
+     *     tags={"Municipis"},
+     *     @OA\Parameter(
+     *     description="ID del municipi",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Municipi",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="data", ref="#/components/schemas/Municipi")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Municipi no trobat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="message", type="string")
+     * )
+     * )
+     * )
+     *
      */
     public function show($id)
     {
@@ -83,7 +165,7 @@ class MunicipiController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Municipi not found'
+                'message' => 'El municipi amb id ' . $id . ' no existeix'
             ], 404);
         }
     }
@@ -136,7 +218,7 @@ class MunicipiController extends Controller
             } catch (\Exception $e) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Municipi not found'
+                    'message' => 'El municipi amb id ' . $id . ' no existeix'
                 ], 404);
             }
         }
@@ -154,7 +236,7 @@ class MunicipiController extends Controller
         $tuples->delete();
         return response()->json([
             'status' => 'success',
-            'message' => 'Municipi deleted'
+            'message' => 'Municipi eliminat correctament'
         ], 200);
     }
 }
