@@ -9,7 +9,7 @@ class Traduccio_servei extends Model
 {
     use HasFactory;
     protected $table = 'TRADUCCIO_SERVEIS';
-    protected $primaryKey = 'FK_ID_SERVEI, FK_ID_IDIOMA';
+    protected $primaryKey = ['FK_ID_SERVEI, FK_ID_IDIOMA'];
     public $timestamps = false;
     public $incrementing = false;
     protected $fillable = [

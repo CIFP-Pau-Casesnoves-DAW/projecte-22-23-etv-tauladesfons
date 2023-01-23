@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Traduccio_servei;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class Traduccio_serveiController extends Controller
@@ -14,18 +16,9 @@ class Traduccio_serveiController extends Controller
     public function index()
     {
         $tuples=Traduccio_servei::all();
-         return response()->json(['status'=>'success', 'result' => $tuples],200);
+        return response()->json(['status'=>'success', 'result' => $tuples],200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +28,7 @@ class Traduccio_serveiController extends Controller
      */
     public function store(Request $request)
     {
-        $traduccio_servei= new Traduccio_servei;
+        $traduccio_servei= new Traduccio_servei();
         $traduccio_servei->FK_ID_SERVEI=$request->FK_ID_SERVEI;
         $traduccio_servei->FK_ID_IDIOMA=$request->FK_ID_IDIOMA;
         $traduccio_servei->TRADUCCIO_SERVEI=$request->TRADUCCIO_SERVEI;
@@ -65,10 +58,6 @@ class Traduccio_serveiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -77,8 +66,7 @@ class Traduccio_serveiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         //
     }
 
@@ -88,8 +76,7 @@ class Traduccio_serveiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id_servei,$id_idioma){
+        $tupla=Traduccio_servei::where();
     }
 }

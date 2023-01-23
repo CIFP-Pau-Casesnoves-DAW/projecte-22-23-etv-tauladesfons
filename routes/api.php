@@ -105,16 +105,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::put('/put/{id}', [ServeiController::class, 'update']);
     Route::delete('/destroy/{id}', [ServeiController::class, 'destroy']);
     });
-    //ruta de traduccions_serveis
-    Route::group(['prefix' => 'traduccions_serveis'], function () {
+    // ! ruta de traduccions_serveis
+    Route::group(['prefix' => 'traduccio_serveis'], function () {
     Route::get('/', [Traduccio_serveiController::class, 'index']);
-    Route::get('/{id}', [Traduccio_serveiController::class, 'show']);
+    Route::get('/{id_servei}/{id_idioma}', [Traduccio_serveiController::class, 'show']);
     Route::post('', [Traduccio_serveiController::class, 'store']);
     Route::put('/put/{id}', [Traduccio_serveiController::class, 'update']);
-    Route::delete('/destroy/{id}', [Traduccio_serveiController::class, 'destroy']);
+    Route::delete('/destroy/{id_servei}/{id_idioma}', [Traduccio_serveiController::class, 'destroy']);
     });
     //ruta de traduccions_tipus
-    Route::group(['prefix' => 'traduccions_tipus'], function () {
+    Route::group(['prefix' => 'traduccio_tipus'], function () {
     Route::get('/', [Traduccio_tipusController::class, 'index']);
     Route::get('/{id}', [Traduccio_tipusController::class, 'show']);
     Route::post('', [Traduccio_tipusController::class, 'store']);
@@ -122,12 +122,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::delete('/destroy/{id}', [Traduccio_tipusController::class, 'destroy']);
     });
     //ruta de traduccions_vacances
-    Route::group(['prefix' => 'traduccions_vacances'], function () {
+    Route::group(['prefix' => 'traduccio_vacances'], function () {
     Route::get('/', [Traduccio_vacancesController::class, 'index']);
     Route::get('/{id}', [Traduccio_vacancesController::class, 'show']);
     Route::post('', [Traduccio_vacancesController::class, 'store']);
     Route::put('/put/{id}', [Traduccio_vacancesController::class, 'update']);
-    Route::delete('/destroy/{id}', [Traduccio_vacancesController::class, 'destroy']);
+    Route::delete('/destroy/{id_servei}', [Traduccio_vacancesController::class, 'destroy']);
     });
     //ruta de usuaris
     Route::group(['prefix' => 'usuaris'], function () {
