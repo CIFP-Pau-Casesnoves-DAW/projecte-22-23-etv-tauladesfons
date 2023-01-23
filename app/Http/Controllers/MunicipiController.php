@@ -48,15 +48,7 @@ class MunicipiController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -170,16 +162,7 @@ class MunicipiController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -187,6 +170,56 @@ class MunicipiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     *  @OA\Put(
+     *     path="/municipis/put/{id}",
+     *     summary="Actualitza un municipi",
+     *     tags={"Municipis"},
+     *     @OA\Parameter(
+     *     description="ID del municipi",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     * )
+     * ),
+     *     @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *     required={"ID_MUNICIPI", "NOM_MUNICIPI"},
+     *     @OA\Property(property="ID_MUNICIPI", type="integer"),
+     *     @OA\Property(property="NOM_MUNICIPI", type="string")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Municipi actualitzat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="data", ref="#/components/schemas/Municipi")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=400,
+     *     description="Error de validació",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="errors", ref="#/components/schemas/Municipi")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Municipi no trobat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="message", type="string")
+     * )
+     * )
+     * )
+     *
      */
     public function update(Request $request, $id)
     {
@@ -229,10 +262,42 @@ class MunicipiController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *     path="/municipis/destroy/{id}",
+     *     summary="Elimina un municipi",
+     *     tags={"Municipis"},
+     *     @OA\Parameter(
+     *     description="ID del municipi",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Municipi eliminat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="message", type="string")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Municipi no trobat",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="message", type="string")
+     * )
+     * )
+     * )
      */
     public function destroy($id)
     {
-        $tuples = Municipi::finorFail($id);
+        $tuples = Municipi::findOrFail($id);
         $tuples->delete();
         return response()->json([
             'status' => 'success',
