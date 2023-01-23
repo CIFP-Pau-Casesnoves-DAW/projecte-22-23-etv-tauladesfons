@@ -5,13 +5,52 @@ namespace App\Http\Controllers;
 use App\Models\Comentari;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
+/**
+@OA\Tag( name="Comentaris")
+ */
 class ComentariController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/comentaris",
+     *     tags={"Comentaris"},
+     *     summary="Mostra tots els comentaris",
+     *     description="Retorna tots els comentaris",
+     *     operationId="index",
+     *     @OA\Response(
+     *     response=200,
+     *     description="Retorna tots els comentaris",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Comentari")
+     *    )
+     *   ),
+     *     @OA\Response(
+     *     response=401,
+     *     description="No autoritzat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Comentari")
+     *   )
+     * )
+     * )
+     *  @OA\Schema(
+     *     schema="Comentari",
+     *     type="object",
+     *     @OA\Property(property="ID_COMENTARI", type="integer"),
+     *     @OA\Property(property="DESCRIPCIO", type="string"),
+     *     @OA\Property(property="HORA", type="time"),
+     *     @OA\Property(property="DATA", type="date"),
+     *     @OA\Property(property="FK_ID_USUARI", type="integer"),
+     *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer")
+     * )
+     *
+     * )
      */
     public function index()
     {
@@ -20,20 +59,45 @@ class ComentariController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *    path="/comentaris",
+     *     tags={"Comentaris"},
+     *     summary="Afegeix un comentari",
+     *     description="Afegeix un comentari",
+     *     @OA\RequestBody(
+     *     required=true,
+     *     description="Dades del comentari",
+     *     @OA\JsonContent(
+     *     required={"ID_COMENTARI","DESCRIPCIO","HORA","DATA","FK_ID_USUARI","FK_ID_ALLOTJAMENT"},
+     *     @OA\Property(property="ID_COMENTARI", type="integer", format="int64", example=1),
+     *     @OA\Property(property="DESCRIPCIO", type="string", format="string", example="Bon allotjament"),
+     *     @OA\Property(property="HORA", type="string", format="string", example="12:00:00"),
+     *     @OA\Property(property="DATA", type="string", format="string", example="2020-12-12"),
+     *     @OA\Property(property="FK_ID_USUARI", type="integer", format="int64", example=1),
+     *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", format="int64", example=1)
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Retorna el comentari que s'ha afegit",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Comentari")
+     *   )
+     * ),
+     *     @OA\Response(
+     *     response=401,
+     *     description="No autoritzat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Comentari")
+     *  )
+     * )
+     * )
      */
     public function store(Request $request)
     {
@@ -78,6 +142,40 @@ class ComentariController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/comentaris/{id}",
+     *     operationId="getComentariById",
+     *     tags={"Comentaris"},
+     *     summary="Mostra un comentari",
+     *     description="Retorna un comentari",
+     *     @OA\Parameter(
+     *     name="id",
+     *     description="Comentari id",
+     *     required=true,
+     *     in="path",
+     *     @OA\Schema(
+     *     type="integer"
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *      description="Retorna el comentari",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Comentari")
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Comentari no trobat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Comentari")
+     * )
+     * )
+     *     )
+     *
+     * )
      */
     public function show($id)
     {
@@ -90,22 +188,56 @@ class ComentariController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *     path="/comentaris/put/{id}",
+     *     operationId="updateComentari",
+     *     tags={"Comentaris"},
+     *     summary="Actualitza un comentari",
+     *     description="Actualitza un comentari",
+     *     @OA\Parameter(
+     *     name="id",
+     *     description="Comentari id",
+     *     required=true,
+     *     in="path",
+     *     @OA\Schema(
+     *     type="integer"
+        *  )
+     * ),
+     *     @OA\RequestBody(
+     *     required=true,
+     *     description="Dades del comentari",
+     *     @OA\JsonContent(
+     *     required={"ID_COMENTARI","DESCRIPCIO","HORA","DATA","FK_ID_USUARI","FK_ID_ALLOTJAMENT"},
+     *     @OA\Property(property="ID_COMENTARI", type="integer", format="int64", example=1),
+     *     @OA\Property(property="DESCRIPCIO", type="string", format="string", example="Bon allotjament"),
+     *     @OA\Property(property="HORA", type="string", format="string", example="12:00:00"),
+     *     @OA\Property(property="DATA", type="string", format="string", example="2020-12-12"),
+     *     @OA\Property(property="FK_ID_USUARI", type="integer", format="int64", example=1),
+     *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", format="int64", example=1)
+        *  )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Retorna el comentari actualitzat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Comentari")
+        *  )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Comentari no trobat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Comentari")
+     * )
+     * )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -154,6 +286,38 @@ class ComentariController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *     path="/comentaris/destroy/{id}",
+     *     operationId="deleteComentari",
+     *     tags={"Comentaris"},
+     *     summary="Elimina un comentari",
+     *     description="Elimina un comentari",
+     *     @OA\Parameter(
+     *     name="id",
+     *     description="Comentari id",
+     *     required=true,
+     *     in="path",
+     *     @OA\Schema(
+     *     type="integer"
+        *  )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Comentari eliminat correctament",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Comentari")
+        *  )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Comentari no trobat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Comentari")
+     * )
+     * )
+     *     )
      */
     public function destroy($id)
     {
