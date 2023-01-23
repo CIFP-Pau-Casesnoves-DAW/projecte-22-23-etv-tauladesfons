@@ -42,7 +42,7 @@ class Traduccio_serveiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id_servei,$id_idioma)
     {
         try {
             $traduccio_servei=Traduccio_servei::findOrFail($id);
