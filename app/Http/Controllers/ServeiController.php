@@ -5,13 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\Servei;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
+/** @OA\Tag(
+ *     name="Serveis"
+ *
+ * )
+ */
 class ServeiController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/serveis",
+     *     summary="Mostra tots els serveis",
+     *     tags={"Serveis"},
+     *     @OA\Response(
+     *     response=200,
+     *     description="Retorna tots els serveis",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Servei")
+     *    )
+     *  )
+     * )
+     * @OA\Schema(
+     *     schema="Servei",
+     *     type="object",
+     *     @OA\Property(property="ID_SERVEI", type="integer"),
+     *     @OA\Property(property="NOM_SERVEI", type="string")
+     * )
      */
     public function index()
     {
@@ -20,20 +46,40 @@ class ServeiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/serveis",
+     *     summary="Crea un nou servei",
+     *     tags={"Serveis"},
+     *     @OA\RequestBody(
+     *     required=true,
+     *     description="Dades del servei",
+     *     @OA\JsonContent(
+     *     required={"ID_SERVEI","NOM_SERVEI"},
+     *     @OA\Property(property="ID_SERVEI", type="integer"),
+     *     @OA\Property(property="NOM_SERVEI", type="string")
+     *   )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Servei creat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Servei")
+     *   )
+     * ),
+     *      @OA\Response(
+     *     response=400,
+     *     description="Error de creació",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Error")
+     *  )
+     * )
+     * )
      */
     public function store(Request $request)
     {
@@ -66,6 +112,38 @@ class ServeiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *     path="/serveis/{id}",
+     *     summary="Mostra un servei",
+     *     tags={"Serveis"},
+     *     @OA\Parameter(
+     *     description="ID del servei",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     *   )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Retorna el servei",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Servei")
+     *   )
+     * ),
+     *      @OA\Response(
+     *     response=404,
+     *     description="Servei no trobat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Error")
+     *  )
+     * )
+     * )
+     */
     public function show($id)
     {
         try {
@@ -77,22 +155,52 @@ class ServeiController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Put(
+     *     path="/serveis/put/{id}",
+     *     summary="Actualitza un servei",
+     *     tags={"Serveis"},
+     *     @OA\Parameter(
+     *     description="ID del servei",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     *   )
+     * ),
+     *     @OA\RequestBody(
+     *     required=true,
+     *     description="Dades del servei",
+     *     @OA\JsonContent(
+     *     required={"ID_SERVEI","NOM_SERVEI"},
+     *     @OA\Property(property="ID_SERVEI", type="integer"),
+     *     @OA\Property(property="NOM_SERVEI", type="string")
+     *   )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Servei actualitzat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Servei")
+     *   )
+     * ),
+     *      @OA\Response(
+     *     response=400,
+     *     description="Error d'actualització",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Error")
+     *  )
+     * )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -125,6 +233,38 @@ class ServeiController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Delete(
+     *     path="/serveis/destroy/{id}",
+     *     summary="Elimina un servei",
+     *     tags={"Serveis"},
+     *     @OA\Parameter(
+     *     description="ID del servei",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     *   )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Servei eliminat correctament",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Servei")
+     *   )
+     * ),
+     *      @OA\Response(
+     *     response=400,
+     *     description="Error d'eliminació",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Error")
+     *  )
+     * )
+     * )
      */
     public function destroy($id)
     {
