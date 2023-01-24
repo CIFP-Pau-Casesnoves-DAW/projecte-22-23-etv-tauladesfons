@@ -5,13 +5,56 @@ namespace App\Http\Controllers;
 use App\Models\Usuari;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Tag(name="Usuaris")
+ */
 class UsuariController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Get(
+     *     path="/usuaris",
+     *     summary="Llista tots els usuaris",
+     *     tags={"Usuaris"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="result", type="array",@OA\Items(
+     *                 @OA\Property(property="ID_USUARI", type="integer", example=1),
+     *                 @OA\Property(property="DNI", type="string", example="12345678Z"),
+     *                 @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
+     *                 @OA\Property(property="CORREU_ELECTRONIC", type="string", example=" patata@gmail.com")
+     *            ))
+     *        )
+     *    ),
+     *     @OA\Response(
+     *     response=401,
+     *     description="Unauthorized",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="status", type="string", example="Unauthorized")
+     *    )
+     * )
+     * )
+     * @OA\Schema(
+     *     schema="Usuari",
+     *     @OA\Property(property="ID_USUARI", type="integer", example=1),
+     *     @OA\Property(property="DNI", type="string", example="12345678Z"),
+     *     @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
+     *     @OA\Property(property="CORREU_ELECTRONIC", type="string", example="patata@gmail.com"),
+     *     @OA\Property(property="CONTRASENYA", type="string", example="12345678Z"),
+     *     @OA\Property(property="TELEFON", type="string", example="12345678Z"),
+     *     @OA\Property(property="ADMINISTRADOR", type="boolean", example="true")
+     *
+     * )
      */
     public function index()
     {
@@ -20,20 +63,52 @@ class UsuariController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Post(
+     *     path="/usuaris",
+     *     summary="Crear un usuari",
+     *     tags={"Usuaris"},
+     *     @OA\RequestBody(
+     *         description="Usuari a crear",
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="DNI", type="string", example="12345678Z"),
+     *             @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
+     *             @OA\Property(property="CORREU_ELECTRONIC", type="string", example="patata@gmail.com"),
+     *        @OA\Property(property="CONTRASENYA", type="string", example="patata"),
+     *     @OA\Property(property="TELEFON", type="string", example="123456789"),
+     *     @OA\Property(property="ADMINISTRADOR", type="boolean", example="false")
+     *        )
+     *    ),
+     *     @OA\Response(
+     *     response=201,
+     *     description="Creat correctament",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="status", type="string", example="success"),
+     *     @OA\Property(property="result", type="array",@OA\Items(
+     *     @OA\Property(property="ID_USUARI", type="integer", example=1),
+     *     @OA\Property(property="DNI", type="string", example="12345678Z"),
+     *     @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
+     *     @OA\Property(property="CORREU_ELECTRONIC", type="string", example="patata@gmail.com"),
+     *     @OA\Property(property="CONTRASENYA", type="string", example="patata"),
+     *     @OA\Property(property="TELEFON", type="string", example="123456789"),
+     *     @OA\Property(property="ADMINISTRADOR", type="boolean", example="false")
+     *   ))
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=401,
+     *     description="No autoritzat",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="status", type="string", example="Unauthorized")
+     *   )
+     * )
+     * )
      */
     public function store(Request $request)
     {
@@ -87,6 +162,41 @@ class UsuariController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    /** * @OA\Get(
+     *      path="/usuaris/{id}",
+     *     operationId="Obtenir usuari",
+     *     tags={"Usuaris"},
+     *     summary="Mostra un usuari",
+     *     description="Retorna un usuari",
+     *     @OA\Parameter(
+     *     name="id",
+     *     description="Usuari ID",
+     *     required=true,
+     *     in="path",
+     *     @OA\Schema(
+     *     type="integer"
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *      description="Usuari trobat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Usuari")
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Comentari no trobat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Usuari")
+     * )
+     * )
+     *     )
+     *
+     * )
+     */
     public function show($id)
     {
         try {
@@ -98,22 +208,62 @@ class UsuariController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /** * @OA\Put(
+     *      path="/usuaris/put/{id}",
+     *     operationId="Actualitzar usuari",
+     *     tags={"Usuaris"},
+     *     summary="Actualitza un usuari",
+     *     description="Actualitza un usuari",
+     *     @OA\Parameter(
+     *     name="id",
+     *     description="Usuari ID",
+     *     required=true,
+     *     in="path"
+     * ),
+     *     @OA\RequestBody(
+     *     required=true,
+     *     description="Usuari a modificar",
+     *     @OA\JsonContent(
+     *     required={"ID_USUARI","DNI","NOM_COMPLET","CORREU_ELECTRONIC","CONTRASENYA","TELEFON","ADMINISTRADOR"},
+     *     @OA\Property(property="ID_USUARI", type="integer", format="int64", example=1),
+     *     @OA\Property(property="DNI", type="string", format="string", example="12345678Z"),
+     *     @OA\Property(property="NOM_COMPLET", type="string", format="string", example="Nom Cognom"),
+     *     @OA\Property(property="CORREU_ELECTRONIC", type="string", format="string", example="patata@gmail.com"),
+     *     @OA\Property(property="CONTRASENYA", type="string", format="string", example="12345678"),
+     *     @OA\Property(property="TELEFON", type="string", format="string", example="123456789"),
+     *     @OA\Property(property="ADMINISTRADOR", type="boolean", format="boolean", example=true)
+     * )
+     * ),
+     *    @OA\Response(
+     *     response=200,
+     *     description="Usuari actualitzat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Usuari")
+     * )
+     * ),    @OA\Response(
+     *     response=404,
+     *     description="Usuari no trobat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Usuari")
+     * )
+     *
+     * ),   @OA\Response(
+     *     response=400,
+     *     description="Error de usuari",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Usuari")
+     * )
+     * )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -162,6 +312,46 @@ class UsuariController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Delete(
+     *     path="/usuari/destroy/{id}",
+     *     description="Elimina un usuari",
+     *     tags={"Usuaris"},
+     *     @OA\Parameter(
+     *     description="ID de l'usuari",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer",
+     *     format="int64"
+     * )
+     * ),
+     *    @OA\Response(
+     *     response=200,
+     *     description="Usuari eliminat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Usuari")
+     * )
+     * ),    @OA\Response(
+     *     response=404,
+     *     description="Usuari no trobat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Usuari")
+     * )
+     *
+     * ),   @OA\Response(
+     *     response=400,
+     *     description="Error de usuari",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Usuari")
+     * )
+     * )
+     * )
      */
     public function destroy($id)
     {
