@@ -3,14 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vacances;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
+/**
+ *@OA\Tag(name="Vacances")
+ */
 class VacancesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Get(
+     *     path="/vacances",
+     *     tags={"Vacances"},
+     *     summary="Llista de vacances",
+     *     description="Retorna una llista de vacances",
+     *     operationId="indexes",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Llista de vacances",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Vacances")
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *     ),
+     * )
+     * @OA\Schema(
+     *     schema="Vacances",
+     *     type="object",
+     *     @OA\Property(property="ID_VACANCES", type="integer"),
+     *     @OA\Property(property="NOM_VACANCES", type="string")
+     *
+     * )
      */
     public function index()
     {
@@ -19,20 +53,36 @@ class VacancesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Post(
+     *     path="/vacances",
+     *     tags={"Vacances"},
+     *     summary="Afegeix una vacances",
+     *     description="Afegeix una vacances a la base de dades",
+     *     operationId="afegirVacances",
+     *     @OA\Response(
+     *         response=201,
+     *         description="Vacances afegida",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Vacances no afegida",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Vacances a afegir",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Vacances"),
+     *     ),
+     * )
      */
     public function store(Request $request)
     {
@@ -65,6 +115,37 @@ class VacancesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *     path="/vacances/{id}",
+     *     tags={"Vacances"},
+     *     summary="Mostra una vacances",
+     *     description="Retorna una vacances",
+     *     operationId="mostraVacances",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID de la vacances",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Vacances",
+     *         @OA\JsonContent(ref="#/components/schemas/Vacances"),
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Vacances no trobada",
+     *     ),
+     * )
+     */
     public function show($id)
     {
         try {
@@ -76,22 +157,51 @@ class VacancesController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Put(
+     *     path="/vacances/put/{id}",
+     *     tags={"Vacances"},
+     *     summary="Modifica una vacances",
+     *     description="Modifica una vacances",
+     *     operationId="modificarVacances",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID de la vacances",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Vacances modificada",
+     *         @OA\JsonContent(ref="#/components/schemas/Vacances"),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Vacances no modificada",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Vacances no trobada",
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Vacances a modificar",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Vacances"),
+     *     ),
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -124,6 +234,41 @@ class VacancesController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Delete(
+     *     path="/vacances/destroy/{id}",
+     *     tags={"Vacances"},
+     *     summary="Elimina una vacances",
+     *     description="Elimina una vacances",
+     *     operationId="eliminarVacances",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID de la vacances",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Vacances eliminada",
+     *         @OA\JsonContent(ref="#/components/schemas/Vacances"),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Vacances no eliminada",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Vacances no trobada",
+     *     ),
+     * )
      */
     public function destroy($id)
     {
