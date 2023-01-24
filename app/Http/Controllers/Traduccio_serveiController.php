@@ -15,8 +15,8 @@ class Traduccio_serveiController extends Controller
      */
     public function index()
     {
-        $tuples=Traduccio_servei::all();
-        return response()->json(['status'=>'success', 'result' => $tuples],200);
+        $tuples = Traduccio_servei::all();
+        return response()->json(['status' => 'success', 'result' => $tuples], 200);
     }
 
 
@@ -28,12 +28,12 @@ class Traduccio_serveiController extends Controller
      */
     public function store(Request $request)
     {
-        $traduccio_servei= new Traduccio_servei();
-        $traduccio_servei->FK_ID_SERVEI=$request->FK_ID_SERVEI;
-        $traduccio_servei->FK_ID_IDIOMA=$request->FK_ID_IDIOMA;
-        $traduccio_servei->TRADUCCIO_SERVEI=$request->TRADUCCIO_SERVEI;
+        $traduccio_servei = new Traduccio_servei();
+        $traduccio_servei->FK_ID_SERVEI = $request->FK_ID_SERVEI;
+        $traduccio_servei->FK_ID_IDIOMA = $request->FK_ID_IDIOMA;
+        $traduccio_servei->TRADUCCIO_SERVEI = $request->TRADUCCIO_SERVEI;
         $traduccio_servei->save();
-        return response()->json(['status'=>'success','result'=>$traduccio_servei], 200);
+        return response()->json(['status' => 'success', 'result' => $traduccio_servei], 200);
     }
 
     /**
@@ -42,13 +42,13 @@ class Traduccio_serveiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id_servei,$id_idioma)
+    public function show($id_servei, $id_idioma)
     {
         try {
-            $traduccio_servei=Traduccio_servei::findOrFail($id);
-            return response()->json(['status'=>'success','result'=>$traduccio_servei], 200);
+            $traduccio_servei = Traduccio_servei::where('FK_ID_SERVEI', $id_servei)->where('FK_ID_IDIOMA', $id_idioma)->first();
+            return response()->json(['status' => 'success', 'result' => $traduccio_servei], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status'=>'error','result'=>'No existeix aquesta traduccio_servei'], 404);
+            return response()->json(['status' => 'error', 'result' => 'No existeix aquesta traduccio_servei'], 404);
         }
     }
 
@@ -66,7 +66,8 @@ class Traduccio_serveiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         //
     }
 
@@ -76,7 +77,14 @@ class Traduccio_serveiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id_servei,$id_idioma){
-        $tupla=Traduccio_servei::where();
+    public function destroy($id_servei, $id_idioma)
+    {
+        $traduccio_servei = Traduccio_servei::where('FK_ID_SERVEI', $id_servei)->where('FK_ID_IDIOMA', $id_idioma)->delete();
+
+        if ($traduccio_servei) {
+            return response()->json(['status' => ' Esborrat correctament'], 200);
+        } else {
+            return response()->json(['status' => 'No trobat'], 404);
+        }
     }
 }
