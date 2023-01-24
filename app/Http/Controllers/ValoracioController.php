@@ -3,14 +3,50 @@
 namespace App\Http\Controllers;
 
 use App\Models\Valoracio;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
+/** @OA\Tag(name="Valoracions") */
 class ValoracioController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     */
+    /** @OA\Get(
+     *     path="/valoracions",
+     *     tags={"Valoracions"},
+     *     summary="Obtenir totes les valoracions",
+     *     description="Retorna totes les valoracions",
+     *     operationId="indexValoracions",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Valoracions response",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Valoracio")
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="unexpected error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="An error occurred")
+     *         )
+     *     )
+     * )
+     * @OA\Schema(
+     *     schema="Valoracio",
+     *     type="object",
+     *     title="Valoracio model",
+     *     @OA\Property(property="ID_VALORACIO", type="integer", format="int64", description="ID de la valoracio"),
+     *     @OA\Property(property="PUNTUACIO", type="integer", format="int64", description="Puntuacio de la valoracio"),
+     *     @OA\Property(property="FK_ID_USUARI", type="integer", format="int64", description="ID de l'usuari que ha valorat"),
+     *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", format="int64", description="ID de l'allotjament que ha estat valorat")
+     * )
      */
     public function index()
     {
@@ -19,20 +55,37 @@ class ValoracioController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Post(
+     *     path="/valoracions",
+     *     tags={"Valoracions"},
+     *     summary="Inserir una nova valoracio",
+     *     description="Inserir una nova valoracio",
+     *     operationId="storeValoracio",
+     *     @OA\RequestBody(
+     *         description="Objecte valoracio",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Valoracio"),
+     *             @OA\Schema(ref="#/components/schemas/Valoracio")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Valoracio response",
+     *         @OA\JsonContent(ref="#/components/schemas/Valoracio"),
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="unexpected error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="An error occurred")
+     *         )
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -72,6 +125,37 @@ class ValoracioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *     path="/valoracions/{id}",
+     *     tags={"Valoracions"},
+     *     summary="Mostrar una valoracio",
+     *     description="Mostrar una valoracio",
+     *     operationId="showValoracio",
+     *     @OA\Parameter(
+     *         description="ID de la valoracio",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Valoracio obtinguda",
+     *         @OA\JsonContent(ref="#/components/schemas/Valoracio"),
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="unexpected error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="An error occurred")
+     *         )
+     *     )
+     * )
+     */
     public function show($id)
     {
         try {
@@ -83,22 +167,47 @@ class ValoracioController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Put(
+     *     path="/valoracions/put/{id}",
+     *     tags={"Valoracions"},
+     *     summary="Actualitzar una valoracio",
+     *     description="Actualitzar una valoracio",
+     *     operationId="updateValoracio",
+     *     @OA\Parameter(
+     *         description="ID de la valoracio",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Valoracio"),
+     *             @OA\Schema(ref="#/components/schemas/Valoracio")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Valoracio actualitzada",
+     *         @OA\JsonContent(ref="#/components/schemas/Valoracio"),
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="unexpected error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="An error occurred")
+     *         )
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -136,6 +245,37 @@ class ValoracioController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Delete(
+     *     path="/valoracions/destroy/{id}",
+     *     tags={"Valoracions"},
+     *     summary="Eliminar una valoracio",
+     *     description="Eliminar una valoracio",
+     *     operationId="deleteValoracio",
+     *     @OA\Parameter(
+     *         description="ID de la valoracio",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Valoracio eliminada",
+     *         @OA\JsonContent(ref="#/components/schemas/Valoracio"),
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="unexpected error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="An error occurred")
+     *         )
+     *     )
+     * )
      */
     public function destroy($id)
     {
