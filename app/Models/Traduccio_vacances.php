@@ -9,7 +9,7 @@ class Traduccio_vacances extends Model
 {
     use HasFactory;
     protected $table = 'TRADUCCIO_VACANCES';
-    protected $primaryKey = 'FK_ID_VACANCES, FK_ID_IDIOMA';
+    protected $primaryKey = ['FK_ID_VACANCES, FK_ID_IDIOMA'];
     public $timestamps = false;
     public $incrementing = false;
     protected $fillable = [

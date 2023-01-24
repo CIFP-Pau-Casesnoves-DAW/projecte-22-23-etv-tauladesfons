@@ -9,7 +9,7 @@ class Traduccio_tipus extends Model
 {
     use HasFactory;
     protected $table = 'TRADUCCIO_TIPUS';
-    protected $primaryKey = 'FK_ID_TIPUS, FK_ID_IDIOMA';
+    protected $primaryKey = ['FK_ID_TIPUS, FK_ID_IDIOMA'];
     public $timestamps = false;
     public $incrementing = false;
     protected $fillable = [
