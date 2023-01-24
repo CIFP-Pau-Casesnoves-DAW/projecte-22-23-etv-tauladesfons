@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Servei;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
