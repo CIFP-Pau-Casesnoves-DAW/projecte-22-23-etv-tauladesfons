@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 /**
- * @OA\Info(title="API TauladesFons", version="0.1")
- * @OA\Server(url="http://localhost:8000/api")
  * @OA\Tag(name="Reserves")
  *
  */
@@ -43,7 +41,7 @@ class ReservaController extends Controller
      *     @OA\Property(property="CONFIRMADA", type="boolean")
      * )
      */
-    public function index()
+    public function getReserves()
     {
         $tuples=Reserva::all();
         return response()->json(['status'=>'success', 'result' => $tuples],200);
@@ -115,7 +113,7 @@ class ReservaController extends Controller
      *     ),
      *     )
      */
-    public function store(Request $request)
+    public function insertReserva(Request $request)
     {
         $reglesvalidacio = [
             'ID_RESERVA' => 'required',
@@ -202,7 +200,7 @@ class ReservaController extends Controller
      *     )
      *    )
      */
-    public function show($id)
+    public function getReserva($id)
     {
         try {
             $tuples=Reserva::findOrFail($id);
@@ -274,7 +272,7 @@ class ReservaController extends Controller
      *     ),
      *     )
      */
-    public function update(Request $request, $id)
+    public function updateReserva(Request $request, $id)
     {
         $reglesvalidacio = [
             'ID_RESERVA' => 'required',
@@ -351,7 +349,7 @@ class ReservaController extends Controller
      *    )
      * )
      */
-    public function destroy($id)
+    public function deleteReserva($id)
     {
         try {
             $tuples=Reserva::findOrFail($id);

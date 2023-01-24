@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
+ ** @OA\Info(title="API TauladesFons", version="0.1")
+ * @OA\Server(url="http://localhost:8000/api")
  * @OA\Tag(name="Usuaris")
  */
 class UsuariController extends Controller
@@ -56,7 +58,7 @@ class UsuariController extends Controller
      *
      * )
      */
-    public function index()
+    public function getUsuaris()
     {
         $tuples=Usuari::all();
          return response()->json(['status'=>'success', 'result' => $tuples],200);
@@ -110,7 +112,7 @@ class UsuariController extends Controller
      * )
      * )
      */
-    public function store(Request $request)
+    public function insertUsuaris(Request $request)
     {
         $reglesvalidacio = [
             'ID_USUARI' => 'required|integer',
@@ -197,7 +199,7 @@ class UsuariController extends Controller
      *
      * )
      */
-    public function show($id)
+    public function getUsuari($id)
     {
         try {
             $usuaris=Usuari::findOrFail($id);
@@ -265,7 +267,7 @@ class UsuariController extends Controller
      * )
      * )
      */
-    public function update(Request $request, $id)
+    public function updateUsuaris(Request $request, $id)
     {
         $reglesvalidacio = [
             'ID_USUARI' => 'required|integer',
@@ -318,6 +320,7 @@ class UsuariController extends Controller
      *     path="/usuari/destroy/{id}",
      *     description="Elimina un usuari",
      *     tags={"Usuaris"},
+     *     summary="Elimina un usuari",
      *     @OA\Parameter(
      *     description="ID de l'usuari",
      *     in="path",
@@ -353,7 +356,7 @@ class UsuariController extends Controller
      * )
      * )
      */
-    public function destroy($id)
+    public function deleteUsuari($id)
     {
         try {
             $tuples =Usuari::where('ID_USUARI', $id)->delete();

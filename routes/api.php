@@ -91,11 +91,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     });
     //ruta de reserves
     Route::group(['prefix' => 'reserves'], function () {
-    Route::get('/', [ReservaController::class, 'index']);
-    Route::get('/{id}', [ReservaController::class, 'show']);
-    Route::post('', [ReservaController::class, 'store']);
-    Route::put('/put/{id}', [ReservaController::class, 'update']);
-    Route::delete('/destroy/{id}', [ReservaController::class, 'destroy']);
+    Route::get('/', [ReservaController::class, 'getReserves']);
+    Route::get('/{id}', [ReservaController::class, 'getReserva']);
+    Route::post('', [ReservaController::class, 'insertReserva']);
+    Route::put('/put/{id}', [ReservaController::class, 'updateReserva']);
+    Route::delete('/destroy/{id}', [ReservaController::class, 'deleteReserva']);
     });
     //ruta de serveis
     Route::group(['prefix' => 'serveis'], function () {
@@ -131,11 +131,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     });
     //ruta de usuaris
     Route::group(['prefix' => 'usuaris'], function () {
-    Route::get('/', [UsuariController::class, 'index']);
-    Route::get('/{id}', [UsuariController::class, 'show']);
-    Route::post('', [UsuariController::class, 'store']);
-    Route::put('/put/{id}', [UsuariController::class, 'update']);
-    Route::delete('/destroy/{id}', [UsuariController::class, 'destroy']);
+    Route::get('/', [UsuariController::class, 'getUsuaris']);
+    Route::get('/{id}', [UsuariController::class, 'getUsuari']);
+    Route::post('', [UsuariController::class, 'insertUsuaris']);
+    Route::put('/put/{id}', [UsuariController::class, 'updateUsuaris']);
+    Route::delete('/destroy/{id}', [UsuariController::class, 'deleteUsuari']);
     });
     //ruta de vacances
     Route::group(['prefix' => 'vacances'], function () {
