@@ -6,6 +6,11 @@ use App\Models\Traduccio_servei;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
+
+/**
+ *@OA\Tag(name="Traduccio_serveis")
+ */
 
 class Traduccio_serveiController extends Controller
 {
@@ -13,6 +18,30 @@ class Traduccio_serveiController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Get(
+     *     path="/traduccio_serveis",
+     *     tags={"Traduccio_serveis"},
+     *     summary="Obtenir totes les traduccions de serveis",
+     *     description="Obtenir totes les traduccions de serveis",
+     *     operationId="getTraduccionsServei",
+     *     @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Traduccio_servei")
+     *    )
+     *  )
+     * )
+     * @OA\Schema(
+     *     schema="Traduccio_servei",
+     *     type="object",
+     *     @OA\Property(property="FK_ID_SERVEI", type="integer"),
+     *     @OA\Property(property="FK_ID_IDIOMA", type="integer"),
+     *     @OA\Property(property="TRADUCCIO_SERVEI", type="string")
+     * )
      */
     // ! GET all
     public function getTraduccionsServeis()
@@ -26,6 +55,48 @@ class Traduccio_serveiController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Get(
+     *     path="/traduccio_serveis/{id_servei}/{id_idioma}",
+     *     tags={"Traduccio_serveis"},
+     *     summary="Obtenir una traduccio de servei",
+     *     description="Obtenir una traduccio de servei",
+     *     operationId="getTraduccioServei",
+     *     @OA\Parameter(
+     *         name="id_servei",
+     *         in="path",
+     *         description="ID del servei",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="id_idioma",
+     *         in="path",
+     *         description="ID de l'idioma",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Traduccio_servei")
+     *    )
+     *  ), @OA\Response(
+     *     response=404,
+     *     description="Traduccio_servei no trobat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Traduccio_servei")
+     *   )
+     * )
+     * )
      */
     // ! GET de una en especific
     public function getTraduccioServei($id_servei, $id_idioma)
@@ -43,6 +114,33 @@ class Traduccio_serveiController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Post(
+     *     path="/traduccio_serveis",
+     *     tags={"Traduccio_serveis"},
+     *     summary="Crear una traduccio de servei",
+     *     description="Crear una traduccio de servei",
+     *     operationId="insertTraduccioServei",
+     *     @OA\RequestBody(
+     *         description="Traduccio_servei a crear",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_servei")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_servei")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validacio",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Traduccio_servei")
+     *         )
+     *     )
+     * )
      */
     // ! INSERT
     public function insertTraduccioServei(Request $request){
@@ -72,7 +170,51 @@ class Traduccio_serveiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
+    /**
+     * @OA\Put(
+     *     path="/traduccio_serveis/put/{id_servei}/{id_idioma}",
+     *     tags={"Traduccio_serveis"},
+     *     summary="Actualitzar una traduccio de servei",
+     *     description="Actualitzar una traduccio de servei",
+     *     operationId="updateTraduccioServei",
+     *     @OA\Parameter(
+     *         name="id_servei",
+     *         in="path",
+     *         description="ID del servei",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="id_idioma",
+     *         in="path",
+     *         description="ID de l'idioma",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Traduccio_servei a actualitzar",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_servei")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_servei")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validacio",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Traduccio_servei")
+     *         )
+     *     )
+     * )
+     */
      // ! UPDATE
     public function updateTraduccioServei(Request $request, $id_servei,$id_idioma){
         //
@@ -85,6 +227,43 @@ class Traduccio_serveiController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Delete(
+     *     path="/traduccio_serveis/destroy/{id_servei}/{id_idioma}",
+     *     tags={"Traduccio_serveis"},
+     *     summary="Esborrar una traduccio de servei",
+     *     description="Esborrar una traduccio de servei",
+     *     operationId="deleteTraduccioServei",
+     *     @OA\Parameter(
+     *         name="id_servei",
+     *         in="path",
+     *         description="ID del servei",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="id_idioma",
+     *         in="path",
+     *         description="ID de l'idioma",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_servei")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found",
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_servei")
+     *     )
+     * )
      */
 
     // ! DELETE
