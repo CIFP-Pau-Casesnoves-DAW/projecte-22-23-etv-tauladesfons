@@ -107,19 +107,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     });
     // ! ruta de traduccions_serveis
     Route::group(['prefix' => 'traduccio_serveis'], function () {
-    Route::get('/', [Traduccio_serveiController::class, 'index']);
-    Route::get('/{id_servei}/{id_idioma}', [Traduccio_serveiController::class, 'show']);
-    Route::post('', [Traduccio_serveiController::class, 'store']);
-    Route::put('/put/{id}', [Traduccio_serveiController::class, 'update']);
-    Route::delete('/destroy/{id_servei}/{id_idioma}', [Traduccio_serveiController::class, 'destroy']);
+    Route::get('/', [Traduccio_serveiController::class, 'getTraduccionsServeis']);
+    Route::get('/{id_servei}/{id_idioma}', [Traduccio_serveiController::class, 'getTraduccioServei']);
+    Route::post('', [Traduccio_serveiController::class, 'insertTraduccioServei']);
+    Route::put('/put/{id_servei}/{id_idioma}', [Traduccio_serveiController::class, 'updateTraduccioServei']);
+    Route::delete('/destroy/{id_servei}/{id_idioma}', [Traduccio_serveiController::class, 'deleteTraduccioServei']);
     });
     //ruta de traduccions_tipus
     Route::group(['prefix' => 'traduccio_tipus'], function () {
-    Route::get('/', [Traduccio_tipusController::class, 'index']);
-    Route::get('/{id}', [Traduccio_tipusController::class, 'show']);
-    Route::post('', [Traduccio_tipusController::class, 'store']);
-    Route::put('/put/{id}', [Traduccio_tipusController::class, 'update']);
-    Route::delete('/destroy/{id}', [Traduccio_tipusController::class, 'destroy']);
+    Route::get('/', [Traduccio_tipusController::class, 'getTraduccionsTipus']);
+    Route::get('/{id}', [Traduccio_tipusController::class, 'getTraduccioTipus']);
+    Route::post('', [Traduccio_tipusController::class, 'insertTraduccioTipus']);
+    Route::put('/put/{id}', [Traduccio_tipusController::class, 'updateTraduccioTipus']);
+    Route::delete('/destroy/{id}', [Traduccio_tipusController::class, 'deleteTraduccioTipus']);
     });
     //ruta de traduccions_vacances
     Route::group(['prefix' => 'traduccio_vacances'], function () {
