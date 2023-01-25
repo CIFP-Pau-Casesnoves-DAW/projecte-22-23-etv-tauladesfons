@@ -58,7 +58,7 @@ class Traduccio_vacancesController extends Controller
      */
     /**
      * @OA\Get(
-     *     path="/traduccio_vacances/{id_vcances}/{id_idioma}",
+     *     path="/traduccio_vacances/{id_vacances}/{id_idioma}",
      *     tags={"Traduccio_vacances"},
      *     summary="Obtenir una traduccio de vacances",
      *     description="Obtenir una traduccio de vacances",
@@ -120,22 +120,29 @@ class Traduccio_vacancesController extends Controller
      * @OA\Post(
      *     path="/traduccio_vacances",
      *     tags={"Traduccio_vacances"},
-     *     summary="Crear una traduccio de vacances",
-     *     description="Crear una traduccio de vacances",
+     *     summary="Crear una nova traduccio de vacances",
+     *     description="Crear una nova traduccio de vacances",
      *     operationId="insertTraduccioVacances",
      *     @OA\RequestBody(
-     *         description="Traduccio_vacances a crear",
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
+     *         description="Dades de la nova traduccio de vacances",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="FK_ID_VACANCES", type="integer"),
+     *             @OA\Property(property="FK_ID_IDIOMA", type="integer"),
+     *             @OA\Property(property="TRADUCCIO_VAC", type="string"),
+     *         )
      *     ),
      *     @OA\Response(
-     *         response=200,
-     *         description="Success",
-     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
-     *     ),
-     *     @OA\Response(
+     *         response=201,
+     *         description="Created",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Traduccio_vacances")
+     *         )
+     *     ), @OA\Response(
      *         response=422,
-     *         description="Error de validacio",
+     *         description="Unprocessable Entity",
      *         @OA\JsonContent(
      *             type="array",
      *             @OA\Items(ref="#/components/schemas/Traduccio_vacances")
@@ -145,22 +152,20 @@ class Traduccio_vacancesController extends Controller
      */
     // ! INSERT
     public function insertTraduccioVacances(Request $request){
-        $validacio=Validator::make($request->all(),[
-            'FK_ID_VACANCES' => 'exists:vacances,ID_VACANCES',
-            'FK_ID_IDIOMA' => 'exists:idiomes,ID_IDIOMA'
+        $validacio = Validator::make($request->all(), [
+            'FK_ID_VACANCES' => 'exists:VACANCES,ID_VACANCES|required|integer',
+            'FK_ID_IDIOMA' => 'exists:IDIOMES,ID_IDIOMA|required|integer',
+            'TRADUCCIO_VAC' => 'required|string',
         ]);
-        if (!$validacio->fails()) {
-            $traduccio_vacances = new Traduccio_vacances();
+        if ($validacio->fails()) {
+            return response()->json(['status' => 'error', 'result' => $validacio->errors()], 422);
+        } else {
+            $traduccio_vacances = new Traduccio_vacances;
             $traduccio_vacances->FK_ID_VACANCES = $request->FK_ID_VACANCES;
             $traduccio_vacances->FK_ID_IDIOMA = $request->FK_ID_IDIOMA;
-            $traduccio_vacances->TRADUCCIO_VACANCES = $request->TRADUCCIO_VACANCES;
-            if ($traduccio_vacances->save()) {
-                return response()->json(['status'=> 'Creat','result'=> $traduccio_vacances],200);
-            }else {
-                return response()->json(['status'=> 'Error creant']);
-            }
-        }else {
-            return response()->json(['status'=> 'Error:vacances o idioma inexistents']);
+            $traduccio_vacances->TRADUCCIO_VAC = $request->TRADUCCIO_VAC;
+            $traduccio_vacances->save();
+            return response()->json(['status' => 'success', 'result' => $traduccio_vacances], 201);
         }
     }
 
@@ -239,12 +244,12 @@ class Traduccio_vacancesController extends Controller
             ],400);
         } else {
             try {
-                $traduccio_vacances = Traduccio_vacances::where('FK_ID_VACANCES', $id_vacances)->where('FK_ID_IDIOMA', $id_idioma);
+                $traduccio_vacances = Traduccio_vacances::where('FK_ID_VACANCES', $id_vacances)->where('FK_ID_IDIOMA', $id_idioma)->firstOrFail();
                 $traduccio_vacances->update($request->all());
-                return response()->json([
+               return response()->json([
                     'status' => 'success',
-                    'data' => $traduccio_vacances
-                ], 200);
+                    'result' => $traduccio_vacances
+                ], 201);
             } catch (\Exception $e) {
                 return response()->json([
                     'status' => 'error',
