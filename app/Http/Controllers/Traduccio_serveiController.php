@@ -223,8 +223,8 @@ class Traduccio_serveiController extends Controller
             'TRADUCCIO_SERVEI' => 'required|string|max:50'
         ];
         $missatges = [
-            'FK_ID_SERVEI.required' => 'El camp de FK_ID_MUNICIPI és obligatori',
-            'FK_ID_SERVEI.integer' => 'El camp de FK_ID_MUNICIPI ha de ser un enter',
+            'FK_ID_SERVEI.required' => 'El camp de FK_ID_SERVEI és obligatori',
+            'FK_ID_SERVEI.integer' => 'El camp de FK_ID_SERVEI ha de ser un enter',
             'FK_ID_IDIOMA.required' => 'El camp de FK_ID_IDIOMA és obligatori',
             'FK_ID_IDIOMA.integer' => 'El camp de FK_ID_IDIOMA ha de ser un enter',
             'TRADUCCIO_SERVEI.required' => 'El camp de TRADUCCIO_SERVEI és obligatori',
