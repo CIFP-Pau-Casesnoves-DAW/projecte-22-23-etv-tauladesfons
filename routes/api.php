@@ -116,7 +116,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     // ! ruta de traduccions_tipus
     Route::group(['prefix' => 'traduccio_tipus'], function () {
     Route::get('/', [Traduccio_tipusController::class, 'getTraduccionsTipus']);
-    Route::get('/{id}', [Traduccio_tipusController::class, 'getTraduccioTipus']);
+    Route::get('/{id_tipus}/{id_idioma}', [Traduccio_tipusController::class, 'getTraduccioTipus']);
     Route::post('', [Traduccio_tipusController::class, 'insertTraduccioTipus']);
     Route::put('/put/{id_tipus}/{id_idioma}', [Traduccio_tipusController::class, 'updateTraduccioTipus']);
     Route::delete('/destroy/{id_tipus}/{id_idioma}', [Traduccio_tipusController::class, 'deleteTraduccioTipus']);
@@ -124,7 +124,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     //! ruta de traduccions_vacances
     Route::group(['prefix' => 'traduccio_tipus'], function () {
         Route::get('/', [Traduccio_vacancesController::class, 'getTraduccionVacancess']);
-        Route::get('/{id}', [Traduccio_vacancesController::class, 'getTraduccioVacances']);
+        Route::get('/{id_vacances}/{id_idioma}', [Traduccio_vacancesController::class, 'getTraduccioVacances']);
         Route::post('', [Traduccio_vacancesController::class, 'insertTraduccioVacances']);
         Route::put('/put/{id_vacances}{id_idioma}', [Traduccio_vacancesController::class, 'updateTraduccioVacances']);
         Route::delete('/destroy/{id_vacances}/{id_idioma}', [Traduccio_vacancesController::class, 'deleteTraduccioVacances']);
