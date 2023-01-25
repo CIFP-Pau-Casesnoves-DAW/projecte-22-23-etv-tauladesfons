@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Traduccio_vacances;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
+
+/**
+ *@OA\Tag(name="Traduccio_vacances")
+ */
 
 class Traduccio_vacancesController extends Controller
 {
@@ -11,6 +16,30 @@ class Traduccio_vacancesController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Get(
+     *     path="/traduccio_vacances",
+     *     tags={"Traduccio_vacances"},
+     *     summary="Obtenir totes les traduccions de vacances",
+     *     description="Obtenir totes les traduccions de vacances",
+     *     operationId="getTraduccionsVacances",
+     *     @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Traduccio_vacances")
+     *    )
+     *  )
+     * )
+     * @OA\Schema(
+     *     schema="Traduccio_vacances",
+     *     type="object",
+     *     @OA\Property(property="FK_ID_VACANCES", type="integer"),
+     *     @OA\Property(property="FK_ID_IDIOMA", type="integer"),
+     *     @OA\Property(property="TRADUCCIO_VAC", type="string")
+     * )
      */
     public function index()
     {
@@ -24,18 +53,35 @@ class Traduccio_vacancesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Post(
+     *     path="/traduccio_vacances",
+     *     tags={"Traduccio_vacances"},
+     *     summary="Crear una traduccio de vacances",
+     *     description="Crear una traduccio de vacances",
+     *     operationId="insertTraduccioVacances",
+     *     @OA\RequestBody(
+     *         description="Traduccio_vacances a crear",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validacio",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Traduccio_vacances")
+     *         )
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -53,6 +99,50 @@ $traduccio_vacances->save();
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *     path="/traduccio_serveis/{id_vcances}/{id_idioma}",
+     *     tags={"Traduccio_vacances"},
+     *     summary="Obtenir una traduccio de vacances",
+     *     description="Obtenir una traduccio de vacances",
+     *     operationId="getTraduccioVacances",
+     *     @OA\Parameter(
+     *         name="id_vacances",
+     *         in="path",
+     *         description="ID de les vacances",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="id_idioma",
+     *         in="path",
+     *         description="ID de l'idioma",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Traduccio_vacances")
+     *    )
+     *  ), @OA\Response(
+     *     response=404,
+     *     description="Traduccio_vacances no trobat",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Traduccio_vacances")
+     *   )
+     * )
+     * )
+     */
+    // ! GET de una en especific
+
     public function show($id)
     {
         try {
@@ -87,6 +177,51 @@ $traduccio_vacances->save();
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Put(
+     *     path="/traduccio_serveis/put/{id_vacances}/{id_idioma}",
+     *     tags={"Traduccio_vacances"},
+     *     summary="Actualitzar una traduccio de vacances",
+     *     description="Actualitzar una traduccio de vacances",
+     *     operationId="updateTraduccioVacances",
+     *     @OA\Parameter(
+     *         name="id_vacances",
+     *         in="path",
+     *         description="ID de les vacances",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="id_idioma",
+     *         in="path",
+     *         description="ID de l'idioma",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         description="Traduccio_vacances a actualitzar",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validacio",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Traduccio_vacances")
+     *         )
+     *     )
+     * )
+     */
     public function update(Request $request, $id)
     {
         //
@@ -97,6 +232,43 @@ $traduccio_vacances->save();
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Delete(
+     *     path="/traduccio_vacances/destroy/{id_vacances}/{id_idioma}",
+     *     tags={"Traduccio_vacances"},
+     *     summary="Esborrar una traduccio de vacances",
+     *     description="Esborrar una traduccio de vacances",
+     *     operationId="deleteTraduccioVacances",
+     *     @OA\Parameter(
+     *         name="id_vacances",
+     *         in="path",
+     *         description="ID de les vacances",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="id_idioma",
+     *         in="path",
+     *         description="ID de l'idioma",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found",
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
+     *     )
+     * )
      */
     public function destroy($id)
     {
