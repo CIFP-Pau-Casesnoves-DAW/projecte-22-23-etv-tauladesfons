@@ -217,7 +217,40 @@ class Traduccio_serveiController extends Controller
      */
      // ! UPDATE
     public function updateTraduccioServei(Request $request, $id_servei,$id_idioma){
-        //
+        $reglesValidacio = [
+            'FK_ID_SERVEI' => 'required|integer',
+            'FK_ID_IDIOMA' => 'required|integer',
+            'TRADUCCIO_SERVEI' => 'required|string|max:50'
+        ];
+        $missatges = [
+            'FK_ID_SERVEI.required' => 'El camp de FK_ID_MUNICIPI és obligatori',
+            'FK_ID_SERVEI.integer' => 'El camp de FK_ID_MUNICIPI ha de ser un enter',
+            'FK_ID_IDIOMA.required' => 'El camp de FK_ID_IDIOMA és obligatori',
+            'FK_ID_IDIOMA.integer' => 'El camp de FK_ID_IDIOMA ha de ser un enter',
+            'TRADUCCIO_SERVEI.required' => 'El camp de TRADUCCIO_SERVEI és obligatori',
+            'TRADUCCIO_SERVEI.max' => 'El camp TRADUCCIO_SERVEI no pot tenir més de 50 caràcters'
+        ];
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+        if ($validacio -> fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validacio->errors()
+            ],400);
+        } else {
+            try {
+                $traduccio_servei = Traduccio_servei::where('FK_ID_SERVEI', $id_servei)->where('FK_ID_IDIOMA', $id_idioma);
+                $traduccio_servei->update($request->all());
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $traduccio_servei
+                ], 200);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'La traduccio del servei amb la id ' . $id_servei . 'amb idioma' . $id_idioma . 'no existeix'
+                ], 404);
+            }
+        }
     }
 
     
@@ -277,10 +310,4 @@ class Traduccio_serveiController extends Controller
             return response()->json(['status' => 'No trobat'], 404);
         }
     }
-
-    // public function createValidator():array{
-    //     return [
-    //         "FK_ID_SERVEI" => 
-    //     ]
-    // }
 }
