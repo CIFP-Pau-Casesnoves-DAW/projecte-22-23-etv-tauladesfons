@@ -168,6 +168,7 @@ create table `FOTOGRAFIES`
     foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`)
 );
 
+delimiter $$
 create trigger `CALCULAR_VALORACIO_GLOBAL`
     after insert
     on `VALORACIONS`
@@ -176,4 +177,4 @@ begin
     update ALLOTJAMENTS
     set VALORACIO_GLOBAL = (select avg(PUNTUACIO) from VALORACIONS where FK_ID_ALLOTJAMENT = NEW.FK_ID_ALLOTJAMENT)
     where ID_ALLOTJAMENT = NEW.FK_ID_ALLOTJAMENT;
-end;
+end$$
