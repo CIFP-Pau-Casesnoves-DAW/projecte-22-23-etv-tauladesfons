@@ -123,7 +123,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     });
     //! ruta de traduccions_vacances
     Route::group(['prefix' => 'traduccio_tipus'], function () {
-        Route::get('/', [Traduccio_vacancesController::class, 'getTraduccionVacancess']);
+        Route::get('/', [Traduccio_vacancesController::class, 'getTraduccionsVacancess']);
         Route::get('/{id_vacances}/{id_idioma}', [Traduccio_vacancesController::class, 'getTraduccioVacances']);
         Route::post('', [Traduccio_vacancesController::class, 'insertTraduccioVacances']);
         Route::put('/put/{id_vacances}{id_idioma}', [Traduccio_vacancesController::class, 'updateTraduccioVacances']);
