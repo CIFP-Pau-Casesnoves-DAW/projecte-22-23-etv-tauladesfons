@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Traduccio_vacances;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
@@ -41,59 +43,14 @@ class Traduccio_vacancesController extends Controller
      *     @OA\Property(property="TRADUCCIO_VAC", type="string")
      * )
      */
-    public function index()
+     // ! GET all
+    public function getTraduccionsVacances()
     {
-        $tuple = Traduccio_vacances::all();
-        return response()->json([
-            'status' => 'success',
-            'data' => $tuple
-        ], 200);
+        $tuples = Traduccio_vacances::all();
+        return response()->json(['status' => 'success','data' => $tuples], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    /**
-     * @OA\Post(
-     *     path="/traduccio_vacances",
-     *     tags={"Traduccio_vacances"},
-     *     summary="Crear una traduccio de vacances",
-     *     description="Crear una traduccio de vacances",
-     *     operationId="insertTraduccioVacances",
-     *     @OA\RequestBody(
-     *         description="Traduccio_vacances a crear",
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success",
-     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Error de validacio",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Traduccio_vacances")
-     *         )
-     *     )
-     * )
-     */
-    public function store(Request $request)
-    {
-        $traduccio_vacances = new Traduccio_vacances();
-$traduccio_vacances->FK_ID_VACANCES = $request->FK_ID_VACANCES;
-$traduccio_vacances->FK_ID_IDIOMA = $request->FK_ID_IDIOMA;
-$traduccio_vacances->TRADUCCCIO_VAC= $request->TRADUCCCIO_VAC;
-$traduccio_vacances->save();
-        return response()->json(['status' => 'success', 'result' => $traduccio_vacances], 200);
-    }
-
-    /**
+        /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -101,7 +58,7 @@ $traduccio_vacances->save();
      */
     /**
      * @OA\Get(
-     *     path="/traduccio_serveis/{id_vcances}/{id_idioma}",
+     *     path="/traduccio_vacances/{id_vcances}/{id_idioma}",
      *     tags={"Traduccio_vacances"},
      *     summary="Obtenir una traduccio de vacances",
      *     description="Obtenir una traduccio de vacances",
@@ -141,33 +98,70 @@ $traduccio_vacances->save();
      * )
      * )
      */
-    // ! GET de una en especific
+    // ! GET d'una en específic
 
-    public function show($id)
+    public function getTraduccioVacances($id_vacances, $id_idioma)
     {
         try {
-            $traduccio_vacances = Traduccio_vacances::findOrFail($id);
-            return response()->json([
-                'status' => 'success',
-                'data' => $traduccio_vacances
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'No s\'ha trobat la traduccio_vacances amb id ' . $id
-            ], 404);
+            $traduccio_vacances = Traduccio_vacances::where('FK_ID_VACANCES', $id_vacances)->where('FK_ID_IDIOMA', $id_idioma)->first();
+            return response()->json(['status' => 'success', 'result' => $traduccio_vacances], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['status' => 'error', 'result' => 'No existeix aquesta traduccio_vacances'], 404);
         }
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Store a newly created resource in storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    /**
+     * @OA\Post(
+     *     path="/traduccio_vacances",
+     *     tags={"Traduccio_vacances"},
+     *     summary="Crear una traduccio de vacances",
+     *     description="Crear una traduccio de vacances",
+     *     operationId="insertTraduccioVacances",
+     *     @OA\RequestBody(
+     *         description="Traduccio_vacances a crear",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_vacances")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validacio",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Traduccio_vacances")
+     *         )
+     *     )
+     * )
+     */
+    // ! INSERT
+    public function insertTraduccioVacances(Request $request){
+        $validacio=Validator::make($request->all(),[
+            'FK_ID_VACANCES' => 'exists:vacances,ID_VACANCES',
+            'FK_ID_IDIOMA' => 'exists:idiomes,ID_IDIOMA'
+        ]);
+        if (!$validacio->fails()) {
+            $traduccio_vacances = new Traduccio_vacances();
+            $traduccio_vacances->FK_ID_VACANCES = $request->FK_ID_VACANCES;
+            $traduccio_vacances->FK_ID_IDIOMA = $request->FK_ID_IDIOMA;
+            $traduccio_vacances->TRADUCCIO_VACANCES = $request->TRADUCCIO_VACANCES;
+            if ($traduccio_vacances->save()) {
+                return response()->json(['status'=> 'Creat','result'=> $traduccio_vacances],200);
+            }else {
+                return response()->json(['status'=> 'Error creant']);
+            }
+        }else {
+            return response()->json(['status'=> 'Error:vacances o idioma inexistents']);
+        }
     }
 
     /**
@@ -179,7 +173,7 @@ $traduccio_vacances->save();
      */
     /**
      * @OA\Put(
-     *     path="/traduccio_serveis/put/{id_vacances}/{id_idioma}",
+     *     path="/traduccio_vacances/put/{id_vacances}/{id_idioma}",
      *     tags={"Traduccio_vacances"},
      *     summary="Actualitzar una traduccio de vacances",
      *     description="Actualitzar una traduccio de vacances",
@@ -222,9 +216,42 @@ $traduccio_vacances->save();
      *     )
      * )
      */
-    public function update(Request $request, $id)
-    {
-        //
+     // ! UPDATE
+     public function updateTraduccioVacances(Request $request, $id_vacances,$id_idioma){
+        $reglesValidacio = [
+            'FK_ID_VACANCES' => 'required|integer',
+            'FK_ID_IDIOMA' => 'required|integer',
+            'TRADUCCIO_VAC' => 'required|string|max:50'
+        ];
+        $missatges = [
+            'FK_ID_VACANCES.required' => 'El camp de FK_ID_VACANCES és obligatori',
+            'FK_ID_VACANCES.integer' => 'El camp de FK_ID_VACANCES ha de ser un enter',
+            'FK_ID_IDIOMA.required' => 'El camp de FK_ID_IDIOMA és obligatori',
+            'FK_ID_IDIOMA.integer' => 'El camp de FK_ID_IDIOMA ha de ser un enter',
+            'TRADUCCIO_VAC.required' => 'El camp de TRADUCCIO_VAC és obligatori',
+            'TRADUCCIO_VAC.max' => 'El camp TRADUCCIO_VAC no pot tenir més de 50 caràcters'
+        ];
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+        if ($validacio -> fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validacio->errors()
+            ],400);
+        } else {
+            try {
+                $traduccio_vacances = Traduccio_vacances::where('FK_ID_VACANCES', $id_vacances)->where('FK_ID_IDIOMA', $id_idioma);
+                $traduccio_vacances->update($request->all());
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $traduccio_vacances
+                ], 200);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'La traduccio de les vacances amb la id ' . $id_vacances . 'amb idioma' . $id_idioma . 'no existeix'
+                ], 404);
+            }
+        }
     }
 
     /**
@@ -270,8 +297,15 @@ $traduccio_vacances->save();
      *     )
      * )
      */
-    public function destroy($id)
+    // ! DELETE
+    public function deleteTraduccioVacances($id_vacances, $id_idioma)
     {
-        //
+        $traduccio_vacances = Traduccio_vacances::where('FK_ID_VACANCES', $id_vacances)->where('FK_ID_IDIOMA', $id_idioma)->delete();
+
+        if ($traduccio_vacances) {
+            return response()->json(['status' => ' Esborrat correctament'], 200);
+        } else {
+            return response()->json(['status' => 'No trobat'], 404);
+        }
     }
 }
