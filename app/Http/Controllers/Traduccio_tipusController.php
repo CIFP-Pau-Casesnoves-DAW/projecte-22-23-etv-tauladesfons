@@ -6,14 +6,55 @@ use App\Models\Traduccio_tipus;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
 /**
  *@OA\Tag(name="Traduccio_tipus")
  */
-
 class Traduccio_tipusController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Get(
+     *     path="/traduccio_tipus",
+     *     summary="Llista de traduccions de tipus",
+     *     description="Retorna totes les traduccions de tipus",
+     *     tags={"Traducció_tipus"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     * @OA\Schema(
+     *     schema="Traduccio_tipus",
+     *     @OA\Property(
+     *     property="FK_ID_TIPUS",
+     *     type="integer",
+     *     description="Identificador del tipus",
+     *     example=1
+     *     ),
+     *     @OA\Property(
+     *     property="FK_ID_IDIOMA",
+     *     type="integer",
+     *     description="Identificador de l'idioma",
+     *     example=1
+     *     ),
+     *     @OA\Property(
+     *     property="TRADUCCIO_TIPUS",
+     *     type="string",
+     *     description="Traducció del tipus",
+     *     example="Tipus"
+     *    )
+     * )
+     */
     // ! GET all
     public function getTraduccionsTipus()
     {
@@ -21,20 +62,33 @@ class Traduccio_tipusController extends Controller
         return response()->json(['status' => 'success', 'result' => $tuples], 200);
     }
 
-
-    // ! GET de una en especific
-    public function getTraduccioTipus($id_vacances, $id_idioma)
-    {
-        try {
-            $traduccio_tipus = Traduccio_tipus::where('FK_ID_TIPUS', $id_vacances)->where('FK_ID_IDIOMA', $id_idioma)->first();
-            return response()->json(['status' => 'success', 'result' => $traduccio_tipus], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'result' => 'No existeix aquesta traduccio_tipus'], 404);
-        }
-    }
-
-
-    // ! INSERT
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Post(
+     *     path="/traduccio_tipus",
+     *     summary="Crea una nova traducció de tipus",
+     *     description="Crea una nova traducció de tipus",
+     *     tags={"Traducció_tipus"},
+     *     @OA\RequestBody(
+     *         description="Traducció de tipus",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_tipus")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Success"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
+     */
     public function insertTraduccioTipus(Request $request)
     {
         $validacio = Validator::make($request->all(), [
@@ -56,7 +110,120 @@ class Traduccio_tipusController extends Controller
         }
     }
 
-    // ! UPDATE
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Get(
+     *     path="/traduccio_tipus/{id_tipus}/{id_idioma}",
+     *     summary="Mostra una traducció de tipus",
+     *     description="Mostra una traducció de tipus",
+     *     tags={"Traducció_tipus"},
+     *     @OA\Parameter(
+     *         name="id_tipus",
+     *         in="path",
+     *         description="Identificador del tipus",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="id_idioma",
+     *         in="path",
+     *         description="Identificador de l'idioma",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     * @OA\Property(
+     *     property="FK_ID_TIPUS",
+     *     type="integer",
+     *     description="Identificador del tipus",
+     *     example=1
+     *     ),
+     *     @OA\Property(
+     *     property="FK_ID_IDIOMA",
+     *     type="integer",
+     *     description="Identificador de l'idioma",
+     *     example=1
+     *     ),
+     *     @OA\Property(
+     *     property="TRADUCCIO_TIPUS",
+     *     type="string",
+     *     description="Traducció del tipus",
+     *     example="Spa"
+     *     )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found"
+     *     )
+     * )
+     */
+    public function getTraduccioTipus($id_vacances, $id_idioma)
+    {
+        try {
+            $traduccio_tipus = Traduccio_tipus::where('FK_ID_TIPUS', $id_vacances)->where('FK_ID_IDIOMA', $id_idioma)->first();
+            return response()->json(['status' => 'success', 'result' => $traduccio_tipus], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['status' => 'error', 'result' => 'No existeix aquesta traduccio_tipus'], 404);
+        }
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Put(
+     *     path="/traduccio_tipus/put/{id_tipus}/{id_idioma}",
+     *     summary="Actualitza una traducció de tipus",
+     *     description="Actualitza una traducció de tipus",
+     *     tags={"Traducció_tipus"},
+     *     @OA\Parameter(
+     *         name="id_tipus",
+     *         in="path",
+     *         description="Identificador del tipus",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="id_idioma",
+     *         in="path",
+     *         description="Identificador de l'idioma",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_tipus")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
+     */
     public function updateTraduccioTipus(Request $request, $id_tipus, $id_idioma)
     {
         $reglesValidacio = [
@@ -95,6 +262,46 @@ class Traduccio_tipusController extends Controller
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Delete(
+     *     path="/traduccio_tipus/destroy/{id_tipus}/{id_idioma}",
+     *     summary="Esborra una traducció de tipus",
+     *     description="Esborra una traducció de tipus",
+     *     tags={"Traducció_tipus"},
+     *     @OA\Parameter(
+     *         name="id_tipus",
+     *         in="path",
+     *         description="Identificador del tipus",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="id_idioma",
+     *         in="path",
+     *         description="Identificador de l'idioma",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Esborrat correctament"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found"
+     *     )
+     * )
+     */
     public function deleteTraduccioTipus($id_tipus, $id_idioma)
     {
         $traduccio_tipus = Traduccio_tipus::where('FK_ID_TIPUS', $id_tipus)->where('FK_ID_IDIOMA', $id_idioma)->delete();
