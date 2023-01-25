@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
- *@OA\Tag(name="Traduccio_tipus")
+ *@OA\Tag(name="Traducció_tipus")
  */
 class Traduccio_tipusController extends Controller
 {
@@ -26,7 +26,11 @@ class Traduccio_tipusController extends Controller
      *     tags={"Traducció_tipus"},
      *     @OA\Response(
      *         response=200,
-     *         description="Success"
+     *         description="Success",
+     *     @OA\JsonContent(
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Traducció_tipus")
+     *   )
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -34,7 +38,7 @@ class Traduccio_tipusController extends Controller
      *     )
      * )
      * @OA\Schema(
-     *     schema="Traduccio_tipus",
+     *     schema="Traducció_tipus",
      *     @OA\Property(
      *     property="FK_ID_TIPUS",
      *     type="integer",
@@ -71,29 +75,52 @@ class Traduccio_tipusController extends Controller
     /**
      * @OA\Post(
      *     path="/traduccio_tipus",
-     *     summary="Crea una nova traducció de tipus",
-     *     description="Crea una nova traducció de tipus",
+     *     summary="Crear traducció tipus",
+     *     description="Crear traducció tipus",
      *     tags={"Traducció_tipus"},
      *     @OA\RequestBody(
-     *         description="Traducció de tipus",
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_tipus")
+     *         @OA\JsonContent(ref="#/components/schemas/Traducció_tipus")
      *     ),
      *     @OA\Response(
-     *         response=201,
-     *         description="Success"
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="status",
+     *                 type="string",
+     *                 example="Creat"
+     *             ),
+     *             @OA\Property(
+     *                 property="result",
+     *                 ref="#/components/schemas/Traducció_tipus"
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=400,
-     *         description="Bad request"
+     *         description="Error: tipus o idioma inexistent",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(
+     *     property="status",
+     *     type="string",
+     *     example="Error: tipus o idioma inexistent"
+     *     )
+     *   )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
      *     )
      * )
      */
     public function insertTraduccioTipus(Request $request)
     {
         $validacio = Validator::make($request->all(), [
-            'FK_ID_TIPYS' => 'exists:tipus,ID_tipus',
-            'FK_ID_IDIOMA' => 'exists:idiomes,ID_IDIOMA'
+            'FK_ID_TIPUS' => 'exists:TIPUS,ID_TIPUS',
+            'FK_ID_IDIOMA' => 'exists:IDIOMES,ID_IDIOMA'
         ]);
         if (!$validacio->fails()) {
             $traduccio_tipus = new Traduccio_tipus();
@@ -143,6 +170,8 @@ class Traduccio_tipusController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Traducció_tipus"),
+     *
      * @OA\Property(
      *     property="FK_ID_TIPUS",
      *     type="integer",
@@ -212,17 +241,51 @@ class Traduccio_tipusController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Traduccio_tipus")
+     *         description="Dades de la traducció de tipus",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="FK_ID_TIPUS",
+     *                 type="integer",
+     *                 description="Identificador del tipus",
+     *                 example=1
+     *             ),
+     *             @OA\Property(
+     *                 property="FK_ID_IDIOMA",
+     *                 type="integer",
+     *                 description="Identificador de l'idioma",
+     *                 example=1
+     *             ),
+     *             @OA\Property(
+     *                 property="TRADUCCIO_TIPUS",
+     *                 type="string",
+     *                 description="Traducció del tipus",
+     *                 example="Spa"
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Success"
+     *         description="Success",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(
+     *     property="status",
+     *     type="string",
+     *     example="Actualitzat"
      *     ),
+     *     @OA\Property(
+     *     property="result",
+     *     type="object",
+     *     ref="#/components/schemas/Traducció_tipus"
+     *    )
+     *    )
+     *    ),
      *     @OA\Response(
-     *         response=400,
-     *         description="Bad request"
-     *     )
+     *     response=404,
+     *     description="Not found"
+     *    )
      * )
+     *
      */
     public function updateTraduccioTipus(Request $request, $id_tipus, $id_idioma)
     {
@@ -247,7 +310,7 @@ class Traduccio_tipusController extends Controller
             ], 400);
         } else {
             try {
-                $traduccio_tipus = Traduccio_tipus::where('FK_ID_TIPUS', $id_tipus)->where('FK_ID_IDIOMA', $id_idioma);
+                $traduccio_tipus = Traduccio_tipus::where('FK_ID_TIPUS', $id_tipus)->where('FK_ID_IDIOMA', $id_idioma)->firstOrFail();
                 $traduccio_tipus->update($request->all());
                 return response()->json([
                     'status' => 'success',
