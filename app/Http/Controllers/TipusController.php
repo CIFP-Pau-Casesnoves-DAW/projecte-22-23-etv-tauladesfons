@@ -44,16 +44,6 @@ class TipusController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -95,14 +85,14 @@ class TipusController extends Controller
     {
         $reglesvalidacio = [
             'ID_TIPUS' => 'required|integer',
-            'NOM_TIPUS' => 'required|string|max:255',
+            'NOM_TIPUS' => 'required|string|50',
         ];
         $missatge= [
             'ID_TIPUS.required' => 'El camp ID_TIPUS és obligatori',
             'ID_TIPUS.integer' => 'El camp ID_TIPUS ha de ser un enter',
             'NOM_TIPUS.required' => 'El camp NOM_TIPUS és obligatori',
             'NOM_TIPUS.string' => 'El camp NOM_TIPUS ha de ser una cadena de caràcters',
-            'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 255 caràcters',
+            'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 50 caràcters',
         ];
         $validacio= Validator::make($request->all(), $reglesvalidacio, $missatge);
         if ($validacio->fails()) {
@@ -171,20 +161,9 @@ class TipusController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Tipus not found'
+                'message' => 'Tipus no trobat'
             ], 404);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -235,14 +214,14 @@ class TipusController extends Controller
     {
         $reglesvalidacio = [
             'ID_TIPUS' => 'required|integer',
-            'NOM_TIPUS' => 'required|string|max:255',
+            'NOM_TIPUS' => 'required|string|max:50',
         ];
         $missatge= [
             'ID_TIPUS.required' => 'El camp ID_TIPUS és obligatori',
             'ID_TIPUS.integer' => 'El camp ID_TIPUS ha de ser un enter',
             'NOM_TIPUS.required' => 'El camp NOM_TIPUS és obligatori',
             'NOM_TIPUS.string' => 'El camp NOM_TIPUS ha de ser una cadena de caràcters',
-            'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 255 caràcters',
+            'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 50 caràcters',
         ];
         $validacio= Validator::make($request->all(), $reglesvalidacio, $missatge);
         if ($validacio->fails()) {
