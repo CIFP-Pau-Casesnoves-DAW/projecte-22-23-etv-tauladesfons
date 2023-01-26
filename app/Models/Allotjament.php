@@ -20,7 +20,6 @@ class Allotjament extends Model
         'LLITS',
         'PERSONES',
         'BANYS',
-        'FOTOGRAFIES',
         'ADRECA',
         'DESTACAT',
         'VALORACIO_GLOBAL',
