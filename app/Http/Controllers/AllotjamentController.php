@@ -38,13 +38,12 @@ class AllotjamentController extends Controller
      *     type="object",
      *     @OA\Property (property="ID_ALLOTJAMENT", type="integer"),
      *     @OA\Property (property="NOM_COMERCIAL", type="string"),
-     *     @OA\Property (property="NUM_REGISTRE", type="integer"),
+     *     @OA\Property (property="NUM_REGISTRE", type="string"),
      *     @OA\Property (property="DESCRIPCIO", type="string"),
      *     @OA\Property (property="LLITS", type="integer"),
      *     @OA\Property (property="PERSONES", type="integer"),
      *     @OA\Property (property="BANYS", type="integer"),
-     *     @OA\Property (property="FOTOGRAFIES", type="string"),
-     *     @OA\Property (property="ADRECA", type="string"),
+     *     @OA\Property (property="ADREÇA", type="string"),
      *     @OA\Property (property="DESTACAT", type="boolean"),
      *     @OA\Property (property="VALORACIO_GLOBAL", type="number"),
      *     @OA\Property (property="FK_ID_MUNICIPI", type="integer"),
@@ -105,14 +104,13 @@ class AllotjamentController extends Controller
 
         $reglesvalidacio = [
             'ID_ALLOTJAMENT' => 'required|integer',
-            'NOM_COMERCIAL' => 'required|string|max:255',
-            'NUM_REGISTRE' => 'required|integer',
-            'DESCRIPCIO' => 'required|string|max:255',
+            'NOM_COMERCIAL' => 'required|string|max:50',
+            'NUM_REGISTRE' => 'required|string|max:50',
+            'DESCRIPCIO' => 'required|string|max:500',
             'LLITS' => 'required|integer',
             'PERSONES' => 'required|integer',
             'BANYS' => 'required|integer',
-            'FOTOGRAFIES' => 'required|string|max:255',
-            'ADRECA' => 'required|string|max:255',
+            'ADREÇA' => 'required|string|max:50',
             'DESTACAT' => 'required|boolean',
             'VALORACIO_GLOBAL' => 'required|integer',
             'FK_ID_MUNICIPI' => 'required|integer',
@@ -127,24 +125,22 @@ class AllotjamentController extends Controller
             'ID_ALLOTJAMENT.integer' => 'El camp ID_ALLOTJAMENT ha de ser un número enter.',
             'NOM_COMERCIAL.required' => 'El camp NOM_COMERCIAL és obligatori.',
             'NOM_COMERCIAL.string' => 'El camp NOM_COMERCIAL ha de ser una cadena de caràcters.',
-            'NOM_COMERCIAL.max' => 'El camp NOM_COMERCIAL no pot tenir més de 255 caràcters.',
+            'NOM_COMERCIAL.max' => 'El camp NOM_COMERCIAL no pot tenir més de 50 caràcters.',
             'NUM_REGISTRE.required' => 'El camp NUM_REGISTRE és obligatori.',
-            'NUM_REGISTRE.integer' => 'El camp NUM_REGISTRE ha de ser un número enter.',
+            'NUM_REGISTRE.string' => 'El camp NUM_REGISTRE ha de ser una cadena de caràcters.',
+            'NUM_REGISTRE.max' => 'El camp NUM_REGISTRE no pot tenir més de 50 caràcters.',
             'DESCRIPCIO.required' => 'El camp DESCRIPCIO és obligatori.',
             'DESCRIPCIO.string' => 'El camp DESCRIPCIO ha de ser una cadena de caràcters.',
-            'DESCRIPCIO.max' => 'El camp DESCRIPCIO no pot tenir més de 255 caràcters.',
+            'DESCRIPCIO.max' => 'El camp DESCRIPCIO no pot tenir més de 500 caràcters.',
             'LLITS.required' => 'El camp LLITS és obligatori.',
             'LLITS.integer' => 'El camp LLITS ha de ser un número enter.',
             'PERSONES.required' => 'El camp PERSONES és obligatori.',
             'PERSONES.integer' => 'El camp PERSONES ha de ser un número enter.',
             'BANYS.required' => 'El camp BANYS és obligatori.',
             'BANYS.integer' => 'El camp BANYS ha de ser un número enter.',
-            'FOTOGRAFIES.required' => 'El camp FOTOGRAFIES és obligatori.',
-            'FOTOGRAFIES.string' => 'El camp FOTOGRAFIES ha de ser una cadena de caràcters.',
-            'FOTOGRAFIES.max' => 'El camp FOTOGRAFIES no pot tenir més de 255 caràcters.',
-            'ADRECA.required' => 'El camp ADRECA és obligatori.',
-            'ADRECA.string' => 'El camp ADRECA ha de ser una cadena de caràcters.',
-            'ADRECA.max' => ' El camp ADRECA no pot tenir més de 255 caràcters.',
+            'ADREÇA.required' => 'El camp ADRECA és obligatori.',
+            'ADREÇA.string' => 'El camp ADRECA ha de ser una cadena de caràcters.',
+            'ADREÇA.max' => ' El camp ADRECA no pot tenir més de 50 caràcters.',
             'DESTACAT.required' => 'El camp DESTACAT és obligatori.',
             'DESTACAT.boolean' => 'El camp DESTACAT ha de ser un booleà.',
             'VALORACIO_GLOBAL.required' => 'El camp VALORACIO_GLOBAL és obligatori.',
@@ -174,8 +170,7 @@ class AllotjamentController extends Controller
             $allotjament->LLITS = $request->input('LLITS');
             $allotjament->PERSONES = $request->input('PERSONES');
             $allotjament->BANYS = $request->input('BANYS');
-            $allotjament->FOTOGRAFIES = $request->input('FOTOGRAFIES');
-            $allotjament->ADRECA = $request->input('ADRECA');
+            $allotjament->ADREÇA = $request->input('ADRECA');
             $allotjament->DESTACAT = $request->input('DESTACAT');
             $allotjament->VALORACIO_GLOBAL = $request->input('VALORACIO_GLOBAL');
             $allotjament->FK_ID_MUNICIPI = $request->input('FK_ID_MUNICIPI');
@@ -185,7 +180,7 @@ class AllotjamentController extends Controller
             $allotjament->FK_ID_CATEGORIA = $request->input('FK_ID_CATEGORIA');
             $allotjament->FK_ID_USUARI = $request->input('FK_ID_USUARI');
             $allotjament->save();
-            return response()->json($allotjament, 201);
+            return response()->json($allotjament, 200);
         }
 
     }
@@ -217,9 +212,8 @@ class AllotjamentController extends Controller
      *     @OA\Property(property="LLITS", type="integer"),
      *     @OA\Property(property="PERSONES", type="integer"),
      *     @OA\Property(property="BANYS", type="integer"),
-     *     @OA\Property(property="FOTOGRAFIES", type="string"),
-     *     @OA\Property(property="ADRECA", type="string"),
-     *     @OA\Property(property="DESTACAT", type="integer"),
+     *     @OA\Property(property="ADREÇA", type="string"),
+     *     @OA\Property(property="DESTACAT", type="boolean"),
      *     @OA\Property(property="VALORACIO_GLOBAL", type="integer"),
      *     @OA\Property(property="FK_ID_MUNICIPI", type="integer"),
      *     @OA\Property(property="FK_ID_TIPUS", type="integer"),
@@ -228,6 +222,12 @@ class AllotjamentController extends Controller
      *     @OA\Property(property="FK_ID_CATEGORIA", type="integer"),
      *     @OA\Property(property="FK_ID_USUARI", type="integer"),
      *     ),
+     *      @OA\Response (
+     *           response=404,
+     *           description="No s'ha trobat l'allotjament",
+     *           @OA\JsonContent (
+     *           ref="#/components/schemas/Error"
+     *  )
      *     )
      *
      *
@@ -265,13 +265,12 @@ class AllotjamentController extends Controller
      *     @OA\JsonContent(
      *     @OA\Property(property="ID_ALLOTJAMENT", type="integer"),
      *     @OA\Property(property="NOM_COMERCIAL", type="string"),
-     *     @OA\Property(property="NUM_REGISTRE", type="integer"),
+     *     @OA\Property(property="NUM_REGISTRE", type="string"),
      *     @OA\Property(property="DESCRIPCIO", type="string"),
      *     @OA\Property(property="LLITS", type="integer"),
      *     @OA\Property(property="PERSONES", type="integer"),
      *     @OA\Property(property="BANYS", type="integer"),
-     *     @OA\Property(property="FOTOGRAFIES", type="string"),
-     *     @OA\Property(property="ADRECA", type="string"),
+     *     @OA\Property(property="ADREÇA", type="string"),
      *     @OA\Property(property="DESTACAT", type="boolean"),
      *     @OA\Property(property="VALORACIO_GLOBAL", type="integer"),
      *     @OA\Property(property="FK_ID_MUNICIPI", type="integer"),
@@ -288,14 +287,13 @@ class AllotjamentController extends Controller
      *     @OA\JsonContent(
      *     @OA\Property(property="ID_ALLOTJAMENT", type="integer"),
      *     @OA\Property(property="NOM_COMERCIAL", type="string"),
-     *     @OA\Property(property="NUM_REGISTRE", type="integer"),
+     *     @OA\Property(property="NUM_REGISTRE", type="string"),
      *     @OA\Property(property="DESCRIPCIO", type="string"),
      *     @OA\Property(property="LLITS", type="integer"),
      *     @OA\Property(property="PERSONES", type="integer"),
      *     @OA\Property(property="BANYS", type="integer"),
-     *     @OA\Property(property="FOTOGRAFIES", type="string"),
-     *     @OA\Property(property="ADRECA", type="string"),
-     *     @OA\Property(property="DESTACAT", type="integer"),
+     *     @OA\Property(property="ADREÇA", type="string"),
+     *     @OA\Property(property="DESTACAT", type="boolean"),
      *     @OA\Property(property="VALORACIO_GLOBAL", type="number"),
      *     @OA\Property(property="FK_ID_MUNICIPI", type="integer"),
      *     @OA\Property(property="FK_ID_TIPUS", type="integer"),
@@ -304,6 +302,12 @@ class AllotjamentController extends Controller
      *     @OA\Property(property="FK_ID_CATEGORIA", type="integer"),
      *     @OA\Property(property="FK_ID_USUARI", type="integer"),
      *     ),
+     *      @OA\Response (
+     *     response=400,
+     *     description="No s'ha pogut actualitzar l'allotjament",
+     *     @OA\JsonContent (
+     *     ref="#/components/schemas/Error"
+     *  )
      *     )
      * )
      */
@@ -311,15 +315,14 @@ class AllotjamentController extends Controller
     {
         $reglesvalidacio = [
             'ID_ALLOTJAMENT' => 'required|integer',
-            'NOM_COMERCIAL' => 'required|string|max:255',
-            'NUM_REGISTRE' => 'required|string|max:255',
-            'DESCRIPCIO' => 'required|string|max:255',
+            'NOM_COMERCIAL' => 'required|string|max:50',
+            'NUM_REGISTRE' => 'required|string|max:50',
+            'DESCRIPCIO' => 'required|string|max:500',
             'LLITS' => 'required|integer',
             'PERSONES' => 'required|integer',
             'BANYS' => 'required|integer',
-            'FOTOGRAFIES' => 'required|string|max:255',
-            'ADRECA' => 'required|string|max:255',
-            'DESTACAT' => 'required|integer',
+            'ADRECA' => 'required|string|max:50',
+            'DESTACAT' => 'required|boolean',
             'VALORACIO_GLOBAL' => 'required|integer',
             'FK_ID_MUNICIPI' => 'required|integer',
             'FK_ID_TIPUS' => 'required|integer',
@@ -333,25 +336,22 @@ class AllotjamentController extends Controller
             'ID_ALLOTJAMENT.integer' => 'El camp ID_ALLOTJAMENT ha de ser un número enter.',
             'NOM_COMERCIAL.required' => 'El camp NOM_COMERCIAL és obligatori.',
             'NOM_COMERCIAL.string' => 'El camp NOM_COMERCIAL ha de ser una cadena de text.',
-            'NOM_COMERCIAL.max' => 'El camp NOM_COMERCIAL no pot tenir més de 255 caràcters.',
+            'NOM_COMERCIAL.max' => 'El camp NOM_COMERCIAL no pot tenir més de 50 caràcters.',
             'NUM_REGISTRE.required' => 'El camp NUM_REGISTRE és obligatori.',
             'NUM_REGISTRE.string' => 'El camp NUM_REGISTRE ha de ser una cadena de text.',
-            'NUM_REGISTRE.max' => 'El camp NUM_REGISTRE no pot tenir més de 255 caràcters.',
+            'NUM_REGISTRE.max' => 'El camp NUM_REGISTRE no pot tenir més de 50 caràcters.',
             'DESCRIPCIO.required' => 'El camp DESCRIPCIO és obligatori.',
             'DESCRIPCIO.string' => 'El camp DESCRIPCIO ha de ser una cadena de text.',
-            'DESCRIPCIO.max' => 'El camp DESCRIPCIO no pot tenir més de 255 caràcters.',
+            'DESCRIPCIO.max' => 'El camp DESCRIPCIO no pot tenir més de 500 caràcters.',
             'LLITS.required' => 'El camp LLITS és obligatori.',
             'LLITS.integer' => 'El camp LLITS ha de ser un número enter.',
             'PERSONES.required' => 'El camp PERSONES és obligatori.',
             'PERSONES.integer' => 'El camp PERSONES ha de ser un número enter.',
             'BANYS.required' => 'El camp BANYS és obligatori.',
             'BANYS.integer' => 'El camp BANYS ha de ser un número enter.',
-            'FOTOGRAFIES.required' => 'El camp FOTOGRAFIES és obligatori.',
-            'FOTOGRAFIES.string' => 'El camp FOTOGRAFIES ha de ser una cadena de text.',
-            'FOTOGRAFIES.max' => 'El camp FOTOGRAFIES no pot tenir més de 255 caràcters.',
-            'ADRECA.required' => 'El camp ADRECA és obligatori.',
-            'ADRECA.string' => 'El camp ADRECA ha de ser una cadena de text.',
-            'ADRECA.max' => 'El camp ADRECA no pot tenir més de 255 caràcters.',
+            'ADREÇA.required' => 'El camp ADREÇA és obligatori.',
+            'ADREÇA.string' => 'El camp ADREÇA ha de ser una cadena de text.',
+            'ADREÇA.max' => 'El camp ADREÇA no pot tenir més de 50 caràcters.',
             'DESTACAT.required' => 'El camp DESTACAT és obligatori.',
             'DESTACAT.boolean' => 'El camp DESTACAT ha de ser un booleà.',
             'VALORACIO_GLOBAL.required' => 'El camp VALORACIO_GLOBAL és obligatori.',
@@ -406,7 +406,7 @@ class AllotjamentController extends Controller
      * )
      * ),
      *     @OA\Response(
-     *     response=404,
+     *     response=400,
      *     description="No s'ha pogut eliminar l'allotjament"
      * )
      * )
