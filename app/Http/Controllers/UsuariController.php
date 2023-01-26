@@ -319,7 +319,7 @@ class UsuariController extends Controller
      */
     /**
      * @OA\Delete(
-     *     path="/usuari/destroy/{id}",
+     *     path="/usuaris/destroy/{id}",
      *     description="Elimina un usuari",
      *     tags={"Usuaris"},
      *     summary="Elimina un usuari",
