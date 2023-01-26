@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Traduccio_tipus;
 use App\Models\Traduccio_vacances;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -15,11 +13,6 @@ use OpenApi\Annotations as OA;
 
 class Traduccio_vacancesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Get(
      *     path="/traduccio_vacances",
@@ -44,7 +37,6 @@ class Traduccio_vacancesController extends Controller
      *     @OA\Property(property="TRADUCCIO_VAC", type="string")
      * )
      */
-     
     // ! GET all
     public function getTraduccionsVacances()
     {
