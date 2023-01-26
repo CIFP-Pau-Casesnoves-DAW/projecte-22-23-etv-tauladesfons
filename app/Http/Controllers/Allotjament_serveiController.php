@@ -77,7 +77,7 @@ class Allotjament_serveiController extends Controller
      *         description="Allotjament_servei creat"
      *     ),
      *     @OA\Response(
-     *         response=500,
+     *         response=400,
      *         description="Error creant allotjament_servei"
      *     )
      * )
@@ -95,7 +95,7 @@ class Allotjament_serveiController extends Controller
             $tuple->save();
             return response()->json($tuple);
         } else {
-            return response()->json(['error' => 'Bad request'], 400);
+            return response()->json(['error' => 'Error creant allotjament_servei'], 400);
         }
     }
 
