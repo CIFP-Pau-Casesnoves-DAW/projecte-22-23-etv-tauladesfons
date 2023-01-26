@@ -141,12 +141,12 @@ class Allotjament_serveiController extends Controller
 
     public function show($id_allot, $id_servei)
     {
-       try{
-           $allotjament_servei = Allotjament_servei::where('FK_ID_ALLOT', $id_allot)->where('FK_ID_SERVEI', $id_servei)->firstOrFail();
-           return response()->json("Allotjament_servei: " . $allotjament_servei . " amb ID allotjament: " . $id_allot . " i ID servei: " . $id_servei);
-       } catch (ModelNotFoundException $e) {
-           return response()->json(['error' => 'No existeix allotjament_servei amb aquest ID allotjament: ' . $id_allot . ' i ID servei: ' . $id_servei], 404);
-       }
+        try {
+            $allotjament_servei = Allotjament_servei::where('FK_ID_ALLOT', $id_allot)->where('FK_ID_SERVEI', $id_servei)->firstOrFail();
+            return response()->json("Allotjament_servei: " . $allotjament_servei . " amb ID allotjament: " . $id_allot . " i ID servei: " . $id_servei);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'No existeix allotjament_servei amb aquest ID allotjament: ' . $id_allot . ' i ID servei: ' . $id_servei], 404);
+        }
     }
     /**
      * Update the specified resource in storage.
@@ -193,24 +193,39 @@ class Allotjament_serveiController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, $id_allot, $id_servei)
+    // ! UPDATE
+    public function updateAllotjamentServei(Request $request, $id_allot, $id_servei)
     {
-        $reglesvalidacio = Validator::make($request->all(), [
-            'FK_ID_ALLOT' => 'exists:ALLOTJAMENTS,ID_ALLOTJAMENT',
-            'FK_ID_SERVEI' => 'exists:SERVEIS,ID_SERVEI'
-        ]);
-        if (!$reglesvalidacio->fails()) {
-            try {
-                $allotjament_servei = Allotjament_servei::where('FK_ID_ALLOT', $id_allot)->where('FK_ID_SERVEI', $id_servei)->firstOrFail();
-                $allotjament_servei->FK_ID_ALLOT = $request->FK_ID_ALLOT;
-                $allotjament_servei->FK_ID_SERVEI = $request->FK_ID_SERVEI;
-                $allotjament_servei->update();
-                return response()->json($allotjament_servei);
-            } catch (ModelNotFoundException $e) {
-                return response()->json(['error' => 'No existeix allotjament_servei amb aquest ID allotjament: ' . $id_allot . ' i ID servei: ' . $id_servei], 404);
-            }
+        $reglesValidacio = [
+            'FK_ID_ALLOT' => 'required|integer',
+            'FK_ID_SERVEI' => 'required|integer'
+        ];
+        $missatges = [
+            'FK_ID_ALLOT.required' => 'El camp de FK_ID_ALLOT és obligatori',
+            'FK_ID_ALLOT.integer' => 'El camp de FK_ID_ALLOT ha de ser un enter',
+            'FK_ID_SERVEI.required' => 'El camp de FK_ID_SERVEI és obligatori',
+            'FK_ID_SERVEI.integer' => 'El camp de FK_ID_SERVEI ha de ser un enter'
+        ];
+        $validacio = Validator::make($request->all(), $reglesValidacio, $missatges);
+        if ($validacio->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validacio->errors()
+            ], 400);
         } else {
-            return response()->json(['error' => 'Bad request'], 400);
+            try {
+                $allotjament_servei = Allotjament_servei::where('FK_ID_ALLOT', $id_allot)->where('FK_ID_SERVEI', $id_servei);
+                $allotjament_servei->update($request->all());
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $allotjament_servei
+                ], 200);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'L\'allotjament amb la id ' . $id_allot . 'amb servei' . $id_servei . 'no existeix'
+                ], 404);
+            }
         }
     }
 

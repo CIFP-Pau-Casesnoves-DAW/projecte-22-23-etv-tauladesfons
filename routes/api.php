@@ -71,7 +71,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/', [Allotjament_serveiController::class, 'index']);
     Route::get('/{id_allot}/{id_servei}', [Allotjament_serveiController::class, 'show']);
     Route::post('', [Allotjament_serveiController::class, 'store']);
-    Route::put('/put/{id_allot}/{id_servei}', [Allotjament_serveiController::class, 'update']);
+    Route::put('/put/{id_allot}/{id_servei}', [Allotjament_serveiController::class, 'updateAllotjamentServei']);
     Route::delete('/destroy/{id_allot}/{id_servei}', [Allotjament_serveiController::class, 'destroy']);
     });
     //ruta de categories
