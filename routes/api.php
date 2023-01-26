@@ -68,10 +68,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     //ruta de allotjament servei
     Route::group(['prefix' => 'allotjaments_serveis'], function () {
     Route::get('/', [Allotjament_serveiController::class, 'index']);
-    Route::get('/{id}', [Allotjament_serveiController::class, 'show']);
+    Route::get('/{id_allot}/{id_servei}', [Allotjament_serveiController::class, 'show']);
     Route::post('', [Allotjament_serveiController::class, 'store']);
-    Route::put('/put/{id}', [Allotjament_serveiController::class, 'update']);
-    Route::delete('/destroy/{id}', [Allotjament_serveiController::class, 'destroy']);
+    Route::put('/put/{id_allot}/{id_servei}', [Allotjament_serveiController::class, 'update']);
+    Route::delete('/destroy/{id_allot}/{id_servei}', [Allotjament_serveiController::class, 'destroy']);
     });
     //ruta de categories
     Route::group(['prefix' => 'categories'], function () {
