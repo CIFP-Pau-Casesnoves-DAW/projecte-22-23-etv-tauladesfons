@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuari;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
@@ -79,12 +80,13 @@ class UsuariController extends Controller
      *         description="Usuari a crear",
      *         required=true,
      *         @OA\JsonContent(
+     *             @OA\Property(property="ID_USUARI", type="int", example="123"),
      *             @OA\Property(property="DNI", type="string", example="12345678Z"),
      *             @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
-     *             @OA\Property(property="CORREU_ELECTRONIC", type="string", example="patata@gmail.com"),
-     *        @OA\Property(property="CONTRASENYA", type="string", example="patata"),
-     *     @OA\Property(property="TELEFON", type="string", example="123456789"),
-     *     @OA\Property(property="ADMINISTRADOR", type="boolean", example="false")
+     *             @OA\Property(property="CORREU_ELECTRONIC", type="string", example="perepujol@gmail.com"),
+     *             @OA\Property(property="CONTRASENYA", type="string", example="patata"),
+     *             @OA\Property(property="TELEFON", type="string", example="123456789"),
+     *             @OA\Property(property="ADMINISTRADOR", type="boolean", example="false")
      *        )
      *    ),
      *     @OA\Response(
@@ -297,7 +299,7 @@ class UsuariController extends Controller
             'ADMINISTRADOR.boolean' => 'El camp ADMINISTRADOR ha de ser un booleà.'
         ];
         $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
-        $tuples=Uusari::where('ID_USUARI', $id)->update($request->except(['_token']));
+        $tuples=Usuari::where('ID_USUARI', $id)->update($request->except(['_token']));
         if ($validacio->fails()) {
             return response()->json([
                 'error' => $validacio->errors()->all()
