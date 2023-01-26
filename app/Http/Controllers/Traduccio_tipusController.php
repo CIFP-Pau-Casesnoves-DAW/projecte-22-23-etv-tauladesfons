@@ -14,11 +14,6 @@ use OpenApi\Annotations as OA;
 class Traduccio_tipusController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /**
      * @OA\Get(
      *     path="/traduccio_tipus",
      *     summary="Llista de traduccions de tipus",
@@ -65,84 +60,6 @@ class Traduccio_tipusController extends Controller
         $tuples = Traduccio_tipus::all();
         return response()->json(['status' => 'success', 'result' => $tuples], 200);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    /**
-     * @OA\Post(
-     *     path="/traduccio_tipus",
-     *     summary="Crear traducció tipus",
-     *     description="Crear traducció tipus",
-     *     tags={"Traducció_tipus"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Traducció_tipus")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(
-     *                 property="status",
-     *                 type="string",
-     *                 example="Creat"
-     *             ),
-     *             @OA\Property(
-     *                 property="result",
-     *                 ref="#/components/schemas/Traducció_tipus"
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Error: tipus o idioma inexistent",
-     *     @OA\JsonContent(
-     *     type="object",
-     *     @OA\Property(
-     *     property="status",
-     *     type="string",
-     *     example="Error: tipus o idioma inexistent"
-     *     )
-     *   )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized"
-     *     )
-     * )
-     */
-    public function insertTraduccioTipus(Request $request)
-    {
-        $validacio = Validator::make($request->all(), [
-            'FK_ID_TIPUS' => 'exists:TIPUS,ID_TIPUS',
-            'FK_ID_IDIOMA' => 'exists:IDIOMES,ID_IDIOMA'
-        ]);
-        if (!$validacio->fails()) {
-            $traduccio_tipus = new Traduccio_tipus();
-            $traduccio_tipus->FK_ID_TIPUS = $request->FK_ID_TIPUS;
-            $traduccio_tipus->FK_ID_IDIOMA = $request->FK_ID_IDIOMA;
-            $traduccio_tipus->TRADUCCIO_TIPUS = $request->TRADUCCIO_TIPUS;
-            if ($traduccio_tipus->save()) {
-                return response()->json(['status' => 'Creat', 'result' => $traduccio_tipus], 200);
-            } else {
-                return response()->json(['status' => 'Error creant']);
-            }
-        } else {
-            return response()->json(['status' => 'Error:tipus o idioma inexistents']);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Get(
      *     path="/traduccio_tipus/{id_tipus}/{id_idioma}",
@@ -207,14 +124,70 @@ class Traduccio_tipusController extends Controller
         }
     }
 
-
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/traduccio_tipus",
+     *     summary="Crear traducció tipus",
+     *     description="Crear traducció tipus",
+     *     tags={"Traducció_tipus"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Traducció_tipus")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="status",
+     *                 type="string",
+     *                 example="Creat"
+     *             ),
+     *             @OA\Property(
+     *                 property="result",
+     *                 ref="#/components/schemas/Traducció_tipus"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Error: tipus o idioma inexistent",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(
+     *     property="status",
+     *     type="string",
+     *     example="Error: tipus o idioma inexistent"
+     *     )
+     *   )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
      */
+    public function insertTraduccioTipus(Request $request)
+    {
+        $validacio = Validator::make($request->all(), [
+            'FK_ID_TIPUS' => 'exists:TIPUS,ID_TIPUS',
+            'FK_ID_IDIOMA' => 'exists:IDIOMES,ID_IDIOMA'
+        ]);
+        if (!$validacio->fails()) {
+            $traduccio_tipus = new Traduccio_tipus();
+            $traduccio_tipus->FK_ID_TIPUS = $request->FK_ID_TIPUS;
+            $traduccio_tipus->FK_ID_IDIOMA = $request->FK_ID_IDIOMA;
+            $traduccio_tipus->TRADUCCIO_TIPUS = $request->TRADUCCIO_TIPUS;
+            if ($traduccio_tipus->save()) {
+                return response()->json(['status' => 'Creat', 'result' => $traduccio_tipus], 200);
+            } else {
+                return response()->json(['status' => 'Error creant']);
+            }
+        } else {
+            return response()->json(['status' => 'Error:tipus o idioma inexistents']);
+        }
+    }
     /**
      * @OA\Put(
      *     path="/traduccio_tipus/put/{id_tipus}/{id_idioma}",
@@ -324,13 +297,6 @@ class Traduccio_tipusController extends Controller
             }
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Delete(
      *     path="/traduccio_tipus/destroy/{id_tipus}/{id_idioma}",
