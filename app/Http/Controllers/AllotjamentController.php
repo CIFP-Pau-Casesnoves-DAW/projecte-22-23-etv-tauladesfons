@@ -297,7 +297,7 @@ class AllotjamentController extends Controller
      */
     /**
      * @OA\Put(
-     *     path="/allotjaments/update/{id}",
+     *     path="/allotjaments/put/{id}",
      *     summary="Actualitza un allotjament",
      *     description="Actualitza un allotjament",
      *     tags={"Allotjaments"},
@@ -315,7 +315,7 @@ class AllotjamentController extends Controller
      *    required=true,
      *    description="Dades allotjament",
      *    @OA\JsonContent(
-     *       required={"ID_ALLOTJAMENT","NOM_COMERCIAL","NUM_REGISTRE","DESCRIPCIO","LLITS","PERSONES","BANYS","ADREÇA","DESTACAT","VALORACIO_GLOBAL","FK_ID_MUNICIPI","FK_ID_TIPUS","FK_ID_SERVEI","FK_ID_VACANCES","FK_ID_CATEGORIA","FK_ID_USUARI"},
+     *       required={"ID_ALLOTJAMENT","NOM_COMERCIAL","NUM_REGISTRE","DESCRIPCIO","LLITS","PERSONES","BANYS","ADREÇA","DESTACAT","VALORACIO_GLOBAL","FK_ID_MUNICIPI","FK_ID_TIPUS","FK_ID_VACANCES","FK_ID_CATEGORIA","FK_ID_USUARI"},
      *       @OA\Property(
      *        property="ID_ALLOTJAMENT",
      *        type="integer",
@@ -405,7 +405,7 @@ class AllotjamentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $reglesvalidacio = [
+        $regles = [
             'ID_ALLOTJAMENT' => 'required|integer',
             'NOM_COMERCIAL' => 'required|string|max:50',
             'NUM_REGISTRE' => 'required|string|max:50',
@@ -418,7 +418,6 @@ class AllotjamentController extends Controller
             'VALORACIO_GLOBAL' => 'required|integer',
             'FK_ID_MUNICIPI' => 'required|integer',
             'FK_ID_TIPUS' => 'required|integer',
-            'FK_ID_SERVEI' => 'required|integer',
             'FK_ID_VACANCES' => 'required|integer',
             'FK_ID_CATEGORIA' => 'required|integer',
             'FK_ID_USUARI' => 'required|integer'
@@ -452,8 +451,6 @@ class AllotjamentController extends Controller
             'FK_ID_MUNICIPI.integer' => 'El camp FK_ID_MUNICIPI ha de ser un número enter.',
             'FK_ID_TIPUS.required' => 'El camp FK_ID_TIPUS és obligatori.',
             'FK_ID_TIPUS.integer' => 'El camp FK_ID_TIPUS ha de ser un número enter.',
-            'FK_ID_SERVEI.required' => 'El camp FK_ID_SERVEI és obligatori.',
-            'FK_ID_SERVEI.integer' => 'El camp FK_ID_SERVEI ha de ser un número enter.',
             'FK_ID_VACANCES.required' => 'El camp FK_ID_VACANCES és obligatori.',
             'FK_ID_VACANCES.integer' => 'El camp FK_ID_VACANCES ha de ser un número enter.',
             'FK_ID_CATEGORIA.required' => 'El camp FK_ID_CATEGORIA és obligatori.',
@@ -461,17 +458,16 @@ class AllotjamentController extends Controller
             'FK_ID_USUARI.required' => 'El camp FK_ID_USUARI és obligatori.',
             'FK_ID_USUARI.integer' => 'El camp FK_ID_USUARI ha de ser un número enter.',
         ];
-       $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
-        $tuples=Allotjament::where('ID_ALLOTJAMENT', $id)->update($request->except(['_token']));
+       $validacio = Validator::make($request->all(), $regles, $missatges);
         if ($validacio->fails()) {
-            return response()->json([
-                'error' => $validacio->errors()->all()
-            ]);
-         } else {
-            return response()->json([
-                'success' => 'Allotjament modificat correctament'
-            ]);
-            }
+            return response()->json($validacio->errors(), 400);
+        }
+        $allotjament = Allotjament::find($id);
+        if ($allotjament == null) {
+            return response()->json(['error' => 'No s\'ha trobat l\'allotjament'], 404);
+        }
+        $allotjament->update($request->all());
+        return response()->json($allotjament, 200);
     }
 
     /**
@@ -479,32 +475,56 @@ class AllotjamentController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+        */
+    /**
      * @OA\Delete(
-     *     path="/allojaments/destroy/{id}",
-     *     tags={"Allotjaments"},
-     *     summary="Elimina un allotjament",
-     *     description="Elimina un allotjament",
-     *     @OA\Response(
-     *     response=200,
-     *     description="Allotjament eliminat correctament"
-     * ),
-     *     @OA\Parameter(
+     *   path="/allotjaments/destroy/{id}",
+     *   summary="Elimina un allotjament",
+     *   tags={"Allotjaments"},
+     *   @OA\Parameter(
      *     name="id",
      *     in="path",
-     *     description="ID de l'allotjament",
+     *     description="Id de l'allotjament",
      *     required=true,
      *     @OA\Schema(
-     *     type="integer"
+     *       type="integer",
+     *       format="int64"
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Allotjament eliminat correctament",
+     *     @OA\JsonContent(
+     *       @OA\Property(
+     *         property="success",
+     *         type="string",
+     *         example="Allotjament eliminat correctament"
+     *       ),
+     *     ),
+     *   ),
+     *   @OA\Response(
+     *     response=404,
+     *     description="No s'ha trobat l'allotjament",
+     *     @OA\JsonContent(
+     *       @OA\Property(
+     *         property="error",
+     *         type="string",
+     *         example="No s'ha trobat l'allotjament"
+     *       ),
+     *     ),
+     *   ),
+     *   @OA\Response(
+     *     response=500,
+     *     description="No s'ha pogut eliminar l'allotjament",
+     *     @OA\JsonContent(
+     *       @OA\Property(
+     *         property="error",
+     *         type="string",
+     *         example="No s'ha pogut eliminar l'allotjament"
+     *       ),
+     *     ),
+     *   ),
      * )
-     * ),
-     *     @OA\Response(
-     *     response=400,
-     *     description="No s'ha pogut eliminar l'allotjament"
-     * )
-     * )
-     *
-     *
-     *
      */
     public function destroy($id)
     {
