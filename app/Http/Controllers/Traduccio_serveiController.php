@@ -145,21 +145,16 @@ class Traduccio_serveiController extends Controller
     // ! INSERT
     public function insertTraduccioServei(Request $request){
         $validacio=Validator::make($request->all(),[
-            'FK_ID_SERVEI' => 'exists:serveis,ID_SERVEI',
-            'FK_ID_IDIOMA' => 'exists:idiomes,ID_IDIOMA'
+            'FK_ID_SERVEI' => 'exists:SERVEIS,ID_SERVEI',
+            'FK_ID_IDIOMA' => 'exists:IDIOMES,ID_IDIOMA'
         ]);
         if (!$validacio->fails()) {
             $traduccio_servei = new Traduccio_servei();
             $traduccio_servei->FK_ID_SERVEI = $request->FK_ID_SERVEI;
             $traduccio_servei->FK_ID_IDIOMA = $request->FK_ID_IDIOMA;
             $traduccio_servei->TRADUCCIO_SERVEI = $request->TRADUCCIO_SERVEI;
-            if ($traduccio_servei->save()) {
-                return response()->json(['status'=> 'Creat','result'=> $traduccio_servei],200);
-            }else {
-                return response()->json(['status'=> 'Error creant']);
-            }
-        }else {
-            return response()->json(['status'=> 'Error:servei o idioma inexistents']);
+            $traduccio_servei->save();
+            return response()->json(['status' => 'success', 'result' => $traduccio_servei], 200);
         }
     }
 

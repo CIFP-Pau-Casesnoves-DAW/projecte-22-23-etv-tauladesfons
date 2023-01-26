@@ -44,6 +44,7 @@ class Traduccio_vacancesController extends Controller
      *     @OA\Property(property="TRADUCCIO_VAC", type="string")
      * )
      */
+     
     // ! GET all
     public function getTraduccionsVacances()
     {
@@ -93,7 +94,8 @@ class Traduccio_vacancesController extends Controller
      * )
      * )
      */
-    // ! GET de una en especific
+
+    // ! GET d'una en específic
     public function getTraduccioVacances($id_vacances, $id_idioma)
     {
         try {
@@ -150,6 +152,7 @@ class Traduccio_vacancesController extends Controller
             }
         } else {
             return response()->json(['status' => 'Error:vacances o idioma inexistents']);
+
         }
     }
     /**
@@ -197,6 +200,7 @@ class Traduccio_vacancesController extends Controller
      *     )
      * )
      */
+
     // ! UPDATE
     public function updateTraduccioVacances(Request $request, $id_vacances, $id_idioma)
     {
@@ -235,8 +239,7 @@ class Traduccio_vacancesController extends Controller
             }
         }
     }
-
-
+    
     /**
      * @OA\Delete(
      *     path="/traduccio_vacances/destroy/{id_vacances}/{id_idioma}",
@@ -285,4 +288,5 @@ class Traduccio_vacancesController extends Controller
                 return response()->json(['status' => 'No trobat'], 404);
             }
         }
+
 }
