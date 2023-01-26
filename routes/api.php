@@ -4,6 +4,7 @@ use App\Http\Controllers\Allotjament_serveiController;
 use App\Http\Controllers\AllotjamentController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ComentariController;
+use App\Http\Controllers\FotografiaController;
 use App\Http\Controllers\IdiomaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MunicipiController;
@@ -157,6 +158,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::group(['prefix' => 'login'], function () {
     Route::get('/', [LoginController::class, 'index']);
     Route::post('', [LoginController::class, 'login']);
+    });
+    //ruta de fotografies
+    Route::group(['prefix' => 'fotografies'], function () {
+    Route::get('/', [FotografiaController::class, 'getFotografies']);
+    Route::get('/{id}', [FotografiaController::class, 'getFotografia']);
+    Route::post('', [FotografiaController::class, 'insertFotografia']);
+    Route::put('/put/{id}', [FotografiaController::class, 'updateFotografia']);
+    Route::delete('/destroy/{id}', [FotografiaController::class, 'deleteFotografia']);
     });
 
 
