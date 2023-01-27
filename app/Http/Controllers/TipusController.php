@@ -85,7 +85,7 @@ class TipusController extends Controller
     {
         $reglesvalidacio = [
             'ID_TIPUS' => 'required|integer',
-            'NOM_TIPUS' => 'required|string|50',
+            'NOM_TIPUS' => 'required|string|max:50',
         ];
         $missatge= [
             'ID_TIPUS.required' => 'El camp ID_TIPUS és obligatori',
@@ -166,7 +166,7 @@ class TipusController extends Controller
         }
     }
 
-    /**
+      /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -188,24 +188,26 @@ class TipusController extends Controller
      *     @OA\RequestBody(
      *     description="Dades del tipus",
      *     required=true,
-     *     @OA\JsonContent(ref="#/components/schemas/Tipus")
+     *     @OA\JsonContent(
+     *     required={"ID_TIPUS","NOM_TIPUS"},
+     *     @OA\Property(property="ID_TIPUS", type="integer"),
+     *     @OA\Property(property="NOM_TIPUS", type="string")
+     *   )
      * ),
      *     @OA\Response(
      *     response=200,
      *     description="Tipus actualitzat",
      *     @OA\JsonContent(
-     *     type="object",
-     *     @OA\Property(property="status", type="string"),
-     *     @OA\Property(property="data", ref="#/components/schemas/Tipus")
-     * )
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Tipus")
+     *   )
      * ),
      *     @OA\Response(
      *     response=400,
      *     description="Error de validació",
      *     @OA\JsonContent(
-     *     type="object",
-     *     @OA\Property(property="status", type="string"),
-     *     @OA\Property(property="errors", type="object")
+     *     type="array",
+     *     @OA\Items(ref="#/components/schemas/Error")
      * )
      * )
      * )
@@ -214,29 +216,26 @@ class TipusController extends Controller
     {
         $reglesvalidacio = [
             'ID_TIPUS' => 'required|integer',
-            'NOM_TIPUS' => 'required|string|max:50',
+            'NOM_TIPUS' => 'required|string|max:50'
         ];
         $missatge= [
             'ID_TIPUS.required' => 'El camp ID_TIPUS és obligatori',
             'ID_TIPUS.integer' => 'El camp ID_TIPUS ha de ser un enter',
             'NOM_TIPUS.required' => 'El camp NOM_TIPUS és obligatori',
             'NOM_TIPUS.string' => 'El camp NOM_TIPUS ha de ser una cadena de caràcters',
-            'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 50 caràcters',
+            'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 50 caràcters'
         ];
         $validacio= Validator::make($request->all(), $reglesvalidacio, $missatge);
+        $tuples=Tipus::where('ID_TIPUS', $id)->update($request->except(['_token']));
         if ($validacio->fails()) {
-            $tuples=Tipus::findOrFail($id);
-            $tuples->update($request->all());
             return response()->json([
-                'status' => 'success',
-                'data' => $tuples
-            ], 200);
-        } else {
+                'error' => $validacio->errors()->all()
+            ]);
+         } else {
             return response()->json([
-                'status' => 'error',
-                'data' => $validacio->errors()
-            ], 400);
-        }
+                'success' => 'Tipus modificat correctament.'
+            ]);
+            }
     }
 
     /**
