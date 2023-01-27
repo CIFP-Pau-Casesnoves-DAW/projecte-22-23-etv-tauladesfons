@@ -37,8 +37,8 @@ create table `TRADUCCIO_TIPUS`
     `FK_ID_IDIOMA`    INT         not null,
     `TRADUCCIO_TIPUS` VARCHAR(50) not null,
     primary key (`FK_ID_TIPUS`, `FK_ID_IDIOMA`),
-    foreign key (`FK_ID_TIPUS`) references `TIPUS` (`ID_TIPUS`),
-    foreign key (`FK_ID_IDIOMA`) references `IDIOMES` (`ID_IDIOMA`)
+    foreign key (`FK_ID_TIPUS`) references `TIPUS` (`ID_TIPUS`) on update cascade on delete cascade,
+    foreign key (`FK_ID_IDIOMA`) references `IDIOMES` (`ID_IDIOMA`) on update cascade on delete cascade
 );
 
 create table `TRADUCCIO_VACANCES`
@@ -47,8 +47,8 @@ create table `TRADUCCIO_VACANCES`
     `FK_ID_IDIOMA`   INT         not null,
     `TRADUCCIO_VAC`  VARCHAR(50) not null,
     primary key (`FK_ID_VACANCES`, `FK_ID_IDIOMA`),
-    foreign key (`FK_ID_VACANCES`) references `VACANCES` (`ID_VACANCES`),
-    foreign key (`FK_ID_IDIOMA`) references `IDIOMES` (`ID_IDIOMA`)
+    foreign key (`FK_ID_VACANCES`) references `VACANCES` (`ID_VACANCES`) on update cascade on delete cascade,
+    foreign key (`FK_ID_IDIOMA`) references `IDIOMES` (`ID_IDIOMA`) on update cascade on delete cascade
 );
 
 create table `TRADUCCIO_SERVEIS`
@@ -57,8 +57,8 @@ create table `TRADUCCIO_SERVEIS`
     `FK_ID_IDIOMA`     INT         not null,
     `TRADUCCIO_SERVEI` VARCHAR(50) not null,
     primary key (`FK_ID_SERVEI`, `FK_ID_IDIOMA`),
-    foreign key (`FK_ID_SERVEI`) references `SERVEIS` (`ID_SERVEI`),
-    foreign key (`FK_ID_IDIOMA`) references `IDIOMES` (`ID_IDIOMA`)
+    foreign key (`FK_ID_SERVEI`) references `SERVEIS` (`ID_SERVEI`) on update cascade on delete cascade,
+    foreign key (`FK_ID_IDIOMA`) references `IDIOMES` (`ID_IDIOMA`) on update cascade on delete cascade
 );
 
 create table `MUNICIPIS`
@@ -106,11 +106,11 @@ create table `ALLOTJAMENTS`
     `FK_ID_CATEGORIA`  INT          not null,
     `FK_ID_USUARI`     INT          not null,
     primary key (`ID_ALLOTJAMENT`),
-    foreign key (`FK_ID_MUNICIPI`) references `MUNICIPIS` (`ID_MUNICIPI`),
-    foreign key (`FK_ID_TIPUS`) references `TIPUS` (`ID_TIPUS`),
-    foreign key (`FK_ID_VACANCES`) references `VACANCES` (`ID_VACANCES`),
-    foreign key (`FK_ID_CATEGORIA`) references `CATEGORIA` (`ID_CATEGORIA`),
-    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`)
+    foreign key (`FK_ID_MUNICIPI`) references `MUNICIPIS` (`ID_MUNICIPI`) on update cascade,
+    foreign key (`FK_ID_TIPUS`) references `TIPUS` (`ID_TIPUS`) on update cascade,
+    foreign key (`FK_ID_VACANCES`) references `VACANCES` (`ID_VACANCES`) on update cascade,
+    foreign key (`FK_ID_CATEGORIA`) references `CATEGORIA` (`ID_CATEGORIA`) on update cascade,
+    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`) on update cascade
 );
 
 create table `RESERVA`
@@ -122,8 +122,8 @@ create table `RESERVA`
     `DATA_FINAL`        DATE    not null,
     `CONFIRMADA`        BOOLEAN not null,
     primary key (`ID_RESERVA`),
-    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`),
-    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`)
+    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`) on update cascade,
+    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`) on update cascade
 );
 
 create table `COMENTARIS`
@@ -135,8 +135,8 @@ create table `COMENTARIS`
     `FK_ID_USUARI`      INT          not null,
     `FK_ID_ALLOTJAMENT` INT          not null,
     primary key (`ID_COMENTARI`),
-    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`),
-    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`)
+    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`) on update cascade,
+    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`) on update cascade
 );
 
 create table `VALORACIONS`
@@ -146,8 +146,8 @@ create table `VALORACIONS`
     `FK_ID_USUARI`      INT not null,
     `FK_ID_ALLOTJAMENT` INT not null,
     primary key (`ID_VALORACIO`),
-    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`),
-    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`)
+    foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`) on update cascade,
+    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`) on update cascade
 );
 
 create table `ALLOTJAMENTS_SERVEIS`
@@ -155,8 +155,8 @@ create table `ALLOTJAMENTS_SERVEIS`
     `FK_ID_ALLOT`  INT not null,
     `FK_ID_SERVEI` INT not null,
     primary key (`FK_ID_ALLOT`, `FK_ID_SERVEI`),
-    foreign key (`FK_ID_ALLOT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`),
-    foreign key (`FK_ID_SERVEI`) references `SERVEIS` (`ID_SERVEI`)
+    foreign key (`FK_ID_ALLOT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`) on update cascade on delete cascade,
+    foreign key (`FK_ID_SERVEI`) references `SERVEIS` (`ID_SERVEI`) on update cascade on delete cascade
 );
 
 create table `FOTOGRAFIES`
@@ -165,7 +165,7 @@ create table `FOTOGRAFIES`
     `FOTO`              VARCHAR(50) not null,
     `FK_ID_ALLOTJAMENT` INT         not null,
     primary key (`ID_FOTO`, `FK_ID_ALLOTJAMENT`),
-    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`)
+    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`) on update cascade on delete cascade
 );
 
 delimiter $$
