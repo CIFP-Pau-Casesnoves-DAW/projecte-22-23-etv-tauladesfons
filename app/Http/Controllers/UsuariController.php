@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
 
 /**
@@ -71,7 +72,7 @@ class UsuariController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    /**
+   /**
      * @OA\Post(
      *     path="/usuaris",
      *     summary="Crear un usuari",
@@ -137,6 +138,9 @@ class UsuariController extends Controller
             'CORREU_ELECTRONIC.required' => 'El camp CORREU_ELECTRONIC és obligatori.',
             'CORREU_ELECTRONIC.string' => 'El camp CORREU_ELECTRONICA ha de ser una cadena de caràcters.',
             'CORREU_ELECTRONIC.max' => 'El camp DNI no pot tenir més de 50 caràcters.',
+            'CONTRASENYA.required' => 'El camp CONTRASENYA és obligatori.',
+            'CONTRASENYA.string' => 'El camp CONTRASENYA ha de ser una cadena de caràcters.',
+            'CONTRASENYA.max' => 'El camp CONTRASENYA no pot tenir més de 50 caràcters.',
             'TELEFON.required' => 'El camp TELEFON és obligatori.',
             'TELEFON.string' => 'El camp TELEFON ha de ser una cadena de caràcters.',
             'TELEFON.max' => 'El camp DNI no pot tenir més de 9 caràcters.',
@@ -152,11 +156,11 @@ class UsuariController extends Controller
         $usuaris->DNI=$request->input('DNI');
         $usuaris->NOM_COMPLET=$request->input('NOM_COMPLET');
         $usuaris->CORREU_ELECTRONIC=$request->input('CORREU_ELECTRONIC');
-        $usuaris->CONTRASENYA=$request->input('CONTRASENYA');
+        $usuaris->CONTRASENYA=Hash::make($request->input('CONTRASENYA'));
         $usuaris->TELEFON=$request->input('TELEFON');
         $usuaris->ADMINISTRADOR=$request->input('ADMINISTRADOR');
         $usuaris->save();
-        return response()->json(['status'=>'success','result'=>$usuaris], 201);
+        return response()->json(['status'=>'success', 'result' => 'Nou usuari creat'], 201);
         }
     }
 
@@ -292,23 +296,30 @@ class UsuariController extends Controller
             'CORREU_ELECTRONIC.required' => 'El camp CORREU_ELECTRONIC és obligatori.',
             'CORREU_ELECTRONIC.string' => 'El camp CORREU_ELECTRONICA ha de ser una cadena de caràcters.',
             'CORREU_ELECTRONIC.max' => 'El camp DNI no pot tenir més de 50 caràcters.',
+            'CONTRASENYA.required' => 'El camp CONTRASENYA és obligatori.',
+            'CONTRASENYA.string' => 'El camp CONTRASENYA ha de ser una cadena de caràcters.',
+            'CONTRASENYA.max' => 'El camp CONTRASENYA no pot tenir més de 50 caràcters.',
             'TELEFON.required' => 'El camp TELEFON és obligatori.',
             'TELEFON.string' => 'El camp TELEFON ha de ser una cadena de caràcters.',
             'TELEFON.max' => 'El camp DNI no pot tenir més de 9 caràcters.',
             'ADMINISTRADOR.required' => 'El camp ADMINISTRADOR és obligatori.',
             'ADMINISTRADOR.boolean' => 'El camp ADMINISTRADOR ha de ser un booleà.'
         ];
-        $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
-        $tuples=Usuari::where('ID_USUARI', $id)->update($request->except(['_token']));
-        if ($validacio->fails()) {
-            return response()->json([
-                'error' => $validacio->errors()->all()
-            ]);
-         } else {
-            return response()->json([
-                'success' => 'Usuari modificat correctament'
-            ]);
-            }
+        $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        } else {
+            $usuaris = Usuari::findOrFail($id);
+            $usuaris->ID_USUARI=$request->input('ID_USUARI');
+            $usuaris->DNI=$request->input('DNI');
+            $usuaris->NOM_COMPLET=$request->input('NOM_COMPLET');
+            $usuaris->CORREU_ELECTRONIC=$request->input('CORREU_ELECTRONIC');
+            $usuaris->CONTRASENYA=Hash::make($request->input('CONTRASENYA'));
+            $usuaris->TELEFON=$request->input('TELEFON');
+            $usuaris->ADMINISTRADOR=$request->input('ADMINISTRADOR');
+            $usuaris->save();
+            return response()->json(['status' => 'Usuari actualitzat correctament'], 200);
+        }
     }
 
     /**
