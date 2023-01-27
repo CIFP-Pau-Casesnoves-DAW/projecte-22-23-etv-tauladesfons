@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Idioma;
-use http\Message;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -93,13 +92,14 @@ class IdiomaController extends Controller
     {
        $reglesvalidacio=[
            'ID_IDIOMA' => 'required|integer',
-              'NOM_IDIOMA' => 'required|string',
+              'NOM_IDIOMA' => 'required|string|max:50',
         ];
         $missatges=[
             'ID_IDIOMA.required' => 'El camp ID_IDIOMA és obligatori',
             'ID_IDIOMA.integer' => 'El camp ID_IDIOMA ha de ser un número enter',
             'NOM_IDIOMA.required' => 'El camp NOM_IDIOMA és obligatori',
             'NOM_IDIOMA.string' => 'El camp NOM_IDIOMA ha de ser una cadena de caràcters',
+            'NOM_IDIOMA.max' => 'El camp NOM_IDIOMA no pot tenir més de 50 caràcters.'
         ];
         $validador = Validator::make($request->all(), $reglesvalidacio, $missatges);
         if ($validador->fails()) {
@@ -110,7 +110,7 @@ class IdiomaController extends Controller
         }
         $tuple = new Idioma;
         $tuple->ID_IDIOMA = $request->input('ID_IDIOMA');
-        $tuple->NOM_IDIOMA = $request->input('NOM_IDIOMA');
+        $tuple->NOM_IDIOMA = strtoupper($request->input('NOM_IDIOMA'));
         $tuple->save();
         return response()->json([
             'status' => 'success',
@@ -156,17 +156,6 @@ class IdiomaController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(['status'=>'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'],404);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -217,13 +206,14 @@ class IdiomaController extends Controller
             $tuples = Idioma::findOrFail($id);
             $reglesValidacio = [
                 'ID_IDIOMA' => 'required|integer',
-                'NOM_IDIOMA' => 'required|string',
+                'NOM_IDIOMA' => 'required|string|max:50',
             ];
             $missatges = [
                 'ID_IDIOMA.required' => 'El camp ID_IDIOMA és obligatori',
                 'ID_IDIOMA.integer' => 'El camp ID_IDIOMA ha de ser un número enter',
                 'NOM_IDIOMA.required' => 'El camp NOM_IDIOMA és obligatori',
                 'NOM_IDIOMA.string' => 'El camp NOM_IDIOMA ha de ser una cadena de caràcters',
+                'NOM_IDIOMA.max' => 'El camp NOM_IDIOMA no pot tenir més de 50 caràcters.'
             ];
             $validador = Validator::make($request->all(), $reglesValidacio, $missatges);
             if ($validador->fails()) {
@@ -233,7 +223,7 @@ class IdiomaController extends Controller
                 ], 400);
             } else {
                 $tuples->ID_IDIOMA = $request->input('ID_IDIOMA');
-                $tuples->NOM_IDIOMA = $request->input('NOM_IDIOMA');
+                $tuples->NOM_IDIOMA = strtoupper($request->input('NOM_IDIOMA'));
                 $tuples->save();
                 return response()->json([
                     'status' => 'success',
