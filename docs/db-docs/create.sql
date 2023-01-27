@@ -74,7 +74,7 @@ create table `USUARIS`
     `DNI`               VARCHAR(9)  not null,
     `NOM_COMPLET`       VARCHAR(50) not null,
     `CORREU_ELECTRONIC` VARCHAR(50) not null,
-    `CONTRASENYA`       VARCHAR(50) not null,
+    `CONTRASENYA`       VARCHAR(64) not null,
     `TELEFON`           VARCHAR(9)  not null,
     `ADMINISTRADOR`     BOOLEAN     not null,
     primary key (`ID_USUARI`)
