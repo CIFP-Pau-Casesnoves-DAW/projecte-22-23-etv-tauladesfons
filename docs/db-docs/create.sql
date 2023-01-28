@@ -123,7 +123,8 @@ create table `RESERVA`
     `CONFIRMADA`        BOOLEAN not null,
     primary key (`ID_RESERVA`),
     foreign key (`FK_ID_USUARI`) references `USUARIS` (`ID_USUARI`) on update cascade,
-    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`) on update cascade
+    foreign key (`FK_ID_ALLOTJAMENT`) references `ALLOTJAMENTS` (`ID_ALLOTJAMENT`) on update cascade,
+    check ( `DATA_INICIAL` < `DATA_FINAL` )
 );
 
 create table `COMENTARIS`
