@@ -50,6 +50,8 @@ class Allotjament_serveiController extends Controller
      *   )
      * )
      */
+
+    // ! GET de tots
     public function index()
     {
         $tuples = Allotjament_servei::all();
@@ -82,6 +84,8 @@ class Allotjament_serveiController extends Controller
      *     )
      * )
      */
+
+    // ! INSERT
     public function store(Request $request)
     {
         $reglesvalidacio = Validator::make($request->all(), [
@@ -139,6 +143,7 @@ class Allotjament_serveiController extends Controller
      * )
      */
 
+    //! GET de un en concret
     public function show($id_allot, $id_servei)
     {
         try {
