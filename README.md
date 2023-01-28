@@ -9,8 +9,12 @@
 
 # Projecte etv-taula-des-fons
 
+## Pagina web de l'api:
+### http://www.etvtauladesfons.com/api/documentation
+
 ### *Participants*
 - Isaac Palou Gijon
 - Maria Margalida
 - Jaume Truyols
 - Joan Antoni
+

@@ -1,0 +1,4655 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API TauladesFons",
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/allotjaments": {
+            "get": {
+                "tags": [
+                    "Allotjaments"
+                ],
+                "summary": "Llista d'allotjaments",
+                "description": "Display a listing of the resource.",
+                "operationId": "7dacec90237d5af47d4de05a751d7aa1",
+                "responses": {
+                    "200": {
+                        "description": "Llista d'allotjaments",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Allotjament"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Allotjaments"
+                ],
+                "summary": "Crea un allotjament",
+                "operationId": "68815396b83c51ee3c6e5eb0327c6505",
+                "requestBody": {
+                    "description": "Dades de l'allotjament",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Allotjament"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Allotjament creat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Allotjament"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validació",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/allotjaments/{id}": {
+            "get": {
+                "tags": [
+                    "Allotjaments"
+                ],
+                "summary": "Mostra un allotjament",
+                "description": "Mostra un allotjament",
+                "operationId": "b6b3a01e2e207098db0e3e45b0d311b2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'allotjament",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mostra l'allotjament",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "ID_ALLOTJAMENT": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "NOM_COMERCIAL": {
+                                            "type": "string",
+                                            "example": "Hotel"
+                                        },
+                                        "NUM_REGISTRE": {
+                                            "type": "string",
+                                            "example": "123456789"
+                                        },
+                                        "DESCRIPCIO": {
+                                            "type": "string",
+                                            "example": "Hotel de 5 estrelles"
+                                        },
+                                        "LLITS": {
+                                            "type": "integer",
+                                            "example": "5"
+                                        },
+                                        "PERSONES": {
+                                            "type": "integer",
+                                            "example": "5"
+                                        },
+                                        "BANYS": {
+                                            "type": "integer",
+                                            "example": "5"
+                                        },
+                                        "ADREÇA": {
+                                            "type": "string",
+                                            "example": "Carrer de l'hotel, 1"
+                                        },
+                                        "DESTACAT": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "VALORACIO_GLOBAL": {
+                                            "type": "integer",
+                                            "example": "5"
+                                        },
+                                        "FK_ID_MUNICIPI": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "FK_ID_TIPUS": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "FK_ID_VACANCES": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "FK_ID_CATEGORIA": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "FK_ID_USUARI": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/allotjaments/put/{id}": {
+            "put": {
+                "tags": [
+                    "Allotjaments"
+                ],
+                "summary": "Actualitza un allotjament",
+                "description": "Actualitza un allotjament",
+                "operationId": "06b60dde1429defd95f52898fb69f681",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'allotjament",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dades allotjament",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_ALLOTJAMENT",
+                                    "NOM_COMERCIAL",
+                                    "NUM_REGISTRE",
+                                    "DESCRIPCIO",
+                                    "LLITS",
+                                    "PERSONES",
+                                    "BANYS",
+                                    "ADREÇA",
+                                    "DESTACAT",
+                                    "VALORACIO_GLOBAL",
+                                    "FK_ID_MUNICIPI",
+                                    "FK_ID_TIPUS",
+                                    "FK_ID_VACANCES",
+                                    "FK_ID_CATEGORIA",
+                                    "FK_ID_USUARI"
+                                ],
+                                "properties": {
+                                    "ID_ALLOTJAMENT": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "NOM_COMERCIAL": {
+                                        "type": "string",
+                                        "example": "Hotel"
+                                    },
+                                    "NUM_REGISTRE": {
+                                        "type": "string",
+                                        "example": "123456789"
+                                    },
+                                    "DESCRIPCIO": {
+                                        "type": "string",
+                                        "example": "Hotel de 5 estrelles"
+                                    },
+                                    "LLITS": {
+                                        "type": "integer",
+                                        "example": "5"
+                                    },
+                                    "PERSONES": {
+                                        "type": "integer",
+                                        "example": "5"
+                                    },
+                                    "BANYS": {
+                                        "type": "integer",
+                                        "example": "5"
+                                    },
+                                    "ADREÇA": {
+                                        "type": "string",
+                                        "example": "Carrer de l'hotel, 1"
+                                    },
+                                    "DESTACAT": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "VALORACIO_GLOBAL": {
+                                        "type": "integer",
+                                        "example": "5"
+                                    },
+                                    "FK_ID_MUNICIPI": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "FK_ID_TIPUS": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "FK_ID_VACANCES": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "FK_ID_CATEGORIA": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "FK_ID_USUARI": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "No s'ha trobat l'allotjament"
+                    }
+                }
+            }
+        },
+        "/allotjaments/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Allotjaments"
+                ],
+                "summary": "Elimina un allotjament",
+                "operationId": "325b4093d57fa8d57435ada705fb5a19",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de l'allotjament",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Allotjament eliminat correctament",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string",
+                                            "example": "Allotjament eliminat correctament"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No s'ha trobat l'allotjament",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "No s'ha trobat l'allotjament"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "No s'ha pogut eliminar l'allotjament",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "No s'ha pogut eliminar l'allotjament"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/allotjaments_serveis": {
+            "get": {
+                "tags": [
+                    "Allotjament_serveis"
+                ],
+                "summary": "Mostra els allotjament_serveis",
+                "operationId": "e9b6fc5719555f9a39758ee474cd398c",
+                "responses": {
+                    "200": {
+                        "description": "Retorna tots els allotjament_serveis"
+                    },
+                    "404": {
+                        "description": "No hi ha allotjament_serveis"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Allotjament_serveis"
+                ],
+                "summary": "Crea un allotjament_servei",
+                "operationId": "9940bc4fc7418e1c3078ddc24f75b193",
+                "requestBody": {
+                    "description": "Allotjament_servei a crear",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Allotjament_servei"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Allotjament_servei creat"
+                    },
+                    "400": {
+                        "description": "Error creant allotjament_servei"
+                    }
+                }
+            }
+        },
+        "/allotjaments_serveis/{id_allot}/{id_servei}": {
+            "get": {
+                "tags": [
+                    "Allotjament_serveis"
+                ],
+                "summary": "Mostra un allotjament_servei",
+                "operationId": "da86ebcaffa6c517cb9643403a222134",
+                "parameters": [
+                    {
+                        "name": "id_allot",
+                        "in": "path",
+                        "description": "ID allotjament",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_servei",
+                        "in": "path",
+                        "description": "ID servei",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna un allotjament_servei"
+                    },
+                    "404": {
+                        "description": "No existeix allotjament_servei"
+                    }
+                }
+            }
+        },
+        "/allotjaments_serveis/put/{id_allot}/{id_servei}": {
+            "put": {
+                "tags": [
+                    "Allotjament_serveis"
+                ],
+                "summary": "Actualitza un allotjament_servei",
+                "operationId": "e5751c8d50c9fde6892b699028754768",
+                "parameters": [
+                    {
+                        "name": "id_allot",
+                        "in": "path",
+                        "description": "ID allotjament",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_servei",
+                        "in": "path",
+                        "description": "ID servei",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Allotjament_servei a actualitzar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Allotjament_servei"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Allotjament_servei actualitzat"
+                    },
+                    "500": {
+                        "description": "Error actualitzant allotjament_servei"
+                    }
+                }
+            }
+        },
+        "/allotjaments_serveis/destroy/{id_allot}/{id_servei}": {
+            "delete": {
+                "tags": [
+                    "Allotjament_serveis"
+                ],
+                "summary": "Elimina un allotjament_servei",
+                "operationId": "0003cbf0fbefc410d69a02140df851da",
+                "parameters": [
+                    {
+                        "name": "id_allot",
+                        "in": "path",
+                        "description": "ID allotjament",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_servei",
+                        "in": "path",
+                        "description": "ID servei",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Allotjament_servei eliminat"
+                    },
+                    "404": {
+                        "description": "Error eliminant allotjament_servei"
+                    }
+                }
+            }
+        },
+        "/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Llista de categories",
+                "description": "Display a listing of the resource.",
+                "operationId": "e14ef422f94b0394478685818f324276",
+                "responses": {
+                    "200": {
+                        "description": "Llista de categories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Categoria"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Crea una categoria",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "129bd7008641f2b909015f592f93c073",
+                "requestBody": {
+                    "description": "Dades de la categoria",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Categoria"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Categoria creada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Categoria"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Mostra una categoria",
+                "description": "Display the specified resource.",
+                "operationId": "f3c5d24921b35cc1ff074080bab46d5a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoria",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Categoria"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Categoria no trobada"
+                    }
+                }
+            }
+        },
+        "/categories/put/{id}": {
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Actualitza una categoria",
+                "description": "Update the specified resource in storage.",
+                "operationId": "9f108fe70e9087421e3133795511ec0b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dades de la categoria",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Categoria"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Categoria actualitzada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Categoria"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Categoria no trobada"
+                    }
+                }
+            }
+        },
+        "/categories/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Elimina una categoria",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "524abb6634c890a320f4cec00afde115",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoria eliminada"
+                    },
+                    "404": {
+                        "description": "Categoria no trobada"
+                    }
+                }
+            }
+        },
+        "/comentaris": {
+            "get": {
+                "tags": [
+                    "Comentaris"
+                ],
+                "summary": "Mostra tots els comentaris",
+                "description": "Retorna tots els comentaris",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Retorna tots els comentaris",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comentari"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autoritzat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comentari"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Comentaris"
+                ],
+                "summary": "Afegeix un comentari",
+                "description": "Afegeix un comentari",
+                "operationId": "a7e81ddae4037e58f077f8693e5fe5b7",
+                "requestBody": {
+                    "description": "Dades del comentari",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_COMENTARI",
+                                    "DESCRIPCIO",
+                                    "HORA",
+                                    "DATA",
+                                    "FK_ID_USUARI",
+                                    "FK_ID_ALLOTJAMENT"
+                                ],
+                                "properties": {
+                                    "ID_COMENTARI": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": 1
+                                    },
+                                    "DESCRIPCIO": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Bon allotjament"
+                                    },
+                                    "HORA": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "12:00:00"
+                                    },
+                                    "DATA": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "2020-12-12"
+                                    },
+                                    "FK_ID_USUARI": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": 1
+                                    },
+                                    "FK_ID_ALLOTJAMENT": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna el comentari que s'ha afegit",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comentari"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autoritzat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comentari"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/comentaris/{id}": {
+            "get": {
+                "tags": [
+                    "Comentaris"
+                ],
+                "summary": "Mostra un comentari",
+                "description": "Retorna un comentari",
+                "operationId": "getComentariById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Comentari id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna el comentari",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comentari"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comentari no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comentari"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/comentaris/put/{id}": {
+            "put": {
+                "tags": [
+                    "Comentaris"
+                ],
+                "summary": "Actualitza un comentari",
+                "description": "Actualitza un comentari",
+                "operationId": "updateComentari",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Comentari id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dades del comentari",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_COMENTARI",
+                                    "DESCRIPCIO",
+                                    "HORA",
+                                    "DATA",
+                                    "FK_ID_USUARI",
+                                    "FK_ID_ALLOTJAMENT"
+                                ],
+                                "properties": {
+                                    "ID_COMENTARI": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": 1
+                                    },
+                                    "DESCRIPCIO": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Bon allotjament"
+                                    },
+                                    "HORA": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "12:00:00"
+                                    },
+                                    "DATA": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "2020-12-12"
+                                    },
+                                    "FK_ID_USUARI": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": 1
+                                    },
+                                    "FK_ID_ALLOTJAMENT": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna el comentari actualitzat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comentari"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comentari no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comentari"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/comentaris/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Comentaris"
+                ],
+                "summary": "Elimina un comentari",
+                "description": "Elimina un comentari",
+                "operationId": "deleteComentari",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Comentari id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comentari eliminat correctament",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comentari"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comentari no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comentari"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/fotografies": {
+            "get": {
+                "tags": [
+                    "Fotografies"
+                ],
+                "summary": "Mostra les fotografies",
+                "operationId": "87b7a4a1fcbec1a808d8cd7f42be1150",
+                "responses": {
+                    "200": {
+                        "description": "Retorna totes les fotografies"
+                    },
+                    "404": {
+                        "description": "No hi ha fotografies"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Fotografies"
+                ],
+                "summary": "Crea una fotografia",
+                "operationId": "Crea una fotografia",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Fotografia"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Fotografia creada"
+                    },
+                    "400": {
+                        "description": "Error de validació"
+                    }
+                }
+            }
+        },
+        "/fotografies/{id}": {
+            "get": {
+                "tags": [
+                    "Fotografies"
+                ],
+                "summary": "Mostra una fotografia",
+                "operationId": "d40350d02180b7800c7054977cde6af1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la fotografia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fotografia trobada"
+                    },
+                    "404": {
+                        "description": "No s'ha trobat la fotografia"
+                    }
+                }
+            }
+        },
+        "/fotografies/put/{id}": {
+            "put": {
+                "tags": [
+                    "Fotografies"
+                ],
+                "summary": "Actualitza una fotografia",
+                "operationId": "Actualitza una fotografia",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la fotografia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Fotografia"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Fotografia actualitzada"
+                    },
+                    "400": {
+                        "description": "Error de validació"
+                    },
+                    "404": {
+                        "description": "No s'ha trobat la fotografia"
+                    }
+                }
+            }
+        },
+        "/fotografies/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Fotografies"
+                ],
+                "summary": "Elimina una fotografia",
+                "operationId": "Elimina una fotografia",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la fotografia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fotografia eliminada"
+                    },
+                    "404": {
+                        "description": "No s'ha trobat la fotografia"
+                    }
+                }
+            }
+        },
+        "/idiomes": {
+            "get": {
+                "tags": [
+                    "Idiomes"
+                ],
+                "summary": "Llista de idiomes",
+                "description": "Display a listing of the resource.",
+                "operationId": "77d7ad67486d1f21bc4b5071b3f02334",
+                "responses": {
+                    "200": {
+                        "description": "Llista de idiomes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Idiomes"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Idiomes"
+                ],
+                "summary": "Crea un idioma",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "343af3aa825edc7b421413560ca69dcb",
+                "requestBody": {
+                    "description": "Dades del nou idioma",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Idiomes"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Idioma creat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Idiomes"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validació",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/idiomes/{id}": {
+            "get": {
+                "tags": [
+                    "Idiomes"
+                ],
+                "summary": "Mostra un idioma",
+                "description": "Display the specified resource.",
+                "operationId": "1d74ee1a706423c59848b428bb2e0caf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Idioma",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Idiomes"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No s'ha trobat cap idioma amb aquest ID",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/idiomes/put/{id}": {
+            "put": {
+                "tags": [
+                    "Idiomes"
+                ],
+                "summary": "Actualitza un idioma",
+                "description": "Update the specified resource in storage.",
+                "operationId": "41654f90d4429ef2d26f34231c100fb8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dades de l'idioma",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Idiomes"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Idioma actualitzat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Idiomes"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validació",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No s'ha trobat cap idioma amb aquest ID",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/idiomes/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Idiomes"
+                ],
+                "summary": "Elimina un idioma",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "46924a0ca09cde3c210b42b2c348afca",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Idioma eliminat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Idiomes"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No s'ha trobat cap idioma amb aquest ID",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/municipis": {
+            "get": {
+                "tags": [
+                    "Municipis"
+                ],
+                "summary": "Llista de municipis",
+                "description": "Display a listing of the resource.",
+                "operationId": "e34da0157b4d0ec67c1077bcb8706410",
+                "responses": {
+                    "200": {
+                        "description": "Llista de municipis",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Municipi"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Municipis"
+                ],
+                "summary": "Crea un municipi",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "5cc4901bda50ee8ba12ad40c2c4fe692",
+                "requestBody": {
+                    "description": "Dades del municipi",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_MUNICIPI",
+                                    "NOM_MUNICIPI"
+                                ],
+                                "properties": {
+                                    "ID_MUNICIPI": {
+                                        "type": "integer"
+                                    },
+                                    "NOM_MUNICIPI": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Municipi creat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Municipi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/municipis/{id}": {
+            "get": {
+                "tags": [
+                    "Municipis"
+                ],
+                "summary": "Mostra un municipi",
+                "description": "Display the specified resource.",
+                "operationId": "c7b8d447fcc775bf7b909588a6ecddd5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del municipi",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Municipi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Municipi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Municipi no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/municipis/put/{id}": {
+            "put": {
+                "tags": [
+                    "Municipis"
+                ],
+                "summary": "Actualitza un municipi",
+                "description": "Update the specified resource in storage.",
+                "operationId": "bef302064f2cf4453faf187374d8ab02",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del municipi",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_MUNICIPI",
+                                    "NOM_MUNICIPI"
+                                ],
+                                "properties": {
+                                    "ID_MUNICIPI": {
+                                        "type": "integer"
+                                    },
+                                    "NOM_MUNICIPI": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Municipi actualitzat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Municipi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validació",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "$ref": "#/components/schemas/Municipi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Municipi no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/municipis/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Municipis"
+                ],
+                "summary": "Elimina un municipi",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "e953969f50afd93a8f50e56ee2a5c2ce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del municipi",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Municipi eliminat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Municipi no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reserves": {
+            "get": {
+                "tags": [
+                    "Reserves"
+                ],
+                "summary": "Llista de reserves",
+                "description": "Display a listing of the resource.",
+                "operationId": "548fabdb7986db8987bd41d99aafa3c6",
+                "responses": {
+                    "200": {
+                        "description": "Llista de reserves",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Reserva"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reserves"
+                ],
+                "summary": "Añaade una nueva reserva",
+                "description": "Añade una nueva reserva",
+                "operationId": "store",
+                "requestBody": {
+                    "description": "Pass reserva data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_RESERVA",
+                                    "FK_ID_USUARI",
+                                    "FK_ID_ALLOTJAMENT",
+                                    "DATA_INICIAL",
+                                    "DATA_FINAL",
+                                    "CONFIRMADA"
+                                ],
+                                "properties": {
+                                    "ID_RESERVA": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": 1
+                                    },
+                                    "FK_ID_USUARI": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": 1
+                                    },
+                                    "FK_ID_ALLOTJAMENT": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": 1
+                                    },
+                                    "DATA_INICIAL": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2021-01-01"
+                                    },
+                                    "DATA_FINAL": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2021-01-01"
+                                    },
+                                    "CONFIRMADA": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "result": {
+                                            "properties": {
+                                                "ID_RESERVA": {
+                                                    "type": "integer",
+                                                    "format": "int64",
+                                                    "example": 1
+                                                },
+                                                "FK_ID_USUARI": {
+                                                    "type": "integer",
+                                                    "format": "int64",
+                                                    "example": 1
+                                                },
+                                                "FK_ID_ALLOTJAMENT": {
+                                                    "type": "integer",
+                                                    "format": "int64",
+                                                    "example": 1
+                                                },
+                                                "DATA_INICIAL": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-01"
+                                                },
+                                                "DATA_FINAL": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-01"
+                                                },
+                                                "CONFIRMADA": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "result": {
+                                            "properties": {
+                                                "ID_RESERVA": {
+                                                    "type": "string",
+                                                    "example": "El camp ID_RESERVA és obligatori"
+                                                },
+                                                "FK_ID_USUARI": {
+                                                    "type": "string",
+                                                    "example": "El camp FK_ID_USUARI és obligatori"
+                                                },
+                                                "FK_ID_ALLOTJAMENT": {
+                                                    "type": "string",
+                                                    "example": "El camp FK_ID_ALLOTJAMENT és obligatori"
+                                                },
+                                                "DATA_INICIAL": {
+                                                    "type": "string",
+                                                    "example": "El camp DATA_INICIAL és obligatori"
+                                                },
+                                                "DATA_FINAL": {
+                                                    "type": "string",
+                                                    "example": "El camp DATA_FINAL és obligatori"
+                                                },
+                                                "CONFIRMADA": {
+                                                    "type": "string",
+                                                    "example": "El camp CONFIRMADA és obligatori"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "result": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reserves/{id}": {
+            "get": {
+                "tags": [
+                    "Reserves"
+                ],
+                "summary": "Mostra una reserva",
+                "description": "Mostra una reserva",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "result": {
+                                            "properties": {
+                                                "ID_RESERVA": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "FK_ID_USUARI": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "FK_ID_ALLOTJAMENT": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "DATA_INICIAL": {
+                                                    "type": "string",
+                                                    "example": "2020-01-01"
+                                                },
+                                                "DATA_FINAL": {
+                                                    "type": "string",
+                                                    "example": "2020-01-01"
+                                                },
+                                                "CONFIRMADA": {
+                                                    "type": "boolean",
+                                                    "example": "true"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "result": {
+                                            "type": "string",
+                                            "example": "No existeix aquesta reserva"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reserves/put/{id}": {
+            "put": {
+                "tags": [
+                    "Reserves"
+                ],
+                "summary": "Actualitza una reserva",
+                "description": "Actualitza una reserva",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dades de la reserva",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_RESERVA",
+                                    "FK_ID_USUARI",
+                                    "FK_ID_ALLOTJAMENT",
+                                    "DATA_INICIAL",
+                                    "DATA_FINAL",
+                                    "CONFIRMADA"
+                                ],
+                                "properties": {
+                                    "ID_RESERVA": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "FK_ID_USUARI": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "FK_ID_ALLOTJAMENT": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "DATA_INICIAL": {
+                                        "type": "string",
+                                        "example": "2020-01-01"
+                                    },
+                                    "DATA_FINAL": {
+                                        "type": "string",
+                                        "example": "2020-01-01"
+                                    },
+                                    "CONFIRMADA": {
+                                        "type": "boolean",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "result": {
+                                            "properties": {
+                                                "ID_RESERVA": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "FK_ID_USUARI": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "FK_ID_ALLOTJAMENT": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "DATA_INICIAL": {
+                                                    "type": "string",
+                                                    "example": "2020-01-01"
+                                                },
+                                                "DATA_FINAL": {
+                                                    "type": "string",
+                                                    "example": "2020-01-01"
+                                                },
+                                                "CONFIRMADA": {
+                                                    "type": "boolean",
+                                                    "example": "true"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "result": {
+                                            "type": "string",
+                                            "example": "No existeix aquesta reserva"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reserves/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Reserves"
+                ],
+                "summary": "Elimina una reserva",
+                "description": "Elimina una reserva",
+                "operationId": "destroy",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "result": {
+                                            "type": "string",
+                                            "example": "Reserva eliminada correctament"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "result": {
+                                            "type": "string",
+                                            "example": "No existeix aquesta reserva"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serveis": {
+            "get": {
+                "tags": [
+                    "Serveis"
+                ],
+                "summary": "Mostra tots els serveis",
+                "description": "Display a listing of the resource.",
+                "operationId": "6c14014aad214931f065cdffb1b45832",
+                "responses": {
+                    "200": {
+                        "description": "Retorna tots els serveis",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Servei"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Serveis"
+                ],
+                "summary": "Crea un nou servei",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "5e066c3f3cbdc54bfa6a6ea9f7057f81",
+                "requestBody": {
+                    "description": "Dades del servei",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_SERVEI",
+                                    "NOM_SERVEI"
+                                ],
+                                "properties": {
+                                    "ID_SERVEI": {
+                                        "type": "integer"
+                                    },
+                                    "NOM_SERVEI": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Servei creat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Servei"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de creació",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Error"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serveis/{id}": {
+            "get": {
+                "tags": [
+                    "Serveis"
+                ],
+                "summary": "Mostra un servei",
+                "operationId": "d11076f6924a1983dab14d64d5753512",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del servei",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna el servei",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Servei"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Servei no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Error"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serveis/put/{id}": {
+            "put": {
+                "tags": [
+                    "Serveis"
+                ],
+                "summary": "Actualitza un servei",
+                "operationId": "7de7ce82116e5ec5f2a33c628ada9753",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del servei",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dades del servei",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_SERVEI",
+                                    "NOM_SERVEI"
+                                ],
+                                "properties": {
+                                    "ID_SERVEI": {
+                                        "type": "integer"
+                                    },
+                                    "NOM_SERVEI": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Servei actualitzat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Servei"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error d'actualització",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Error"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serveis/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Serveis"
+                ],
+                "summary": "Elimina un servei",
+                "operationId": "5e9598b3fba9da254c2a870022c69ac2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del servei",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Servei eliminat correctament",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Servei"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error d'eliminació",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Error"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tipus": {
+            "get": {
+                "tags": [
+                    "Tipus"
+                ],
+                "summary": "Llista de tipus",
+                "description": "Display a listing of the resource.",
+                "operationId": "736bbb75c89234aba32d99dc96fd628c",
+                "responses": {
+                    "200": {
+                        "description": "Llista de tipus",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Tipus"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tipus"
+                ],
+                "summary": "Crea un nou tipus",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "bba708e3aea9f18057074eb81fb37b43",
+                "requestBody": {
+                    "description": "Dades del nou tipus",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_TIPUS",
+                                    "NOM_TIPUS"
+                                ],
+                                "properties": {
+                                    "ID_TIPUS": {
+                                        "type": "integer"
+                                    },
+                                    "NOM_TIPUS": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tipus creat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Tipus"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validació",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tipus/{id}": {
+            "get": {
+                "tags": [
+                    "Tipus"
+                ],
+                "summary": "Mostra un tipus",
+                "description": "Display the specified resource.",
+                "operationId": "25b60d102ffbf788577de1443354bdee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del tipus",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipus",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Tipus"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tipus no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tipus/put/{id}": {
+            "put": {
+                "tags": [
+                    "Tipus"
+                ],
+                "summary": "Actualitza un tipus",
+                "description": "Update the specified resource in storage.",
+                "operationId": "a581c9120550850fe524cf830af6b72c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del tipus",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dades del tipus",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_TIPUS",
+                                    "NOM_TIPUS"
+                                ],
+                                "properties": {
+                                    "ID_TIPUS": {
+                                        "type": "integer"
+                                    },
+                                    "NOM_TIPUS": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tipus actualitzat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Tipus"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de validació",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Error"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tipus/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Tipus"
+                ],
+                "summary": "Elimina un tipus",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "1f05e5305ef2dc921860f43385d937d0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del tipus",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipus eliminat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Tipus"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tipus no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/traduccio_serveis": {
+            "get": {
+                "tags": [
+                    "Traduccio_serveis"
+                ],
+                "summary": "Obtenir totes les traduccions de serveis",
+                "description": "Obtenir totes les traduccions de serveis",
+                "operationId": "getTraduccionsServei",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traduccio_servei"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Traduccio_serveis"
+                ],
+                "summary": "Crear una traduccio de servei",
+                "description": "Crear una traduccio de servei",
+                "operationId": "insertTraduccioServei",
+                "requestBody": {
+                    "description": "Traduccio_servei a crear",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Traduccio_servei"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Traduccio_servei"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validacio",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traduccio_servei"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/traduccio_serveis/{id_servei}/{id_idioma}": {
+            "get": {
+                "tags": [
+                    "Traduccio_serveis"
+                ],
+                "summary": "Obtenir una traduccio de servei",
+                "description": "Obtenir una traduccio de servei",
+                "operationId": "getTraduccioServei",
+                "parameters": [
+                    {
+                        "name": "id_servei",
+                        "in": "path",
+                        "description": "ID del servei",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_idioma",
+                        "in": "path",
+                        "description": "ID de l'idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traduccio_servei"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Traduccio_servei no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traduccio_servei"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/traduccio_serveis/put/{id_servei}/{id_idioma}": {
+            "put": {
+                "tags": [
+                    "Traduccio_serveis"
+                ],
+                "summary": "Actualitzar una traduccio de servei",
+                "description": "Actualitzar una traduccio de servei",
+                "operationId": "updateTraduccioServei",
+                "parameters": [
+                    {
+                        "name": "id_servei",
+                        "in": "path",
+                        "description": "ID del servei",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_idioma",
+                        "in": "path",
+                        "description": "ID de l'idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Traduccio_servei a actualitzar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Traduccio_servei"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Traduccio_servei"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validacio",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traduccio_servei"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/traduccio_serveis/destroy/{id_servei}/{id_idioma}": {
+            "delete": {
+                "tags": [
+                    "Traduccio_serveis"
+                ],
+                "summary": "Esborrar una traduccio de servei",
+                "description": "Esborrar una traduccio de servei",
+                "operationId": "deleteTraduccioServei",
+                "parameters": [
+                    {
+                        "name": "id_servei",
+                        "in": "path",
+                        "description": "ID del servei",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_idioma",
+                        "in": "path",
+                        "description": "ID de l'idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Traduccio_servei"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Traduccio_servei"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/traduccio_tipus": {
+            "get": {
+                "tags": [
+                    "Traducció_tipus"
+                ],
+                "summary": "Llista de traduccions de tipus",
+                "description": "Retorna totes les traduccions de tipus",
+                "operationId": "5d5994aaf0192a5bed6db673df2a67d9",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traducció_tipus"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Traducció_tipus"
+                ],
+                "summary": "Crear traducció tipus",
+                "description": "Crear traducció tipus",
+                "operationId": "f75fc358f942a65a917434d5abc911b7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Traducció_tipus"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Creat"
+                                        },
+                                        "result": {
+                                            "$ref": "#/components/schemas/Traducció_tipus"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: tipus o idioma inexistent",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Error: tipus o idioma inexistent"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/traduccio_tipus/{id_tipus}/{id_idioma}": {
+            "get": {
+                "tags": [
+                    "Traducció_tipus"
+                ],
+                "summary": "Mostra una traducció de tipus",
+                "description": "Mostra una traducció de tipus",
+                "operationId": "76e0ed371f6e6832bfca9422f6e34e9f",
+                "parameters": [
+                    {
+                        "name": "id_tipus",
+                        "in": "path",
+                        "description": "Identificador del tipus",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_idioma",
+                        "in": "path",
+                        "description": "Identificador de l'idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Traducció_tipus"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/traduccio_tipus/put/{id_tipus}/{id_idioma}": {
+            "put": {
+                "tags": [
+                    "Traducció_tipus"
+                ],
+                "summary": "Actualitza una traducció de tipus",
+                "description": "Actualitza una traducció de tipus",
+                "operationId": "7e6bfccc0ec62643707a62f73d3bab4c",
+                "parameters": [
+                    {
+                        "name": "id_tipus",
+                        "in": "path",
+                        "description": "Identificador del tipus",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_idioma",
+                        "in": "path",
+                        "description": "Identificador de l'idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dades de la traducció de tipus",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "FK_ID_TIPUS": {
+                                        "description": "Identificador del tipus",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "FK_ID_IDIOMA": {
+                                        "description": "Identificador de l'idioma",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "TRADUCCIO_TIPUS": {
+                                        "description": "Traducció del tipus",
+                                        "type": "string",
+                                        "example": "Spa"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Actualitzat"
+                                        },
+                                        "result": {
+                                            "$ref": "#/components/schemas/Traducció_tipus"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/traduccio_tipus/destroy/{id_tipus}/{id_idioma}": {
+            "delete": {
+                "tags": [
+                    "Traducció_tipus"
+                ],
+                "summary": "Esborra una traducció de tipus",
+                "description": "Esborra una traducció de tipus",
+                "operationId": "6f28c7bca6481c141d5b3eb5e661a43a",
+                "parameters": [
+                    {
+                        "name": "id_tipus",
+                        "in": "path",
+                        "description": "Identificador del tipus",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_idioma",
+                        "in": "path",
+                        "description": "Identificador de l'idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Esborrat correctament"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/traduccio_vacances": {
+            "get": {
+                "tags": [
+                    "Traduccio_vacances"
+                ],
+                "summary": "Obtenir totes les traduccions de vacances",
+                "description": "Obtenir totes les traduccions de vacances",
+                "operationId": "getTraduccionsVacances",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traduccio_vacances"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Traduccio_vacances"
+                ],
+                "summary": "Crear una traduccio de vacances",
+                "description": "Crear una traduccio de vacances",
+                "operationId": "insertTraduccioVacances",
+                "requestBody": {
+                    "description": "Traduccio_vacances a crear",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Traduccio_vacances"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Traduccio_vacances"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validacio",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traduccio_vacances"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/traduccio_vacances/{id_vacances}/{id_idioma}": {
+            "get": {
+                "tags": [
+                    "Traduccio_vacances"
+                ],
+                "summary": "Obtenir una traduccio de vacances",
+                "description": "Obtenir una traduccio de vacances",
+                "operationId": "getTraduccioVacances",
+                "parameters": [
+                    {
+                        "name": "id_vacances",
+                        "in": "path",
+                        "description": "ID de les vacances",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_idioma",
+                        "in": "path",
+                        "description": "ID de l'idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traduccio_vacances"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Traduccio_vacances no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traduccio_vacances"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/traduccio_vacances/put/{id_vacances}/{id_idioma}": {
+            "put": {
+                "tags": [
+                    "Traduccio_vacances"
+                ],
+                "summary": "Actualitzar una traduccio de vacances",
+                "description": "Actualitzar una traduccio de vacances",
+                "operationId": "updateTraduccioVacances",
+                "parameters": [
+                    {
+                        "name": "id_vacances",
+                        "in": "path",
+                        "description": "ID de les vacances",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_idioma",
+                        "in": "path",
+                        "description": "ID de l'idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Traduccio_vacances a actualitzar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Traduccio_vacances"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Traduccio_vacances"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validacio",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Traduccio_vacances"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/traduccio_vacances/destroy/{id_vacances}/{id_idioma}": {
+            "delete": {
+                "tags": [
+                    "Traduccio_vacances"
+                ],
+                "summary": "Esborrar una traduccio de vacances",
+                "description": "Esborrar una traduccio de vacances",
+                "operationId": "deleteTraduccioVacances",
+                "parameters": [
+                    {
+                        "name": "id_vacances",
+                        "in": "path",
+                        "description": "ID de les vacances",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id_idioma",
+                        "in": "path",
+                        "description": "ID de l'idioma",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Traduccio_vacances"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Traduccio_vacances"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/usuaris": {
+            "get": {
+                "tags": [
+                    "Usuaris"
+                ],
+                "summary": "Llista tots els usuaris",
+                "operationId": "507a5d4f7f7dd00369273af78737b5dc",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "result": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "ID_USUARI": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "DNI": {
+                                                        "type": "string",
+                                                        "example": "12345678Z"
+                                                    },
+                                                    "NOM_COMPLET": {
+                                                        "type": "string",
+                                                        "example": "Pere Pujol"
+                                                    },
+                                                    "CORREU_ELECTRONIC": {
+                                                        "type": "string",
+                                                        "example": " patata@gmail.com"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Usuaris"
+                ],
+                "summary": "Crear un usuari",
+                "operationId": "d2c3a53e08b4963ca026d128217ce859",
+                "requestBody": {
+                    "description": "Usuari a crear",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "ID_USUARI": {
+                                        "type": "integer",
+                                        "example": "123"
+                                    },
+                                    "DNI": {
+                                        "type": "string",
+                                        "example": "12345678Z"
+                                    },
+                                    "NOM_COMPLET": {
+                                        "type": "string",
+                                        "example": "Pere Pujol"
+                                    },
+                                    "CORREU_ELECTRONIC": {
+                                        "type": "string",
+                                        "example": "perepujol@gmail.com"
+                                    },
+                                    "CONTRASENYA": {
+                                        "type": "string",
+                                        "example": "patata"
+                                    },
+                                    "TELEFON": {
+                                        "type": "string",
+                                        "example": "123456789"
+                                    },
+                                    "ADMINISTRADOR": {
+                                        "type": "boolean",
+                                        "example": "false"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Creat correctament",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "result": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "ID_USUARI": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "DNI": {
+                                                        "type": "string",
+                                                        "example": "12345678Z"
+                                                    },
+                                                    "NOM_COMPLET": {
+                                                        "type": "string",
+                                                        "example": "Pere Pujol"
+                                                    },
+                                                    "CORREU_ELECTRONIC": {
+                                                        "type": "string",
+                                                        "example": "patata@gmail.com"
+                                                    },
+                                                    "CONTRASENYA": {
+                                                        "type": "string",
+                                                        "example": "patata"
+                                                    },
+                                                    "TELEFON": {
+                                                        "type": "string",
+                                                        "example": "123456789"
+                                                    },
+                                                    "ADMINISTRADOR": {
+                                                        "type": "boolean",
+                                                        "example": "false"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autoritzat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/usuaris/{id}": {
+            "get": {
+                "tags": [
+                    "Usuaris"
+                ],
+                "summary": "Mostra un usuari",
+                "description": "Retorna un usuari",
+                "operationId": "Obtenir usuari",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Usuari ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuari trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Usuari"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comentari no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Usuari"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/usuaris/put/{id}": {
+            "put": {
+                "tags": [
+                    "Usuaris"
+                ],
+                "summary": "Actualitza un usuari",
+                "description": "Actualitza un usuari",
+                "operationId": "Actualitzar usuari",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Usuari ID",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "description": "Usuari a modificar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ID_USUARI",
+                                    "DNI",
+                                    "NOM_COMPLET",
+                                    "CORREU_ELECTRONIC",
+                                    "CONTRASENYA",
+                                    "TELEFON",
+                                    "ADMINISTRADOR"
+                                ],
+                                "properties": {
+                                    "ID_USUARI": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": 1
+                                    },
+                                    "DNI": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "12345678Z"
+                                    },
+                                    "NOM_COMPLET": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Nom Cognom"
+                                    },
+                                    "CORREU_ELECTRONIC": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "patata@gmail.com"
+                                    },
+                                    "CONTRASENYA": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "12345678"
+                                    },
+                                    "TELEFON": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "123456789"
+                                    },
+                                    "ADMINISTRADOR": {
+                                        "type": "boolean",
+                                        "format": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuari actualitzat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Usuari"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuari no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Usuari"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de usuari",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Usuari"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/usuaris/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Usuaris"
+                ],
+                "summary": "Elimina un usuari",
+                "description": "Elimina un usuari",
+                "operationId": "f5e0e90c10a1812914deffc79efa2d4e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'usuari",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuari eliminat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Usuari"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuari no trobat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Usuari"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error de usuari",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Usuari"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/vacances": {
+            "get": {
+                "tags": [
+                    "Vacances"
+                ],
+                "summary": "Llista de vacances",
+                "description": "Retorna una llista de vacances",
+                "operationId": "indexes",
+                "responses": {
+                    "200": {
+                        "description": "Llista de vacances",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Vacances"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Vacances"
+                ],
+                "summary": "Afegeix una vacances",
+                "description": "Afegeix una vacances a la base de dades",
+                "operationId": "afegirVacances",
+                "requestBody": {
+                    "description": "Vacances a afegir",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Vacances"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Vacances afegida"
+                    },
+                    "400": {
+                        "description": "Vacances no afegida"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/vacances/{id}": {
+            "get": {
+                "tags": [
+                    "Vacances"
+                ],
+                "summary": "Mostra una vacances",
+                "description": "Retorna una vacances",
+                "operationId": "mostraVacances",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la vacances",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vacances",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Vacances"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Vacances no trobada"
+                    }
+                }
+            }
+        },
+        "/vacances/put/{id}": {
+            "put": {
+                "tags": [
+                    "Vacances"
+                ],
+                "summary": "Modifica una vacances",
+                "description": "Modifica una vacances",
+                "operationId": "modificarVacances",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la vacances",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Vacances a modificar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Vacances"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Vacances modificada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Vacances"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Vacances no modificada"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Vacances no trobada"
+                    }
+                }
+            }
+        },
+        "/vacances/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Vacances"
+                ],
+                "summary": "Elimina una vacances",
+                "description": "Elimina una vacances",
+                "operationId": "eliminarVacances",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la vacances",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vacances eliminada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Vacances"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Vacances no eliminada"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Vacances no trobada"
+                    }
+                }
+            }
+        },
+        "/valoracions": {
+            "get": {
+                "tags": [
+                    "Valoracions"
+                ],
+                "summary": "Obtenir totes les valoracions",
+                "description": "Retorna totes les valoracions",
+                "operationId": "indexValoracions",
+                "responses": {
+                    "200": {
+                        "description": "Valoracions response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Valoracio"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Valoracions"
+                ],
+                "summary": "Inserir una nova valoracio",
+                "description": "Inserir una nova valoracio",
+                "operationId": "storeValoracio",
+                "requestBody": {
+                    "description": "Objecte valoracio",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Valoracio"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Valoracio response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Valoracio"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/valoracions/{id}": {
+            "get": {
+                "tags": [
+                    "Valoracions"
+                ],
+                "summary": "Mostrar una valoracio",
+                "description": "Mostrar una valoracio",
+                "operationId": "showValoracio",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la valoracio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Valoracio obtinguda",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Valoracio"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/valoracions/put/{id}": {
+            "put": {
+                "tags": [
+                    "Valoracions"
+                ],
+                "summary": "Actualitzar una valoracio",
+                "description": "Actualitzar una valoracio",
+                "operationId": "updateValoracio",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la valoracio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Valoracio"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Valoracio actualitzada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Valoracio"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/valoracions/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Valoracions"
+                ],
+                "summary": "Eliminar una valoracio",
+                "description": "Eliminar una valoracio",
+                "operationId": "deleteValoracio",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la valoracio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Valoracio eliminada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Valoracio"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Allotjament": {
+                "properties": {
+                    "ID_ALLOTJAMENT": {
+                        "type": "integer"
+                    },
+                    "NOM_COMERCIAL": {
+                        "type": "string"
+                    },
+                    "NUM_REGISTRE": {
+                        "type": "string"
+                    },
+                    "DESCRIPCIO": {
+                        "type": "string"
+                    },
+                    "LLITS": {
+                        "type": "integer"
+                    },
+                    "PERSONES": {
+                        "type": "integer"
+                    },
+                    "BANYS": {
+                        "type": "integer"
+                    },
+                    "ADREÇA": {
+                        "type": "string"
+                    },
+                    "DESTACAT": {
+                        "type": "boolean"
+                    },
+                    "VALORACIO_GLOBAL": {
+                        "type": "number"
+                    },
+                    "FK_ID_MUNICIPI": {
+                        "type": "integer"
+                    },
+                    "FK_ID_TIPUS": {
+                        "type": "integer"
+                    },
+                    "FK_ID_VACANCES": {
+                        "type": "integer"
+                    },
+                    "FK_ID_CATEGORIA": {
+                        "type": "integer"
+                    },
+                    "FK_ID_USUARI": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Allotjament_servei": {
+                "properties": {
+                    "FK_ID_ALLOT": {
+                        "description": "ID de l'allotjament",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "FK_ID_SERVEI": {
+                        "description": "ID del servei",
+                        "type": "integer",
+                        "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "Categoria": {
+                "properties": {
+                    "ID_CATEGORIA": {
+                        "type": "integer"
+                    },
+                    "NOM_CATEGORIA": {
+                        "type": "string"
+                    },
+                    "TARIFA": {
+                        "type": "number"
+                    }
+                },
+                "type": "object"
+            },
+            "Comentari": {
+                "properties": {
+                    "ID_COMENTARI": {
+                        "type": "integer"
+                    },
+                    "DESCRIPCIO": {
+                        "type": "string"
+                    },
+                    "HORA": {
+                        "type": "time"
+                    },
+                    "DATA": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "FK_ID_USUARI": {
+                        "type": "integer"
+                    },
+                    "FK_ID_ALLOTJAMENT": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Fotografia": {
+                "properties": {
+                    "ID_FOTO": {
+                        "description": "ID de la fotografia",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "FOTO": {
+                        "description": "URL de la fotografia",
+                        "type": "string",
+                        "example": "https://www.google.com"
+                    },
+                    "FK_ID_ALLOTJAMENT": {
+                        "description": "ID de l'allotjament",
+                        "type": "integer",
+                        "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "Idiomes": {
+                "properties": {
+                    "ID_IDIOMA": {
+                        "type": "integer"
+                    },
+                    "NOM_IDIOMA": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Error": {
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "Municipi": {
+                "properties": {
+                    "ID_MUNICIPI": {
+                        "type": "integer"
+                    },
+                    "NOM_MUNICIPI": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Reserva": {
+                "properties": {
+                    "ID_RESERVA": {
+                        "type": "integer"
+                    },
+                    "FK_ID_USUARI": {
+                        "type": "integer"
+                    },
+                    "FK_ID_ALLOTJAMENT": {
+                        "type": "integer"
+                    },
+                    "DATA_INICIAL": {
+                        "type": "string"
+                    },
+                    "DATA_FINAL": {
+                        "type": "string"
+                    },
+                    "CONFIRMADA": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "Servei": {
+                "properties": {
+                    "ID_SERVEI": {
+                        "type": "integer"
+                    },
+                    "NOM_SERVEI": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Tipus": {
+                "properties": {
+                    "ID_TIPUS": {
+                        "type": "integer"
+                    },
+                    "NOM_TIPUS": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Traduccio_servei": {
+                "properties": {
+                    "FK_ID_SERVEI": {
+                        "type": "integer"
+                    },
+                    "FK_ID_IDIOMA": {
+                        "type": "integer"
+                    },
+                    "TRADUCCIO_SERVEI": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Traducció_tipus": {
+                "properties": {
+                    "FK_ID_TIPUS": {
+                        "description": "Identificador del tipus",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "FK_ID_IDIOMA": {
+                        "description": "Identificador de l'idioma",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "TRADUCCIO_TIPUS": {
+                        "description": "Traducció del tipus",
+                        "type": "string",
+                        "example": "Tipus"
+                    }
+                },
+                "type": "object"
+            },
+            "Traduccio_vacances": {
+                "properties": {
+                    "FK_ID_VACANCES": {
+                        "type": "integer"
+                    },
+                    "FK_ID_IDIOMA": {
+                        "type": "integer"
+                    },
+                    "TRADUCCIO_VAC": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Usuari": {
+                "properties": {
+                    "ID_USUARI": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "DNI": {
+                        "type": "string",
+                        "example": "12345678Z"
+                    },
+                    "NOM_COMPLET": {
+                        "type": "string",
+                        "example": "Pere Pujol"
+                    },
+                    "CORREU_ELECTRONIC": {
+                        "type": "string",
+                        "example": "patata@gmail.com"
+                    },
+                    "CONTRASENYA": {
+                        "type": "string",
+                        "example": "12345678Z"
+                    },
+                    "TELEFON": {
+                        "type": "string",
+                        "example": "12345678Z"
+                    },
+                    "ADMINISTRADOR": {
+                        "type": "boolean",
+                        "example": "true"
+                    }
+                },
+                "type": "object"
+            },
+            "Vacances": {
+                "properties": {
+                    "ID_VACANCES": {
+                        "type": "integer"
+                    },
+                    "NOM_VACANCES": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Valoracio": {
+                "title": "Valoracio model",
+                "properties": {
+                    "ID_VALORACIO": {
+                        "description": "ID de la valoracio",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "PUNTUACIO": {
+                        "description": "Puntuacio de la valoracio",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "FK_ID_USUARI": {
+                        "description": "ID de l'usuari que ha valorat",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "FK_ID_ALLOTJAMENT": {
+                        "description": "ID de l'allotjament que ha estat valorat",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Allotjaments"
+        },
+        {
+            "name": "Allotjament_serveis"
+        },
+        {
+            "name": "Categories"
+        },
+        {
+            "name": "Fotografies"
+        },
+        {
+            "name": "Idiomes"
+        },
+        {
+            "name": "Municipis"
+        },
+        {
+            "name": "Reserves"
+        },
+        {
+            "name": "Serveis"
+        },
+        {
+            "name": "Tipus"
+        },
+        {
+            "name": "Traduccio_serveis"
+        },
+        {
+            "name": "Traducció_tipus"
+        },
+        {
+            "name": "Traduccio_vacances"
+        },
+        {
+            "name": "Usuaris"
+        },
+        {
+            "name": "Vacances"
+        },
+        {
+            "name": "Valoracions"
+        }
+    ]
+}
