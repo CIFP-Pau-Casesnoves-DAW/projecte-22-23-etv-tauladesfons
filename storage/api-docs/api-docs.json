@@ -1,12 +1,17 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API TauladesFons",
-        "version": "0.1"
+        "title": "Projecte ETV",
+        "description": "REST API. Projecte ETV. DAW Client i servidor.",
+        "contact": {
+            "name": "Isaac Palou.",
+            "email": "isaacpalou@paucasesnovescifp.cat"
+        },
+        "version": "1.0"
     },
     "servers": [
         {
-            "url": "http://localhost:8000/api"
+            "url": "http://www.etvtauladesfons.com/api"
         }
     ],
     "paths": {
