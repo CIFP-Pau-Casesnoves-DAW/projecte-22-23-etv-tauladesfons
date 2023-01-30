@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\IdiomaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,14 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/idiomes', function () {
-    $idiomes = DB::table('IDIOMES')->get();
-    return view('idiomes', compact('idiomes'));
-
-});
-Route::get('/idiomes/{id}', function ($id) {
-$idiomes = DB::table('IDIOMES')->where('ID_IDIOMA', $id)->get();
-return view('idiomes', compact('idiomes'));
+    return redirect('/api/documentation');
 });
