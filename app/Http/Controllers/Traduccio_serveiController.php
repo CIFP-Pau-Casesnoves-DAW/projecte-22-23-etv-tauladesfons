@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
- *@OA\Tag(name="Traduccio_serveis")
+ *@OA\Tag(name="Traduccions")
  */
 
 class Traduccio_serveiController extends Controller
@@ -17,7 +17,7 @@ class Traduccio_serveiController extends Controller
     /**
      * @OA\Get(
      *     path="/traduccio_serveis",
-     *     tags={"Traduccio_serveis"},
+     *     tags={"Traduccions"},
      *     summary="Obtenir totes les traduccions de serveis",
      *     description="Obtenir totes les traduccions de serveis",
      *     operationId="getTraduccionsServei",
@@ -47,7 +47,7 @@ class Traduccio_serveiController extends Controller
     /**
      * @OA\Get(
      *     path="/traduccio_serveis/{id_servei}/{id_idioma}",
-     *     tags={"Traduccio_serveis"},
+     *     tags={"Traduccions"},
      *     summary="Obtenir una traduccio de servei",
      *     description="Obtenir una traduccio de servei",
      *     operationId="getTraduccioServei",
@@ -100,7 +100,7 @@ class Traduccio_serveiController extends Controller
     /**
      * @OA\Post(
      *     path="/traduccio_serveis",
-     *     tags={"Traduccio_serveis"},
+     *     tags={"Traduccions"},
      *     summary="Crear una traduccio de servei",
      *     description="Crear una traduccio de servei",
      *     operationId="insertTraduccioServei",
@@ -143,7 +143,7 @@ class Traduccio_serveiController extends Controller
     /**
      * @OA\Put(
      *     path="/traduccio_serveis/put/{id_servei}/{id_idioma}",
-     *     tags={"Traduccio_serveis"},
+     *     tags={"Traduccions"},
      *     summary="Actualitzar una traduccio de servei",
      *     description="Actualitzar una traduccio de servei",
      *     operationId="updateTraduccioServei",
@@ -225,7 +225,7 @@ class Traduccio_serveiController extends Controller
     /**
      * @OA\Delete(
      *     path="/traduccio_serveis/destroy/{id_servei}/{id_idioma}",
-     *     tags={"Traduccio_serveis"},
+     *     tags={"Traduccions"},
      *     summary="Esborrar una traduccio de servei",
      *     description="Esborrar una traduccio de servei",
      *     operationId="deleteTraduccioServei",

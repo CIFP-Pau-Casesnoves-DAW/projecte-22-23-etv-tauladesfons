@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
- *@OA\Tag(name="Traduccio_vacances")
+ *@OA\Tag(name="Traduccions")
  */
 
 class Traduccio_vacancesController extends Controller
@@ -16,7 +16,7 @@ class Traduccio_vacancesController extends Controller
     /**
      * @OA\Get(
      *     path="/traduccio_vacances",
-     *     tags={"Traduccio_vacances"},
+     *     tags={"Traduccions"},
      *     summary="Obtenir totes les traduccions de vacances",
      *     description="Obtenir totes les traduccions de vacances",
      *     operationId="getTraduccionsVacances",
@@ -47,7 +47,7 @@ class Traduccio_vacancesController extends Controller
     /**
      * @OA\Get(
      *     path="/traduccio_vacances/{id_vacances}/{id_idioma}",
-     *     tags={"Traduccio_vacances"},
+     *     tags={"Traduccions"},
      *     summary="Obtenir una traduccio de vacances",
      *     description="Obtenir una traduccio de vacances",
      *     operationId="getTraduccioVacances",
@@ -101,7 +101,7 @@ class Traduccio_vacancesController extends Controller
     /**
      * @OA\Post(
      *     path="/traduccio_vacances",
-     *     tags={"Traduccio_vacances"},
+     *     tags={"Traduccions"},
      *     summary="Crear una traduccio de vacances",
      *     description="Crear una traduccio de vacances",
      *     operationId="insertTraduccioVacances",
@@ -150,7 +150,7 @@ class Traduccio_vacancesController extends Controller
     /**
      * @OA\Put(
      *     path="/traduccio_vacances/put/{id_vacances}/{id_idioma}",
-     *     tags={"Traduccio_vacances"},
+     *     tags={"Traduccions"},
      *     summary="Actualitzar una traduccio de vacances",
      *     description="Actualitzar una traduccio de vacances",
      *     operationId="updateTraduccioVacances",
@@ -235,7 +235,7 @@ class Traduccio_vacancesController extends Controller
     /**
      * @OA\Delete(
      *     path="/traduccio_vacances/destroy/{id_vacances}/{id_idioma}",
-     *     tags={"Traduccio_vacances"},
+     *     tags={"Traduccions"},
      *     summary="Esborrar una traduccio de vacances",
      *     description="Esborrar una traduccio de vacances",
      *     operationId="deleteTraduccioVacances",

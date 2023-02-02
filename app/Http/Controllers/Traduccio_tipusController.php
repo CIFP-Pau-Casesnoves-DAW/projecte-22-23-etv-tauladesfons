@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
- *@OA\Tag(name="Traducció_tipus")
+ *@OA\Tag(name="Traduccions")
  */
 class Traduccio_tipusController extends Controller
 {
@@ -18,7 +18,7 @@ class Traduccio_tipusController extends Controller
      *     path="/traduccio_tipus",
      *     summary="Llista de traduccions de tipus",
      *     description="Retorna totes les traduccions de tipus",
-     *     tags={"Traducció_tipus"},
+     *     tags={"Traduccions"},
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -65,7 +65,7 @@ class Traduccio_tipusController extends Controller
      *     path="/traduccio_tipus/{id_tipus}/{id_idioma}",
      *     summary="Mostra una traducció de tipus",
      *     description="Mostra una traducció de tipus",
-     *     tags={"Traducció_tipus"},
+     *     tags={"Traduccions"},
      *     @OA\Parameter(
      *         name="id_tipus",
      *         in="path",
@@ -129,7 +129,7 @@ class Traduccio_tipusController extends Controller
      *     path="/traduccio_tipus",
      *     summary="Crear traducció tipus",
      *     description="Crear traducció tipus",
-     *     tags={"Traducció_tipus"},
+     *     tags={"Traduccions"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/Traducció_tipus")
@@ -193,7 +193,7 @@ class Traduccio_tipusController extends Controller
      *     path="/traduccio_tipus/put/{id_tipus}/{id_idioma}",
      *     summary="Actualitza una traducció de tipus",
      *     description="Actualitza una traducció de tipus",
-     *     tags={"Traducció_tipus"},
+     *     tags={"Traduccions"},
      *     @OA\Parameter(
      *         name="id_tipus",
      *         in="path",
@@ -302,7 +302,7 @@ class Traduccio_tipusController extends Controller
      *     path="/traduccio_tipus/destroy/{id_tipus}/{id_idioma}",
      *     summary="Esborra una traducció de tipus",
      *     description="Esborra una traducció de tipus",
-     *     tags={"Traducció_tipus"},
+     *     tags={"Traduccions"},
      *     @OA\Parameter(
      *         name="id_tipus",
      *         in="path",
