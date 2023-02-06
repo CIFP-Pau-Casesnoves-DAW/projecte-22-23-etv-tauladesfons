@@ -10,7 +10,7 @@
 # Projecte etv-taula-des-fons
 
 ## Pagina web de l'api:
-### http://www.etvtauladesfons.com/api/documentation
+### http://www.etvtauladesfons.com
 
 ### *Participants*
 - Isaac Palou Gijon
