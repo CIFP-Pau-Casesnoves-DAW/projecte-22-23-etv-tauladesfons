@@ -63,18 +63,12 @@ class AllotjamentController extends Controller
     }
 
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Post (
      *     path="/allotjaments",
      *     summary="Crea un allotjament",
      *     tags={"Allotjaments"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody (
      *     required=true,
      *     description="Dades de l'allotjament",
