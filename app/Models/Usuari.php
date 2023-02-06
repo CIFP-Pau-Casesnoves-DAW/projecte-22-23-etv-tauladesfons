@@ -19,7 +19,8 @@ class Usuari extends Model
         'CORREU_ELECTRONIC',
         'CONTRASENYA',
         'TELEFON',
-        'ADMINISTRADOR'
+        'ADMINISTRADOR',
+        'TOKEN'
     ];
 
 }
