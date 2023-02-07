@@ -17,7 +17,6 @@ use App\Http\Controllers\Traduccio_vacancesController;
 use App\Http\Controllers\UsuariController;
 use App\Http\Controllers\VacancesController;
 use App\Http\Controllers\ValoracioController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,7 +35,7 @@ use Illuminate\Support\Facades\Route;
 // });
 //ruta de idiomes
 Route::group(['prefix' => 'idiomes'], function () {
-    Route::get('/', [IdiomaController::class, 'index']);
+    Route::get('/', [IdiomaController::class, 'index'])->middleware("token");
     Route::get('/{id}', [IdiomaController::class, 'show']);
     Route::post('', [IdiomaController::class, 'store']);
     Route::put('/put/{id}', [IdiomaController::class, 'update']);
@@ -154,7 +153,7 @@ Route::group(['prefix' => 'valoracions'], function () {
     Route::put('/put/{id}', [ValoracioController::class, 'update']);
     Route::delete('/destroy/{id}', [ValoracioController::class, 'destroy']);
 });
-// TODO ruta de login
+// ruta de login
 Route::group(['prefix' => 'login'], function () {
     Route::post('', [LoginController::class, 'login']);
 });

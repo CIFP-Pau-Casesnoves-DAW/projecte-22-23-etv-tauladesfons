@@ -19,6 +19,7 @@ class IdiomaController extends Controller
      *     path="/idiomes",
      *     summary="Llista de idiomes",
      *     tags={"Idiomes"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *     response=200,
      *     description="Llista de idiomes",
