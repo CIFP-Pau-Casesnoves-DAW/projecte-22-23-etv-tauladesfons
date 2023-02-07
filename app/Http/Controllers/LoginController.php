@@ -43,15 +43,15 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        $usuari = Usuari::where("CORREU_ELECTRONIC", $request->input("CORREU_ELECTRONIC"))->first();
-
-        if ($usuari && Hash::check($request->input("contrasenya"), $usuari->CONTRASENYA)) {
-            $apiKey = base64_encode(Str::random(40));
-            $usuari['TOKEN'] = $apiKey;
-            $usuari->save();
-            return response()->json(['status' => 'Login OK', 'result' => $apiKey]);
+        $user = Usuari::where('CORREU_ELECTRONIC', $request->input('CORREU_ELECTRONIC'))->first();
+        $password = $request->input("CONTRASENYA");
+        if ($user && Hash::check($request->input("CONTRASENYA"), $user->CONTRASENYA)) {
+            $apikey = base64_encode(Str::random(40));
+            $user["api_token"] = $apikey;
+            $user->save();
+            return response()->json(['status' => 'Login OK', 'result' => $user, 'contrasenya' => $password]);
         } else {
-            return response()->json(['status' => 'Error', 'result' => "Les teves credencials son incorrectes"], 401);
+            return response()->json(['status' => 'fail'], 401);
         }
     }
 }

@@ -16,15 +16,11 @@ use OpenApi\Annotations as OA;
 class UsuariController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /**
      * @OA\Get(
      *     path="/usuaris",
-     *     summary="Llista tots els usuaris",
      *     tags={"Usuaris"},
+     *     summary="Llista tots els usuaris",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -61,7 +57,7 @@ class UsuariController extends Controller
     public function getUsuaris()
     {
         $tuples=Usuari::all();
-         return response()->json(['status'=>'success', 'result' => $tuples],200);
+        return response()->json(['status'=>'success', 'result' => $tuples],200);
     }
 
     /**
@@ -70,7 +66,7 @@ class UsuariController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-   /**
+    /**
      * @OA\Post(
      *     path="/usuaris",
      *     summary="Crear un usuari",

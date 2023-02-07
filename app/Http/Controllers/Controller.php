@@ -13,7 +13,7 @@ use Illuminate\Routing\Controller as BaseController;
 * @OA\Contact( name="Isaac Palou.",email="isaacpalou@paucasesnovescifp.cat")
 * )
 *
-* @OA\Server(url="http://localhost:8080/api")
+* @OA\Server(url="http://localhost:8000/api")
 *
 * @OAS\SecurityScheme(
 * securityScheme="bearerAuth",
