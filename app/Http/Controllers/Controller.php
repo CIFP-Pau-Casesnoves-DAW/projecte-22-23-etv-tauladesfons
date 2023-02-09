@@ -15,11 +15,13 @@ use Illuminate\Routing\Controller as BaseController;
 *
 * @OA\Server(url="http://localhost:8000/api")
 *
-* @OAS\SecurityScheme(
-* securityScheme="bearerAuth",
-* type="http",
-* scheme="bearer"
-* )
+ * @OA\SecurityScheme(
+ * securityScheme="bearerAuth",
+ * in="header",
+ * name="bearerAuth",
+ * type="http",
+ * scheme="bearer"
+ * )
 */
 class Controller extends BaseController
 {

@@ -36,7 +36,7 @@ class IdiomaController extends Controller
      *     @OA\Property(property="NOM_IDIOMA", type="string")
      * )
      */
-    public function index()
+    public function  index()
     {
         $tuples = Idioma::all();
 

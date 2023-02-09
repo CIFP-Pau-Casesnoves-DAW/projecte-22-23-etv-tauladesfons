@@ -49,8 +49,7 @@ class UsuariController extends Controller
      *     @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
      *     @OA\Property(property="CORREU_ELECTRONIC", type="string", example="patata@gmail.com"),
      *     @OA\Property(property="CONTRASENYA", type="string", example="12345678Z"),
-     *     @OA\Property(property="TELEFON", type="string", example="12345678Z"),
-     *     @OA\Property(property="ADMINISTRADOR", type="boolean", example="true")
+     *     @OA\Property(property="TELEFON", type="string", example="12345678Z")
      *
      * )
      */
@@ -80,8 +79,7 @@ class UsuariController extends Controller
      *             @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
      *             @OA\Property(property="CORREU_ELECTRONIC", type="string", example="perepujol@gmail.com"),
      *             @OA\Property(property="CONTRASENYA", type="string", example="patata"),
-     *             @OA\Property(property="TELEFON", type="string", example="123456789"),
-     *             @OA\Property(property="ADMINISTRADOR", type="boolean", example="false")
+     *             @OA\Property(property="TELEFON", type="string", example="123456789")
      *        )
      *    ),
      *     @OA\Response(
@@ -95,8 +93,7 @@ class UsuariController extends Controller
      *     @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
      *     @OA\Property(property="CORREU_ELECTRONIC", type="string", example="patata@gmail.com"),
      *     @OA\Property(property="CONTRASENYA", type="string", example="patata"),
-     *     @OA\Property(property="TELEFON", type="string", example="123456789"),
-     *     @OA\Property(property="ADMINISTRADOR", type="boolean", example="false")
+     *     @OA\Property(property="TELEFON", type="string", example="123456789")
      *   ))
      * )
      * ),
@@ -117,8 +114,7 @@ class UsuariController extends Controller
             'NOM_COMPLET' => 'required|string|max:50',
             'CORREU_ELECTRONIC' => 'required|string|max:50',
             'CONTRASENYA' => 'required|string|max:50',
-            'TELEFON' => 'required|string|max:9',
-            'ADMINISTRADOR' => 'required|boolean'
+            'TELEFON' => 'required|string|max:9'
         ];
         $missatges = [
             'ID_USUARI.required' => 'El camp ID_USUARI és obligatori.',
@@ -137,9 +133,7 @@ class UsuariController extends Controller
             'CONTRASENYA.max' => 'El camp CONTRASENYA no pot tenir més de 50 caràcters.',
             'TELEFON.required' => 'El camp TELEFON és obligatori.',
             'TELEFON.string' => 'El camp TELEFON ha de ser una cadena de caràcters.',
-            'TELEFON.max' => 'El camp DNI no pot tenir més de 9 caràcters.',
-            'ADMINISTRADOR.required' => 'El camp ADMINISTRADOR és obligatori.',
-            'ADMINISTRADOR.boolean' => 'El camp ADMINISTRADOR ha de ser un booleà.'
+            'TELEFON.max' => 'El camp DNI no pot tenir més de 9 caràcters.'
         ];
         $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
         if ($validacio->fails()) {
@@ -152,7 +146,6 @@ class UsuariController extends Controller
         $usuaris->CORREU_ELECTRONIC=$request->input('CORREU_ELECTRONIC');
         $usuaris->CONTRASENYA=Hash::make($request->input('CONTRASENYA'));
         $usuaris->TELEFON=$request->input('TELEFON');
-        $usuaris->ADMINISTRADOR=$request->input('ADMINISTRADOR');
         $usuaris->save();
         return response()->json(['status'=>'success', 'result' => 'Nou usuari creat'], 201);
         }
@@ -238,8 +231,7 @@ class UsuariController extends Controller
      *     @OA\Property(property="NOM_COMPLET", type="string", format="string", example="Nom Cognom"),
      *     @OA\Property(property="CORREU_ELECTRONIC", type="string", format="string", example="patata@gmail.com"),
      *     @OA\Property(property="CONTRASENYA", type="string", format="string", example="12345678"),
-     *     @OA\Property(property="TELEFON", type="string", format="string", example="123456789"),
-     *     @OA\Property(property="ADMINISTRADOR", type="boolean", format="boolean", example=true)
+     *     @OA\Property(property="TELEFON", type="string", format="string", example="123456789")
      * )
      * ),
      *    @OA\Response(
@@ -275,8 +267,7 @@ class UsuariController extends Controller
             'NOM_COMPLET' => 'required|string|max:50',
             'CORREU_ELECTRONIC' => 'required|string|max:50',
             'CONTRASENYA' => 'required|string|max:50',
-            'TELEFON' => 'required|string|max:9',
-            'ADMINISTRADOR' => 'required|boolean'
+            'TELEFON' => 'required|string|max:9'
         ];
         $missatges = [
             'ID_USUARI.required' => 'El camp ID_USUARI és obligatori.',
@@ -295,9 +286,7 @@ class UsuariController extends Controller
             'CONTRASENYA.max' => 'El camp CONTRASENYA no pot tenir més de 50 caràcters.',
             'TELEFON.required' => 'El camp TELEFON és obligatori.',
             'TELEFON.string' => 'El camp TELEFON ha de ser una cadena de caràcters.',
-            'TELEFON.max' => 'El camp DNI no pot tenir més de 9 caràcters.',
-            'ADMINISTRADOR.required' => 'El camp ADMINISTRADOR és obligatori.',
-            'ADMINISTRADOR.boolean' => 'El camp ADMINISTRADOR ha de ser un booleà.'
+            'TELEFON.max' => 'El camp DNI no pot tenir més de 9 caràcters.'
         ];
         $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
         if ($validator->fails()) {
@@ -310,7 +299,6 @@ class UsuariController extends Controller
             $usuaris->CORREU_ELECTRONIC=$request->input('CORREU_ELECTRONIC');
             $usuaris->CONTRASENYA=Hash::make($request->input('CONTRASENYA'));
             $usuaris->TELEFON=$request->input('TELEFON');
-            $usuaris->ADMINISTRADOR=$request->input('ADMINISTRADOR');
             $usuaris->save();
             return response()->json(['status' => 'Usuari actualitzat correctament'], 200);
         }
