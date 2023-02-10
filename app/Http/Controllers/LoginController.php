@@ -48,9 +48,9 @@ class LoginController extends Controller
             $apikey = base64_encode(Str::random(40));
             $user["TOKEN"] = $apikey;
             $user->save();
-            return response()->json(['status' => 'Login OK', 'result' => $user]);
+            return response()->json(['Status' => 'Login OK', 'Token' => $user["TOKEN"]]);
         } else {
-            return response()->json(['status' => 'fail'], 401);
+            return response()->json(['Status' => 'Fail'], 401);
         }
     }
 }
