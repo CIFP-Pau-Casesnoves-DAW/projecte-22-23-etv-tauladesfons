@@ -130,6 +130,7 @@ class Traduccio_tipusController extends Controller
      *     summary="Crear traducció tipus",
      *     description="Crear traducció tipus",
      *     tags={"Traduccions"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/Traducció_tipus")
@@ -194,6 +195,7 @@ class Traduccio_tipusController extends Controller
      *     summary="Actualitza una traducció de tipus",
      *     description="Actualitza una traducció de tipus",
      *     tags={"Traduccions"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id_tipus",
      *         in="path",
@@ -303,6 +305,7 @@ class Traduccio_tipusController extends Controller
      *     summary="Esborra una traducció de tipus",
      *     description="Esborra una traducció de tipus",
      *     tags={"Traduccions"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id_tipus",
      *         in="path",

@@ -16,9 +16,6 @@ use OpenApi\Annotations as OA;
 class MunicipiController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      * @OA\Get(
      *     path="/municipis",
      *     summary="Llista de municipis",
@@ -51,14 +48,11 @@ class MunicipiController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      * @OA\Post(
      *     path="/municipis",
      *     summary="Crea un municipi",
      *     tags={"Municipis"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *     required=true,
      *     description="Dades del municipi",
@@ -108,10 +102,6 @@ class MunicipiController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      * @OA\Get(
      *     path="/municipis/{id}",
      *     summary="Mostra un municipi",
@@ -165,15 +155,11 @@ class MunicipiController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      *  @OA\Put(
      *     path="/municipis/put/{id}",
      *     summary="Actualitza un municipi",
      *     tags={"Municipis"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *     description="ID del municipi",
      *     in="path",
@@ -258,14 +244,11 @@ class MunicipiController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      * @OA\Delete(
      *     path="/municipis/destroy/{id}",
      *     summary="Elimina un municipi",
      *     tags={"Municipis"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *     description="ID del municipi",
      *     in="path",

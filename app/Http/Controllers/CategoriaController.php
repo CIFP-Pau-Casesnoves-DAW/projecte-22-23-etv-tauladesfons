@@ -20,9 +20,6 @@ use OpenApi\Annotations as OA;
 class CategoriaController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
      * @OA\Get(
      *     path="/categories",
      *     summary="Llista de categories",
@@ -51,39 +48,6 @@ class CategoriaController extends Controller
         return response()->json($tuples);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return Response
-     * @throws ValidationException
-     * @OA\Post(
-     *     path="/categories",
-     *     summary="Crea una categoria",
-     *     tags={"Categories"},
-     *     @OA\RequestBody(
-     *     description="Dades de la categoria",
-     *     required=true,
-     *     @OA\JsonContent(ref="#/components/schemas/Categoria")
-     * ),
-     *     @OA\Response(
-     *     response=200,
-     *     description="Categoria creada",
-     *     @OA\JsonContent(ref="#/components/schemas/Categoria")
-     * )
-     * )
-     *
-     */
     public function store(Request $request)
     {
         $reglesvalidacio = [
@@ -112,10 +76,6 @@ class CategoriaController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      * @OA\Get(
      *     path="/categories/{id}",
      *     summary="Mostra una categoria",
@@ -150,53 +110,6 @@ class CategoriaController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return Response
-     *
-     * @OA\Put(
-     *     path="/categories/put/{id}",
-     *     summary="Actualitza una categoria",
-     *     tags={"Categories"},
-     *     @OA\Parameter(
-     *     description="ID de la categoria",
-     *     in="path",
-     *     name="id",
-     *     required=true,
-     *     @OA\Schema(
-     *     type="integer"
-     * )
-     * ),
-     *     @OA\RequestBody(
-     *     description="Dades de la categoria",
-     *     required=true,
-     *     @OA\JsonContent(ref="#/components/schemas/Categoria")
-     * ),
-     *     @OA\Response(
-     *     response=200,
-     *     description="Categoria actualitzada",
-     *     @OA\JsonContent(ref="#/components/schemas/Categoria")
-     * ),
-     *     @OA\Response(
-     *     response=404,
-     *     description="Categoria no trobada"
-     * )
-     * )
-     */
     public function update(Request $request, $id)
     {
         $reglesvalidacio = [
@@ -224,38 +137,10 @@ class CategoriaController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     * @OA\Delete(
-     *     path="/categories/destroy/{id}",
-     *    summary="Elimina una categoria",
-     *     tags={"Categories"},
-     *     @OA\Parameter(
-     *     description="ID de la categoria",
-     *     in="path",
-     *     name="id",
-     *     required=true,
-     *     @OA\Schema(
-     *     type="integer"
-     * )
-     * ),
-     *     @OA\Response(
-     *     response=200,
-     *     description="Categoria eliminada"
-     * ),
-     *     @OA\Response(
-     *     response=404,
-     *     description="Categoria no trobada"
-     * )
-     * )
-     */
     public function destroy(int $id)
     {
-       $categoria = Categoria::findOrFail($id);
-         $categoria->delete();
-            return response()->json(['status' => 'Categoria eliminada correctament'], 200);
+        $categoria = Categoria::findOrFail($id);
+        $categoria->delete();
+        return response()->json(['status' => 'Categoria eliminada correctament'], 200);
     }
 }

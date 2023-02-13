@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vacances;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
@@ -13,11 +14,6 @@ use OpenApi\Annotations as OA;
  */
 class VacancesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Get(
      *     path="/vacances",
@@ -48,20 +44,14 @@ class VacancesController extends Controller
      */
     public function index()
     {
-        $tuple=Vacances::all();
-        return response()->json(['status'=>'success', 'result' => $tuple],200);
+        $tuple = Vacances::all();
+        return response()->json(['status' => 'success', 'result' => $tuple], 200);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Post(
      *     path="/vacances",
      *     tags={"Vacances"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Afegeix una vacances",
      *     description="Afegeix una vacances a la base de dades",
      *     operationId="afegirVacances",
@@ -101,20 +91,14 @@ class VacancesController extends Controller
         if ($validacio->fails()) {
             return response()->json($validacio->errors(), 400);
         } else {
-        $vacances= new Vacances;
-        $vacances->ID_VACANCES=$request->input('ID_VACANCES');
-        $vacances->NOM_VACANCES=$request->input('NOM_VACANCES');
-        $vacances->save();
-        return response()->json($vacances, 201);
+            $vacances = new Vacances;
+            $vacances->ID_VACANCES = $request->input('ID_VACANCES');
+            $vacances->NOM_VACANCES = $request->input('NOM_VACANCES');
+            $vacances->save();
+            return response()->json($vacances, 201);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Get(
      *     path="/vacances/{id}",
@@ -149,24 +133,18 @@ class VacancesController extends Controller
     public function show($id)
     {
         try {
-            $vacances=Vacances::findOrFail($id);
-            return response()->json(['status'=>'success', 'result' => $vacances],200);
-        } catch (ModelNotFoundExceptionn $e) {
-            return response()->json(['status'=>'error', 'result' => 'No s\'han trobat les vacances.'],404);
+            $vacances = Vacances::findOrFail($id);
+            return response()->json(['status' => 'success', 'result' => $vacances], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['status' => 'error', 'result' => 'No s\'han trobat les vacances.'], 404);
         }
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    /**
      * @OA\Put(
      *     path="/vacances/put/{id}",
      *     tags={"Vacances"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Modifica una vacances",
      *     description="Modifica una vacances",
      *     operationId="modificarVacances",
@@ -217,16 +195,16 @@ class VacancesController extends Controller
             'NOM_VACANCES.max' => 'El camp NOM_VACANCES no pot tenir més de 50 caràcters.'
         ];
         $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
-        $tuples=Vacances::where('ID_VACANCES', $id)->update($request->except(['_token']));
+        $tuples = Vacances::where('ID_VACANCES', $id)->update($request->except(['_token']));
         if ($validacio->fails()) {
             return response()->json([
                 'error' => $validacio->errors()->all()
             ]);
-         } else {
+        } else {
             return response()->json([
                 'success' => 'Vacances modificades correctament.'
             ]);
-            }
+        }
     }
 
     /**
@@ -239,6 +217,7 @@ class VacancesController extends Controller
      * @OA\Delete(
      *     path="/vacances/destroy/{id}",
      *     tags={"Vacances"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Elimina una vacances",
      *     description="Elimina una vacances",
      *     operationId="eliminarVacances",
@@ -281,6 +260,6 @@ class VacancesController extends Controller
             return response()->json([
                 'error' => 'No s\'han pogut eliminar les vacances.'
             ]);
-             }
+        }
     }
 }

@@ -9,18 +9,15 @@ use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 /**
  * @OA\Tag(name="Reserves")
- *
  */
 class ReservaController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
      * @OA\Get(
      *     path="/reserves",
      *     summary="Llista de reserves",
      *     tags={"Reserves"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *     response=200,
      *     description="Llista de reserves",
@@ -48,15 +45,10 @@ class ReservaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     *
-     *
      * @OA\Post(
      *     path="/reserves",
      *     tags={"Reserves"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Añaade una nueva reserva",
      *     description="Añade una nueva reserva",
      *     operationId="store",
@@ -151,17 +143,11 @@ class ReservaController extends Controller
 
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Get(
      *     path="/reserves/{id}",
      *     tags={"Reserves"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Mostra una reserva",
      *     description="Mostra una reserva",
      *     operationId="show",
@@ -211,16 +197,10 @@ class ReservaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    /**
      * @OA\Put(
      *    path="/reserves/put/{id}",
      *     tags={"Reserves"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Actualitza una reserva",
      *     description="Actualitza una reserva",
      *     operationId="update",
@@ -310,15 +290,10 @@ class ReservaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    /**
      * @OA\Delete(
      *    path="/reserves/destroy/{id}",
      *     tags={"Reserves"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Elimina una reserva",
      *     description="Elimina una reserva",
      *     operationId="destroy",

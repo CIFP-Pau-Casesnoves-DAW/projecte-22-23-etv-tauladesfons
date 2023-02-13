@@ -12,14 +12,10 @@ use OpenApi\Annotations as OA;
 class IdiomaController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      * @OA\Get(
      *     path="/idiomes",
      *     summary="Llista de idiomes",
      *     tags={"Idiomes"},
-     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *     response=200,
      *     description="Llista de idiomes",
@@ -39,8 +35,6 @@ class IdiomaController extends Controller
     public function  index()
     {
         $tuples = Idioma::all();
-
-        // Return the list of languages to the client
         return response()->json([
             'status' => 'success',
             'data' => $tuples
@@ -48,24 +42,11 @@ class IdiomaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      * @OA\Post(
      *     path="/idiomes",
      *     summary="Crea un idioma",
      *     tags={"Idiomes"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *     description="Dades del nou idioma",
      *     required=true,
@@ -91,11 +72,11 @@ class IdiomaController extends Controller
      */
     public function store(Request $request)
     {
-       $reglesvalidacio=[
-           'ID_IDIOMA' => 'required|integer',
-              'NOM_IDIOMA' => 'required|string|max:50',
+        $reglesvalidacio = [
+            'ID_IDIOMA' => 'required|integer',
+            'NOM_IDIOMA' => 'required|string|max:50',
         ];
-        $missatges=[
+        $missatges = [
             'ID_IDIOMA.required' => 'El camp ID_IDIOMA és obligatori',
             'ID_IDIOMA.integer' => 'El camp ID_IDIOMA ha de ser un número enter',
             'NOM_IDIOMA.required' => 'El camp NOM_IDIOMA és obligatori',
@@ -120,10 +101,6 @@ class IdiomaController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      * @OA\Get(
      *     path="/idiomes/{id}",
      *     summary="Mostra un idioma",
@@ -152,55 +129,12 @@ class IdiomaController extends Controller
     public function show($id)
     {
         try {
-            $tuples=Idioma::findOrFail($id);
-            return response()->json(['status'=>'success', 'result' => $tuples],200);
+            $tuples = Idioma::findOrFail($id);
+            return response()->json(['status' => 'success', 'result' => $tuples], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status'=>'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'],404);
+            return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'], 404);
         }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     * @OA\Put(
-     *     path="/idiomes/put/{id}",
-     *     summary="Actualitza un idioma",
-     *     tags={"Idiomes"},
-     *     @OA\Parameter(
-     *     description="ID del idioma",
-     *     in="path",
-     *     name="id",
-     *     required=true,
-     *     @OA\Schema(
-     *     type="integer"
-     *  )
-     * ),
-     *     @OA\RequestBody(
-     *     description="Dades de l'idioma",
-     *     required=true,
-     *     @OA\JsonContent(ref="#/components/schemas/Idiomes")
-     * ),
-     *     @OA\Response(
-     *     response=200,
-     *     description="Idioma actualitzat",
-     *     @OA\JsonContent(ref="#/components/schemas/Idiomes")
-     * ),
-     *     @OA\Response(
-     *     response=400,
-     *     description="Error de validació",
-     *     @OA\JsonContent(ref="#/components/schemas/Error")
-     * ),
-     *     @OA\Response(
-     *     response=404,
-     *     description="No s'ha trobat cap idioma amb aquest ID",
-     *     @OA\JsonContent(ref="#/components/schemas/Error")
-     * )
-     * )
-     *
-     */
     public function update(Request $request, $id)
     {
         try {
@@ -232,49 +166,18 @@ class IdiomaController extends Controller
                 ], 200);
             }
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status'=>'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'],404);
+            return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'], 404);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     * @OA\Delete(
-     *     path="/idiomes/destroy/{id}",
-     *     summary="Elimina un idioma",
-     *     tags={"Idiomes"},
-     *     @OA\Parameter(
-     *     description="ID del idioma",
-     *     in="path",
-     *     name="id",
-     *     required=true,
-     *     @OA\Schema(
-     *     type="integer"
-     * )
-     * ),
-     *     @OA\Response(
-     *     response=200,
-     *     description="Idioma eliminat",
-     *     @OA\JsonContent(ref="#/components/schemas/Idiomes")
-     * ),
-     *     @OA\Response(
-     *     response=404,
-     *     description="No s'ha trobat cap idioma amb aquest ID",
-     *     @OA\JsonContent(ref="#/components/schemas/Error")
-     * )
-     * )
-     *
-     */
     public function destroy($id)
     {
         try {
-            $tuples=Idioma::findOrFail($id);
+            $tuples = Idioma::findOrFail($id);
             $tuples->delete();
-            return response()->json(['status'=>'success', 'result' => 'S\'ha eliminat l\'idioma correctament'],200);
+            return response()->json(['status' => 'success', 'result' => 'S\'ha eliminat l\'idioma correctament'], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status'=>'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'],404);
+            return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'], 404);
         }
     }
 }

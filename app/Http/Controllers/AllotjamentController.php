@@ -17,9 +17,6 @@ use OpenApi\Annotations as OA;
 class AllotjamentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      * @OA\Get (
      *     path="/allotjaments",
      *     summary="Llista d'allotjaments",
@@ -171,13 +168,8 @@ class AllotjamentController extends Controller
             $allotjament->save();
             return response()->json($allotjament, 200);
         }
-
     }
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      * @OA\Get(
      *     path="/allotjaments/{id}",
      *     summary="Mostra un allotjament",
@@ -276,7 +268,7 @@ class AllotjamentController extends Controller
      *    )
      * )
      * )
-    */
+     */
     public function show($id)
     {
         try {
@@ -295,6 +287,7 @@ class AllotjamentController extends Controller
      *     summary="Actualitza un allotjament",
      *     description="Actualitza un allotjament",
      *     tags={"Allotjaments"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *     description="ID de l'allotjament",
      *     in="path",
@@ -452,7 +445,7 @@ class AllotjamentController extends Controller
             'FK_ID_USUARI.required' => 'El camp FK_ID_USUARI és obligatori.',
             'FK_ID_USUARI.integer' => 'El camp FK_ID_USUARI ha de ser un número enter.',
         ];
-       $validacio = Validator::make($request->all(), $regles, $missatges);
+        $validacio = Validator::make($request->all(), $regles, $missatges);
         if ($validacio->fails()) {
             return response()->json($validacio->errors(), 400);
         }
@@ -465,16 +458,11 @@ class AllotjamentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-        */
-    /**
      * @OA\Delete(
      *   path="/allotjaments/destroy/{id}",
      *   summary="Elimina un allotjament",
      *   tags={"Allotjaments"},
+     *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(
      *     name="id",
      *     in="path",
@@ -532,6 +520,6 @@ class AllotjamentController extends Controller
             return response()->json([
                 'error' => 'No s\'ha pogut eliminar l\'allotjament'
             ]);
-             }
+        }
     }
 }

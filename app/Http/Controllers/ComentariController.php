@@ -9,14 +9,11 @@ use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 /**
-@OA\Tag( name="Comentaris")
+ * @OA\Tag( name="Comentaris")
  */
 class ComentariController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      * @OA\Get(
      *     path="/comentaris",
      *     tags={"Comentaris"},
@@ -60,13 +57,10 @@ class ComentariController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      * @OA\Post(
      *    path="/comentaris",
      *     tags={"Comentaris"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Afegeix un comentari",
      *     description="Afegeix un comentari",
      *     @OA\RequestBody(
@@ -139,10 +133,6 @@ class ComentariController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      * @OA\Get(
      *      path="/comentaris/{id}",
      *     operationId="getComentariById",
@@ -189,15 +179,11 @@ class ComentariController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      * @OA\Put(
      *     path="/comentaris/put/{id}",
      *     operationId="updateComentari",
      *     tags={"Comentaris"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Actualitza un comentari",
      *     description="Actualitza un comentari",
      *     @OA\Parameter(
@@ -283,14 +269,11 @@ class ComentariController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      * @OA\Delete(
      *     path="/comentaris/destroy/{id}",
      *     operationId="deleteComentari",
      *     tags={"Comentaris"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Elimina un comentari",
      *     description="Elimina un comentari",
      *     @OA\Parameter(

@@ -52,6 +52,7 @@ class TipusController extends Controller
      *     path="/tipus",
      *     summary="Crea un nou tipus",
      *     tags={"Tipus"},
+     *     security={{"bearerAuth":{}}},
      *      @OA\RequestBody(
      *     required=true,
      *     description="Dades del nou tipus",
@@ -87,14 +88,14 @@ class TipusController extends Controller
             'ID_TIPUS' => 'required|integer',
             'NOM_TIPUS' => 'required|string|max:50',
         ];
-        $missatge= [
+        $missatge = [
             'ID_TIPUS.required' => 'El camp ID_TIPUS és obligatori',
             'ID_TIPUS.integer' => 'El camp ID_TIPUS ha de ser un enter',
             'NOM_TIPUS.required' => 'El camp NOM_TIPUS és obligatori',
             'NOM_TIPUS.string' => 'El camp NOM_TIPUS ha de ser una cadena de caràcters',
             'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 50 caràcters',
         ];
-        $validacio= Validator::make($request->all(), $reglesvalidacio, $missatge);
+        $validacio = Validator::make($request->all(), $reglesvalidacio, $missatge);
         if ($validacio->fails()) {
             return response()->json([
                 'status' => 'error',
@@ -166,7 +167,7 @@ class TipusController extends Controller
         }
     }
 
-      /**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -176,6 +177,7 @@ class TipusController extends Controller
      *     path="/tipus/put/{id}",
      *     summary="Actualitza un tipus",
      *     tags={"Tipus"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *     description="ID del tipus",
      *     in="path",
@@ -218,35 +220,32 @@ class TipusController extends Controller
             'ID_TIPUS' => 'required|integer',
             'NOM_TIPUS' => 'required|string|max:50'
         ];
-        $missatge= [
+        $missatge = [
             'ID_TIPUS.required' => 'El camp ID_TIPUS és obligatori',
             'ID_TIPUS.integer' => 'El camp ID_TIPUS ha de ser un enter',
             'NOM_TIPUS.required' => 'El camp NOM_TIPUS és obligatori',
             'NOM_TIPUS.string' => 'El camp NOM_TIPUS ha de ser una cadena de caràcters',
             'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 50 caràcters'
         ];
-        $validacio= Validator::make($request->all(), $reglesvalidacio, $missatge);
-        $tuples=Tipus::where('ID_TIPUS', $id)->update($request->except(['_token']));
+        $validacio = Validator::make($request->all(), $reglesvalidacio, $missatge);
+        $tuples = Tipus::where('ID_TIPUS', $id)->update($request->except(['_token']));
         if ($validacio->fails()) {
             return response()->json([
                 'error' => $validacio->errors()->all()
             ]);
-         } else {
+        } else {
             return response()->json([
                 'success' => 'Tipus modificat correctament.'
             ]);
-            }
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      * @OA\Delete(
      *     path="/tipus/destroy/{id}",
      *     summary="Elimina un tipus",
      *     tags={"Tipus"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *     description="ID del tipus",
      *     in="path",
@@ -279,7 +278,7 @@ class TipusController extends Controller
      */
     public function destroy($id)
     {
-        $tuples=Tipus::findOrFail($id);
+        $tuples = Tipus::findOrFail($id);
         $tuples->delete();
         return response()->json([
             'status' => 'deleted',

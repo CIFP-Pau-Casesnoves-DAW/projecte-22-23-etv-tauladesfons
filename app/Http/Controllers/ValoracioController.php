@@ -12,11 +12,6 @@ use OpenApi\Annotations as OA;
 /** @OA\Tag(name="Valoracions") */
 class ValoracioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     /** @OA\Get(
      *     path="/valoracions",
      *     tags={"Valoracions"},
@@ -51,20 +46,14 @@ class ValoracioController extends Controller
      */
     public function index()
     {
-        $tuples=Valoracio::all();
-        return response()->json(['status'=>'success', 'result' => $tuples],200);
+        $tuples = Valoracio::all();
+        return response()->json(['status' => 'success', 'result' => $tuples], 200);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Post(
      *     path="/valoracions",
      *     tags={"Valoracions"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Inserir una nova valoracio",
      *     description="Inserir una nova valoracio",
      *     operationId="storeValoracio",
@@ -110,22 +99,16 @@ class ValoracioController extends Controller
         if ($validacio->fails()) {
             return response()->json($validacio->errors(), 400);
         } else {
-            $valoracions= new Valoracio();
-            $valoracions->ID_VALORACIO=$request->input('ID_VALORACIO');
-            $valoracions->PUNTUACIO=$request->input('PUNTUACIO');
-            $valoracions->FK_ID_USUARI=$request->input('FK_ID_USUARI');
-            $valoracions->FK_ID_ALLOTJAMENT=$request->input('FK_ID_ALLOTJAMENT');
+            $valoracions = new Valoracio();
+            $valoracions->ID_VALORACIO = $request->input('ID_VALORACIO');
+            $valoracions->PUNTUACIO = $request->input('PUNTUACIO');
+            $valoracions->FK_ID_USUARI = $request->input('FK_ID_USUARI');
+            $valoracions->FK_ID_ALLOTJAMENT = $request->input('FK_ID_ALLOTJAMENT');
             $valoracions->save();
-            return response()->json(['status'=>'success','result'=>$valoracions], 200);
+            return response()->json(['status' => 'success', 'result' => $valoracions], 200);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Get(
      *     path="/valoracions/{id}",
@@ -160,24 +143,18 @@ class ValoracioController extends Controller
     public function show($id)
     {
         try {
-            $valoracions=Valoracio::findOrFail($id);
-            return response()->json(['status'=>'success','result'=>$valoracions], 200);
+            $valoracions = Valoracio::findOrFail($id);
+            return response()->json(['status' => 'success', 'result' => $valoracions], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status'=>'error','result'=>'No s\'ha trobat la valoració.'], 404);
+            return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat la valoració.'], 404);
         }
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    /**
      * @OA\Put(
      *     path="/valoracions/put/{id}",
      *     tags={"Valoracions"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Actualitzar una valoracio",
      *     description="Actualitzar una valoracio",
      *     operationId="updateValoracio",
@@ -229,28 +206,23 @@ class ValoracioController extends Controller
             'FK_ID_ALLOTJAMENT.integer' => 'El camp FK_ID_ALLOTJAMENT ha de ser un número enter.'
         ];
         $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
-        $tuples=Valoracio::where('ID_VALORACIO', $id)->update($request->except(['_token']));
+        $tuples = Valoracio::where('ID_VALORACIO', $id)->update($request->except(['_token']));
         if ($validacio->fails()) {
             return response()->json([
                 'error' => $validacio->errors()->all()
             ]);
-         } else {
+        } else {
             return response()->json([
                 'success' => 'Valoració modificada correctament.'
             ]);
-            }
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Delete(
      *     path="/valoracions/destroy/{id}",
      *     tags={"Valoracions"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Eliminar una valoracio",
      *     description="Eliminar una valoracio",
      *     operationId="deleteValoracio",

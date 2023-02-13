@@ -16,11 +16,6 @@ use OpenApi\Annotations as OA;
 class Allotjament_serveiController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /**
      * @OA\Get(
      *     path="/allotjaments_serveis",
      *     summary="Mostra els allotjament_serveis",
@@ -59,16 +54,11 @@ class Allotjament_serveiController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    /**
      * @OA\Post(
      *     path="/allotjaments_serveis",
      *     summary="Crea un allotjament_servei",
      *     tags={"Allotjament_serveis"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         description="Allotjament_servei a crear",
      *         required=true,
@@ -103,12 +93,6 @@ class Allotjament_serveiController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Get(
      *     path="/allotjaments_serveis/{id_allot}/{id_servei}",
@@ -153,18 +137,13 @@ class Allotjament_serveiController extends Controller
             return response()->json(['error' => 'No existeix allotjament_servei amb aquest ID allotjament: ' . $id_allot . ' i ID servei: ' . $id_servei], 404);
         }
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     /**
      * @OA\Put(
      *     path="/allotjaments_serveis/put/{id_allot}/{id_servei}",
      *     summary="Actualitza un allotjament_servei",
      *     tags={"Allotjament_serveis"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         description="ID allotjament",
      *         in="path",
@@ -233,19 +212,12 @@ class Allotjament_serveiController extends Controller
             }
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param $FK_ID_ALLOT
-     * @param $FK_ID_SERVEI
-     * @return Response
-     */
     /**
      * @OA\Delete(
      *     path="/allotjaments_serveis/destroy/{id_allot}/{id_servei}",
      *     summary="Elimina un allotjament_servei",
      *     tags={"Allotjament_serveis"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         description="ID allotjament",
      *         in="path",

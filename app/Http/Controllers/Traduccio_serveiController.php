@@ -101,6 +101,7 @@ class Traduccio_serveiController extends Controller
      * @OA\Post(
      *     path="/traduccio_serveis",
      *     tags={"Traduccions"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Crear una traduccio de servei",
      *     description="Crear una traduccio de servei",
      *     operationId="insertTraduccioServei",
@@ -144,6 +145,7 @@ class Traduccio_serveiController extends Controller
      * @OA\Put(
      *     path="/traduccio_serveis/put/{id_servei}/{id_idioma}",
      *     tags={"Traduccions"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Actualitzar una traduccio de servei",
      *     description="Actualitzar una traduccio de servei",
      *     operationId="updateTraduccioServei",
@@ -226,6 +228,7 @@ class Traduccio_serveiController extends Controller
      * @OA\Delete(
      *     path="/traduccio_serveis/destroy/{id_servei}/{id_idioma}",
      *     tags={"Traduccions"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Esborrar una traduccio de servei",
      *     description="Esborrar una traduccio de servei",
      *     operationId="deleteTraduccioServei",
