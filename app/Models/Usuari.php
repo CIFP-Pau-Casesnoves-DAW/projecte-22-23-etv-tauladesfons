@@ -19,8 +19,7 @@ class Usuari extends Model
         'CORREU_ELECTRONIC',
         'CONTRASENYA',
         'TELEFON',
-        'ADMINISTRADOR',
-        'TOKEN'
+        'ADMINISTRADOR'
     ];
-
+    protected $hidden = ['CONTRASENYA', 'TOKEN', 'ADMINISTRADOR'];
 }

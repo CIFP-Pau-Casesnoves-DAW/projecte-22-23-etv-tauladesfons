@@ -7,6 +7,7 @@ use App\Http\Controllers\ComentariController;
 use App\Http\Controllers\FotografiaController;
 use App\Http\Controllers\IdiomaController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\MunicipiController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\ServeiController;
@@ -164,4 +165,8 @@ Route::group(['prefix' => 'fotografies'], function () {
     Route::post('', [FotografiaController::class, 'insertFotografia'])->middleware("token");
     Route::put('/put/{id}', [FotografiaController::class, 'updateFotografia'])->middleware("token");
     Route::delete('/destroy/{id}', [FotografiaController::class, 'deleteFotografia'])->middleware("token");
+});
+// Ruta logout
+Route::group(["prefix"=>"logout"], function() {
+    Route::post('', [LogoutController::class, "logout"])->middleware("token");
 });

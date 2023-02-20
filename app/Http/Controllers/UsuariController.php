@@ -15,6 +15,7 @@ use OpenApi\Annotations as OA;
  */
 class UsuariController extends Controller
 {
+    // ! GET de tots
     /**
      * @OA\Get(
      *     path="/usuaris",
@@ -63,28 +64,23 @@ class UsuariController extends Controller
      *     path="/usuaris",
      *     summary="Crear un usuari",
      *     tags={"Usuaris"},
+     *     description="Crear un nou usuari",
      *     @OA\RequestBody(
-     *         description="Usuari a crear",
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="DNI", type="string", example="12345678Z"),
      *             @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
+     *             @OA\Property(property="CONTRASENYA", type="string", example="abcdefg"),             
      *             @OA\Property(property="CORREU_ELECTRONIC", type="string", example="perepujol@gmail.com"),
-     *             @OA\Property(property="CONTRASENYA", type="string", example="patata"),
+     *             @OA\Property(property="DNI", type="string", example="12345678Z"),
      *             @OA\Property(property="TELEFON", type="string", example="123456789")
      *        )
      *    ),
      *     @OA\Response(
-     *     response=201,
-     *     description="Creat correctament",
+     *     response=200,
+     *     description="success",
      *     @OA\JsonContent(
-     *     @OA\Property(property="status", type="string", example="success"),
-     *     @OA\Property(property="result", type="array",@OA\Items(
-     *     @OA\Property(property="DNI", type="string", example="12345678Z"),
-     *     @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
-     *     @OA\Property(property="CORREU_ELECTRONIC", type="string", example="patata@gmail.com"),
-     *     @OA\Property(property="CONTRASENYA", type="string", example="patata"),
-     *     @OA\Property(property="TELEFON", type="string", example="123456789")
+     *     @OA\Property(property="status", type="integer", example="success"),
+     *     @OA\Property(property="data",type="object")
      *   ))
      * )
      * ),
@@ -127,14 +123,17 @@ class UsuariController extends Controller
         if ($validacio->fails()) {
             return response()->json($validacio->errors(), 400);
         } else {
-            $usuaris = new Usuari;
-            $usuaris->DNI = $request->input('DNI');
-            $usuaris->NOM_COMPLET = $request->input('NOM_COMPLET');
-            $usuaris->CORREU_ELECTRONIC = $request->input('CORREU_ELECTRONIC');
-            $usuaris->CONTRASENYA = Hash::make($request->input('CONTRASENYA'));
-            $usuaris->TELEFON = $request->input('TELEFON');
-            $usuaris->save();
-            return response()->json(['status' => 'success', 'result' => 'Nou usuari creat'], 201);
+            $usuari = new Usuari;
+            $usuari->NOM_COMPLET = $request->input('NOM_COMPLET');
+            $usuari->CONTRASENYA = Hash::make($request->input('CONTRASENYA'));
+            $usuari->CORREU_ELECTRONIC = $request->input('CORREU_ELECTRONIC');
+            $usuari->DNI = $request->input('DNI');
+            $usuari->TELEFON = $request->input('TELEFON');
+            $usuari->ADMINISTRADOR = 0;
+            if ($usuari->save()) {
+                return response()->json(['status' => 'success', 'result' => $usuari], 200);
+            }
+            return response()->json(['status' => 'Error', 'Result' => 'Error guardant'], 400);
         }
     }
 
