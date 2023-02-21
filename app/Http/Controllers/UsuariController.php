@@ -98,7 +98,7 @@ class UsuariController extends Controller
         $reglesvalidacio = [
             'DNI' => 'required|string|max:9',
             'NOM_COMPLET' => 'required|string|max:50',
-            'CORREU_ELECTRONIC' => 'required|string|max:50',
+            'CORREU_ELECTRONIC' => 'required|string|max:50|unique:USUARIS,CORREU_ELECTRONIC',
             'CONTRASENYA' => 'required|string|max:50',
             'TELEFON' => 'required|string|max:9'
         ];
@@ -110,8 +110,9 @@ class UsuariController extends Controller
             'NOM_COMPLET.string' => 'El camp NOM_COMPLET ha de ser una cadena de caràcters.',
             'NOM_COMPLET.max' => 'El camp DNI no pot tenir més de 50 caràcters.',
             'CORREU_ELECTRONIC.required' => 'El camp CORREU_ELECTRONIC és obligatori.',
-            'CORREU_ELECTRONIC.string' => 'El camp CORREU_ELECTRONICA ha de ser una cadena de caràcters.',
+            'CORREU_ELECTRONIC.string' => 'El camp CORREU_ELECTRONIC ha de ser una cadena de caràcters.',
             'CORREU_ELECTRONIC.max' => 'El camp DNI no pot tenir més de 50 caràcters.',
+            'CORREU_ELECTRONIC.unique' => 'El camp CORREU_ELECTRONIC ja s\'està empleant',
             'CONTRASENYA.required' => 'El camp CONTRASENYA és obligatori.',
             'CONTRASENYA.string' => 'El camp CONTRASENYA ha de ser una cadena de caràcters.',
             'CONTRASENYA.max' => 'El camp CONTRASENYA no pot tenir més de 50 caràcters.',
