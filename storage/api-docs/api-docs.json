@@ -1143,6 +1143,26 @@
                 }
             }
         },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Logout"
+                ],
+                "summary": "Logout",
+                "description": "Fa logout del actual usuari, eliminant el seu token de la base de dades",
+                "operationId": "214cdf6ce10b65006d77963647f563fb",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/municipis": {
             "get": {
                 "tags": [
@@ -3188,29 +3208,29 @@
                     "Usuaris"
                 ],
                 "summary": "Crear un usuari",
+                "description": "Crear un nou usuari",
                 "operationId": "d2c3a53e08b4963ca026d128217ce859",
                 "requestBody": {
-                    "description": "Usuari a crear",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "DNI": {
-                                        "type": "string",
-                                        "example": "12345678Z"
-                                    },
                                     "NOM_COMPLET": {
                                         "type": "string",
                                         "example": "Pere Pujol"
+                                    },
+                                    "CONTRASENYA": {
+                                        "type": "string",
+                                        "example": "abcdefg"
                                     },
                                     "CORREU_ELECTRONIC": {
                                         "type": "string",
                                         "example": "perepujol@gmail.com"
                                     },
-                                    "CONTRASENYA": {
+                                    "DNI": {
                                         "type": "string",
-                                        "example": "patata"
+                                        "example": "12345678Z"
                                     },
                                     "TELEFON": {
                                         "type": "string",
@@ -3223,59 +3243,18 @@
                     }
                 },
                 "responses": {
-                    "201": {
-                        "description": "Creat correctament",
+                    "200": {
+                        "description": "success",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "status": {
-                                            "type": "string",
+                                            "type": "integer",
                                             "example": "success"
                                         },
-                                        "result": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "DNI": {
-                                                        "type": "string",
-                                                        "example": "12345678Z"
-                                                    },
-                                                    "NOM_COMPLET": {
-                                                        "type": "string",
-                                                        "example": "Pere Pujol"
-                                                    },
-                                                    "CORREU_ELECTRONIC": {
-                                                        "type": "string",
-                                                        "example": "patata@gmail.com"
-                                                    },
-                                                    "CONTRASENYA": {
-                                                        "type": "string",
-                                                        "example": "patata"
-                                                    },
-                                                    "TELEFON": {
-                                                        "type": "string",
-                                                        "example": "123456789"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "No autoritzat",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
+                                        "data": {
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -4291,6 +4270,24 @@
                     }
                 },
                 "type": "object"
+            }
+        },
+        "responses": {
+            "401": {
+                "description": "No autoritzat",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "Unauthorized"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
             }
         },
         "securitySchemes": {
