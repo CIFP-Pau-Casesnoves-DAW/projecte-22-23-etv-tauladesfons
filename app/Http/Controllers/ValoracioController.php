@@ -48,7 +48,10 @@ class ValoracioController extends Controller
     public function getAllValoracions()
     {
         $tuples = Valoracio::all();
-        return response()->json(['status' => 'success', 'result' => $tuples], 200);
+        return response()->json([
+            'status' => 'success',
+            'result' => $tuples
+        ], 200);
     }
     /**
      * @OA\Post(

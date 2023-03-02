@@ -50,7 +50,10 @@ class Allotjament_serveiController extends Controller
     public function getAllAllotjamentServei()
     {
         $tuples = Allotjament_servei::all();
-        return response()->json($tuples);
+        return response()->json([
+            'status' => 'success',
+            'data' => $tuples
+        ], 200);
     }
 
     /**

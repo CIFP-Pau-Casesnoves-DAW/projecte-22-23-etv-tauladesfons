@@ -46,7 +46,10 @@ class VacancesController extends Controller
     public function getAllVacances()
     {
         $tuple = Vacances::all();
-        return response()->json(['status' => 'success', 'result' => $tuple], 200);
+        return response()->json([
+            'status' => 'success',
+            'result' => $tuple
+        ], 200);
     }
     /**
      * @OA\Post(

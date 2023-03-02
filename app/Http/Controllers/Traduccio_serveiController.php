@@ -42,7 +42,10 @@ class Traduccio_serveiController extends Controller
     public function getAllTraduccionsServeis()
     {
         $tuples = Traduccio_servei::all();
-        return response()->json(['status' => 'success', 'result' => $tuples], 200);
+        return response()->json([
+            'status' => 'success',
+            'result' => $tuples
+        ], 200);
     }
     /**
      * @OA\Get(

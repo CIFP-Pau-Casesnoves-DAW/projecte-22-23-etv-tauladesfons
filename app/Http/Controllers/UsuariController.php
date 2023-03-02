@@ -57,7 +57,10 @@ class UsuariController extends Controller
     public function getAllUsuaris()
     {
         $tuples = Usuari::all();
-        return response()->json(['status' => 'success', 'result' => $tuples], 200);
+        return response()->json([
+            'status' => 'success',
+            'result' => $tuples
+        ], 200);
     }
     /**
      * @OA\Post(

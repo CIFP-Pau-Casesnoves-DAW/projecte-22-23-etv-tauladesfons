@@ -39,7 +39,10 @@ class ServeiController extends Controller
     public function getAllServeis()
     {
         $tuples = Servei::all();
-        return response()->json(['status' => 'success', 'result' => $tuples], 200);
+        return response()->json([
+            'status' => 'success',
+            'result' => $tuples
+        ], 200);
     }
 
     public function insertServei(Request $request)
