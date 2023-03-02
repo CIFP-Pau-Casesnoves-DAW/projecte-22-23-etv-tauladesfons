@@ -276,9 +276,15 @@ class AllotjamentController extends Controller
     {
         try {
             $allotjaments = Allotjament::findOrFail($id);
-            return response()->json($allotjaments);
+            return response()->json([
+                'status' => 'success',
+                'data' => $allotjaments
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'No s\'ha trobat l\'allotjament'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'L\'allotjament amb id ' . $id . ' no existeix'
+            ], 404);
         }
     }
     /**

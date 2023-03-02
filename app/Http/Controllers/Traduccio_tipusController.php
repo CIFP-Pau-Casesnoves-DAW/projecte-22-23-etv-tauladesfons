@@ -117,13 +117,19 @@ class Traduccio_tipusController extends Controller
      *     )
      * )
      */
-    public function getTraduccioTipus($id_vacances, $id_idioma)
+    public function getTraduccioTipus($id_tipus, $id_idioma)
     {
         try {
-            $traduccio_tipus = Traduccio_tipus::where('FK_ID_TIPUS', $id_vacances)->where('FK_ID_IDIOMA', $id_idioma)->first();
-            return response()->json(['status' => 'success', 'result' => $traduccio_tipus], 200);
+            $traduccio_tipus = Traduccio_tipus::where('FK_ID_TIPUS', $id_tipus)->where('FK_ID_IDIOMA', $id_idioma)->first();
+            return response()->json([
+                'status' => 'success', 
+                'data' => $traduccio_tipus
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'result' => 'No existeix aquesta traduccio_tipus'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No existeix traduccio_servei amb ID tipus: ' . $id_tipus . ' i ID idioma: ' . $id_idioma
+            ], 404);
         }
     }
 

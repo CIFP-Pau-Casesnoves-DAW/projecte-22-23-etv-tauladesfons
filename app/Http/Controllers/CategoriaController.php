@@ -107,9 +107,16 @@ class CategoriaController extends Controller
     {
         try {
             $categories = Categoria::findOrFail($id);
-            return response()->json($categories);
+            return response()->json([
+                'status' => 'success',
+                'data' => $categories
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Categoria not found'], 404);
+            return response()->json(
+                [
+                'status' => 'error',
+                'message' => 'La categoria amb id ' . $id . ' no existeix'
+            ], 404);
         }
     }
 
