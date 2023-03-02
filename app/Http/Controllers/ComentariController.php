@@ -53,7 +53,10 @@ class ComentariController extends Controller
     public function index()
     {
         $tuples = Comentari::all();
-        return response()->json($tuples);
+        return response()->json([
+            'status' => 'success',
+            'data' => $tuples
+        ], 200);
     }
 
     /**

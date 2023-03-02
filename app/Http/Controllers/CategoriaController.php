@@ -45,7 +45,10 @@ class CategoriaController extends Controller
     public function index()
     {
         $tuples = Categoria::all();
-        return response()->json($tuples);
+        return response()->json([
+            'status' => 'success',
+            'data' => $tuples
+        ], 200);
     }
 
     public function store(Request $request)

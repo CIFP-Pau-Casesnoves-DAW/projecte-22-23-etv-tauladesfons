@@ -38,7 +38,10 @@ class ServeiController extends Controller
     public function index()
     {
         $tuples = Servei::all();
-        return response()->json(['status' => 'success', 'result' => $tuples], 200);
+        return response()->json([
+            'status' => 'success',
+            'result' => $tuples
+        ], 200);
     }
 
     public function store(Request $request)

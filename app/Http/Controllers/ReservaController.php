@@ -41,7 +41,10 @@ class ReservaController extends Controller
     public function getReserves()
     {
         $tuples=Reserva::all();
-        return response()->json(['status'=>'success', 'result' => $tuples],200);
+        return response()->json([
+            'status'=>'success',
+            'result' => $tuples
+        ], 200);
     }
 
     /**
