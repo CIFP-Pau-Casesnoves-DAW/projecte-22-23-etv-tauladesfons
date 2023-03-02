@@ -56,7 +56,10 @@ class AllotjamentController extends Controller
     public function index()
     {
         $tuples = Allotjament::all();
-        return response()->json($tuples);
+        return response()->json([
+            'status' => 'success',
+            'data' => $tuples
+        ], 200);
     }
 
 

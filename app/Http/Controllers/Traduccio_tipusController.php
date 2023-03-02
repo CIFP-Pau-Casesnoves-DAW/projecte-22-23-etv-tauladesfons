@@ -58,7 +58,10 @@ class Traduccio_tipusController extends Controller
     public function getTraduccionsTipus()
     {
         $tuples = Traduccio_tipus::all();
-        return response()->json(['status' => 'success', 'result' => $tuples], 200);
+        return response()->json([
+            'status' => 'success',
+            'result' => $tuples
+        ], 200);
     }
     /**
      * @OA\Get(

@@ -47,7 +47,10 @@ class ValoracioController extends Controller
     public function index()
     {
         $tuples = Valoracio::all();
-        return response()->json(['status' => 'success', 'result' => $tuples], 200);
+        return response()->json([
+            'status' => 'success',
+            'result' => $tuples
+        ], 200);
     }
     /**
      * @OA\Post(
