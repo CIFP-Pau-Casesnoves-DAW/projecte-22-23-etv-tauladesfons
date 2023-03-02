@@ -38,8 +38,8 @@ class Traduccio_serveiController extends Controller
      *     @OA\Property(property="TRADUCCIO_SERVEI", type="string")
      * )
      */
-    // ! GET all
-    public function getTraduccionsServeis()
+    // ! GET DE TOTS
+    public function getAllTraduccionsServeis()
     {
         $tuples = Traduccio_servei::all();
         return response()->json(['status' => 'success', 'result' => $tuples], 200);

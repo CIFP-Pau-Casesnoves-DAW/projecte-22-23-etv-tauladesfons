@@ -38,7 +38,7 @@ class Traduccio_vacancesController extends Controller
      * )
      */
     // ! GET all
-    public function getTraduccionsVacances()
+    public function getAllTraduccionsVacances()
     {
         $tuples = Traduccio_vacances::all();
         return response()->json(['status' => 'success', 'result' => $tuples], 200);

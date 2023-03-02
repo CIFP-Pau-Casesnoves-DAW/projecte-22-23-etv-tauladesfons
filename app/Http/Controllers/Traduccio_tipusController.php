@@ -55,7 +55,7 @@ class Traduccio_tipusController extends Controller
      * )
      */
     // ! GET all
-    public function getTraduccionsTipus()
+    public function getAllTraduccionsTipus()
     {
         $tuples = Traduccio_tipus::all();
         return response()->json(['status' => 'success', 'result' => $tuples], 200);

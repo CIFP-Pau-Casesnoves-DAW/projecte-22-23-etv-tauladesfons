@@ -53,10 +53,12 @@ class AllotjamentController extends Controller
      *
      *
      */
-    public function index()
+
+    //  ! GET DE TOTS
+    public function getAllAllotjaments()
     {
-        $tuples = Allotjament::all();
-        return response()->json($tuples);
+        $allotjaments = Allotjament::all();
+        return response()->json(["status" => "success", "data" => $allotjaments]);
     }
 
 
@@ -89,7 +91,7 @@ class AllotjamentController extends Controller
      * )
      * )
      */
-    public function store(Request $request)
+    public function insertAllotjament(Request $request)
     {
 
         $reglesvalidacio = [
@@ -269,7 +271,7 @@ class AllotjamentController extends Controller
      * )
      * )
      */
-    public function show($id)
+    public function getAllotjament($id)
     {
         try {
             $allotjaments = Allotjament::findOrFail($id);
@@ -390,7 +392,7 @@ class AllotjamentController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, $id)
+    public function updateAllotjament(Request $request, $id)
     {
         $regles = [
             'ID_ALLOTJAMENT' => 'required|integer',
@@ -508,7 +510,7 @@ class AllotjamentController extends Controller
      *   ),
      * )
      */
-    public function destroy($id)
+    public function deleteAllotjament($id)
     {
         try {
             $tuples = Allotjament::FindOrFail($id);

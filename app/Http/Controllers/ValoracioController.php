@@ -44,7 +44,8 @@ class ValoracioController extends Controller
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", format="int64", description="ID de l'allotjament que ha estat valorat")
      * )
      */
-    public function index()
+    // ! GET DE TOTS
+    public function getAllValoracions()
     {
         $tuples = Valoracio::all();
         return response()->json(['status' => 'success', 'result' => $tuples], 200);
@@ -56,7 +57,7 @@ class ValoracioController extends Controller
      *     security={{"bearerAuth":{}}},
      *     summary="Inserir una nova valoracio",
      *     description="Inserir una nova valoracio",
-     *     operationId="storeValoracio",
+     *     operationId="insertValoracio",
      *     @OA\RequestBody(
      *         description="Objecte valoracio",
      *         required=true,
@@ -77,7 +78,7 @@ class ValoracioController extends Controller
      *     )
      * )
      */
-    public function store(Request $request)
+    public function insertValoracio(Request $request)
     {
         $reglesvalidacio  = [
             'ID_VALORACIO' => 'required|integer',
@@ -115,7 +116,7 @@ class ValoracioController extends Controller
      *     tags={"Valoracions"},
      *     summary="Mostrar una valoracio",
      *     description="Mostrar una valoracio",
-     *     operationId="showValoracio",
+     *     operationId="getValoracio",
      *     @OA\Parameter(
      *         description="ID de la valoracio",
      *         in="path",
@@ -140,7 +141,8 @@ class ValoracioController extends Controller
      *     )
      * )
      */
-    public function show($id)
+    // ! GET de un especific
+    public function getValoracio($id)
     {
         try {
             $valoracions = Valoracio::findOrFail($id);
@@ -187,7 +189,7 @@ class ValoracioController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, $id)
+    public function updateValoracio(Request $request, $id)
     {
         $reglesvalidacio  = [
             'ID_VALORACIO' => 'required|integer',
@@ -250,7 +252,7 @@ class ValoracioController extends Controller
      *     )
      * )
      */
-    public function destroy($id)
+    public function deleteValoracio($id)
     {
         try {
             $tuples = Valoracio::where('ID_VALORACIO', $id)->delete();

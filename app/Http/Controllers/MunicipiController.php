@@ -36,7 +36,9 @@ class MunicipiController extends Controller
      *     @OA\Property(property="NOM_MUNICIPI", type="string")
      * )
      */
-    public function index()
+    
+    // ! GET DE TOTS
+    public function getAllMunicipis()
     {
         $tuples = Municipi::all();
         return response()->json([
@@ -73,7 +75,7 @@ class MunicipiController extends Controller
      * )
      * )
      */
-    public function store(Request $request)
+    public function insertMunicipi(Request $request)
     {
         $reglesvalidacio = [
             'ID_MUNICIPI' => 'required|integer',
@@ -136,7 +138,7 @@ class MunicipiController extends Controller
      * )
      *
      */
-    public function show($id)
+    public function getMunicipi($id)
     {
         try {
             $municipis = Municipi::findOrFail($id);
@@ -207,7 +209,7 @@ class MunicipiController extends Controller
      * )
      *
      */
-    public function update(Request $request, $id)
+    public function updateMunicipi(Request $request, $id)
     {
         $reglesvalidacio = [
             'ID_MUNICIPI' => 'required|integer',
@@ -278,7 +280,7 @@ class MunicipiController extends Controller
      * )
      * )
      */
-    public function destroy($id)
+    public function deleteMunicipi($id)
     {
         $tuples = Municipi::findOrFail($id);
         $tuples->delete();

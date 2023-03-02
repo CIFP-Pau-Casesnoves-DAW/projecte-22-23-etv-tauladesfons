@@ -47,7 +47,7 @@ class Allotjament_serveiController extends Controller
      */
 
     // ! GET de tots
-    public function index()
+    public function getAllAllotjamentServei()
     {
         $tuples = Allotjament_servei::all();
         return response()->json($tuples);
@@ -76,7 +76,7 @@ class Allotjament_serveiController extends Controller
      */
 
     // ! INSERT
-    public function store(Request $request)
+    public function insertAllotjamentServei(Request $request)
     {
         $reglesvalidacio = Validator::make($request->all(), [
             'FK_ID_ALLOT' => 'exists:ALLOTJAMENTS,ID_ALLOTJAMENT',
@@ -128,7 +128,7 @@ class Allotjament_serveiController extends Controller
      */
 
     //! GET de un en concret
-    public function show($id_allot, $id_servei)
+    public function getAllotjamentServei($id_allot, $id_servei)
     {
         try {
             $allotjament_servei = Allotjament_servei::where('FK_ID_ALLOT', $id_allot)->where('FK_ID_SERVEI', $id_servei)->firstOrFail();
@@ -246,7 +246,7 @@ class Allotjament_serveiController extends Controller
      *     )
      * )
      */
-    public function destroy($FK_ID_ALLOT, $FK_ID_SERVEI)
+    public function deleteAllotjamentServei($FK_ID_ALLOT, $FK_ID_SERVEI)
     {
         $tuple = Allotjament_servei::where('FK_ID_ALLOT', $FK_ID_ALLOT)->where('FK_ID_SERVEI', $FK_ID_SERVEI)->delete();
         if ($tuple) {

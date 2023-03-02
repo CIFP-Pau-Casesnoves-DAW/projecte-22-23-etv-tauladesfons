@@ -10,6 +10,7 @@ use OpenApi\Annotations as OA;
 
 /** @OA\Tag(name="Idiomes")*/
 class IdiomaController extends Controller
+// ! GET DE TOTS
 {
     /**
      * @OA\Get(
@@ -32,15 +33,12 @@ class IdiomaController extends Controller
      *     @OA\Property(property="NOM_IDIOMA", type="string")
      * )
      */
-    public function  index()
+    public function  getAllIdiomes()
     {
         $tuples = Idioma::all();
-        return response()->json([
-            'status' => 'success',
-            'data' => $tuples
-        ], 200);
+        return response()->json(['status' => 'success', 'data' => $tuples], 200);
     }
-
+    // ! POST D'UN IDIOMA
     /**
      * @OA\Post(
      *     path="/idiomes",
@@ -70,7 +68,7 @@ class IdiomaController extends Controller
      *     @OA\Property(property="errors", type="object")
      * )
      */
-    public function store(Request $request)
+    public function insertIdioma(Request $request)
     {
         $reglesvalidacio = [
             'ID_IDIOMA' => 'required|integer',
@@ -99,7 +97,7 @@ class IdiomaController extends Controller
             'data' => $tuple
         ], 201);
     }
-
+    // ! GET DE UN IDIOMA
     /**
      * @OA\Get(
      *     path="/idiomes/{id}",
@@ -126,7 +124,7 @@ class IdiomaController extends Controller
      * )
      * )
      */
-    public function show($id)
+    public function getIdioma($id)
     {
         try {
             $tuples = Idioma::findOrFail($id);
@@ -135,7 +133,46 @@ class IdiomaController extends Controller
             return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'], 404);
         }
     }
-    public function update(Request $request, $id)
+    // ! PUT D'IDIOMA
+    /**
+     * @OA\Put(
+     *     path="/idiomes/put/{id}",
+     *     summary="Actualitza un idioma",
+     *     tags={"Idiomes"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *     description="ID del idioma",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     *  )
+     * ),
+     *     @OA\RequestBody(
+     *     description="Dades de l'idioma",
+     *     required=true,
+     *     @OA\JsonContent(ref="#/components/schemas/Idiomes")
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Idioma actualitzat",
+     *     @OA\JsonContent(ref="#/components/schemas/Idiomes")
+     * ),
+     *     @OA\Response(
+     *     response=400,
+     *     description="Error de validació",
+     *     @OA\JsonContent(ref="#/components/schemas/Error")
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="No s'ha trobat cap idioma amb aquest ID",
+     *     @OA\JsonContent(ref="#/components/schemas/Error")
+     * )
+     * )
+     *
+     */
+    public function updateIdioma(Request $request, $id)
     {
         try {
             $tuples = Idioma::findOrFail($id);
@@ -169,8 +206,43 @@ class IdiomaController extends Controller
             return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'], 404);
         }
     }
-
-    public function destroy($id)
+    // ! DELETE D'UN IDIOMA
+    /**
+     * @OA\Delete(
+     *     path="/idiomes/destroy/{id}",
+     *     tags={"Idiomes"},
+     *     security={{"bearerAuth":{}}},
+     *     summary="Esborra un Idioma",
+     *     description="Esborra un idioma, Sols per administradors",
+     *     operationId="eliminarIdioma",
+     *     @OA\Parameter(name="id", in="path",description="ID de l'idioma",required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *         @OA\JsonContent(
+     *         @OA\Property(property="status", type="integer", example="success"),
+     *         @OA\Property(property="data",type="object")
+     *       ),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Idioma no eliminat",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Idioma no trobat",
+     *     ),
+     * )
+     */
+    public function deleteIdioma($id)
     {
         try {
             $tuples = Idioma::findOrFail($id);

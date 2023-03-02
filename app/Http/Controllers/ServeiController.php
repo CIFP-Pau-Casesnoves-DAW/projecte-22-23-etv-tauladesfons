@@ -35,13 +35,14 @@ class ServeiController extends Controller
      *     @OA\Property(property="NOM_SERVEI", type="string")
      * )
      */
-    public function index()
+    // ! GET DE TOTS
+    public function getAllServeis()
     {
         $tuples = Servei::all();
         return response()->json(['status' => 'success', 'result' => $tuples], 200);
     }
 
-    public function store(Request $request)
+    public function insertServei(Request $request)
     {
         $reglesvalidacio = [
             'ID_SERVEI' => 'required|integer',
@@ -97,7 +98,7 @@ class ServeiController extends Controller
      * )
      * )
      */
-    public function show($id)
+    public function getServei($id)
     {
         try {
             $serveis = Servei::findOrFail($id);
@@ -107,7 +108,7 @@ class ServeiController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function updateServei(Request $request, $id)
     {
         $reglesvalidacio = [
             'ID_SERVEI' => 'required|integer',
@@ -134,7 +135,7 @@ class ServeiController extends Controller
     }
 
 
-    public function destroy($id)
+    public function deleteServei($id)
     {
         try {
             $tuples = Servei::where('ID_SERVEI', $id)->delete();

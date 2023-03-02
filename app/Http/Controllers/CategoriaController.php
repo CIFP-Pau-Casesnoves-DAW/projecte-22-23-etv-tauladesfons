@@ -42,13 +42,14 @@ class CategoriaController extends Controller
      * )
      *
      */
-    public function index()
+    // ! GET DE TOTS
+    public function getAllCategories()
     {
         $tuples = Categoria::all();
         return response()->json($tuples);
     }
 
-    public function store(Request $request)
+    public function insertCategoria(Request $request)
     {
         $reglesvalidacio = [
             'ID_CATEGORIA' => 'required',
@@ -100,7 +101,7 @@ class CategoriaController extends Controller
      * )
      * )
      */
-    public function show($id)
+    public function getCategoria($id)
     {
         try {
             $categories = Categoria::findOrFail($id);
@@ -110,7 +111,7 @@ class CategoriaController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function updateCategoria(Request $request, $id)
     {
         $reglesvalidacio = [
             'ID_CATEGORIA' => 'required',
@@ -137,7 +138,7 @@ class CategoriaController extends Controller
         }
     }
 
-    public function destroy(int $id)
+    public function deleteCategoria(int $id)
     {
         $categoria = Categoria::findOrFail($id);
         $categoria->delete();

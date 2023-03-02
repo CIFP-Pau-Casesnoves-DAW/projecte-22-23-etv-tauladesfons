@@ -42,7 +42,8 @@ class VacancesController extends Controller
      *
      * )
      */
-    public function index()
+    // ! GET DE TOTS
+    public function getAllVacances()
     {
         $tuple = Vacances::all();
         return response()->json(['status' => 'success', 'result' => $tuple], 200);
@@ -74,7 +75,7 @@ class VacancesController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function insertVacances(Request $request)
     {
         $reglesvalidacio = [
             'ID_VACANCES' => 'required|integer',
@@ -130,7 +131,7 @@ class VacancesController extends Controller
      *     ),
      * )
      */
-    public function show($id)
+    public function getVacances($id)
     {
         try {
             $vacances = Vacances::findOrFail($id);
@@ -181,7 +182,7 @@ class VacancesController extends Controller
      *     ),
      * )
      */
-    public function update(Request $request, $id)
+    public function updateVacances(Request $request, $id)
     {
         $reglesvalidacio = [
             'ID_VACANCES' => 'required|integer',
@@ -207,12 +208,6 @@ class VacancesController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     /**
      * @OA\Delete(
      *     path="/vacances/destroy/{id}",
@@ -249,7 +244,7 @@ class VacancesController extends Controller
      *     ),
      * )
      */
-    public function destroy($id)
+    public function deleteVacances($id)
     {
         try {
             $tuples = Vacances::where('ID_VACANCES', $id)->delete();

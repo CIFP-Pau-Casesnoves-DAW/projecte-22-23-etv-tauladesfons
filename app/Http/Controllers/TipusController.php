@@ -10,10 +10,8 @@ use OpenApi\Annotations as OA;
 /** @OA\Tag(name="Tipus") */
 class TipusController extends Controller
 {
+// ! GET DE TOTS
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      * @OA\Get(
      *     path="/tipus",
      *     summary="Llista de tipus",
@@ -34,7 +32,7 @@ class TipusController extends Controller
      *     @OA\Property(property="NOM_TIPUS", type="string")
      * )
      */
-    public function index()
+    public function getAllTipus()
     {
         $tuples = Tipus::all();
         return response()->json([
@@ -42,12 +40,8 @@ class TipusController extends Controller
             'data' => $tuples
         ], 200);
     }
-
+// ! POST D'UN TIPUS
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      * @OA\Post(
      *     path="/tipus",
      *     summary="Crea un nou tipus",
@@ -82,7 +76,7 @@ class TipusController extends Controller
      * )
      * )
      */
-    public function store(Request $request)
+    public function insertTipus(Request $request)
     {
         $reglesvalidacio = [
             'ID_TIPUS' => 'required|integer',
@@ -112,12 +106,8 @@ class TipusController extends Controller
             ], 201);
         }
     }
-
+// ! GET D'UN TIPUS
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
      * @OA\Get(
      *     path="/tipus/{id}",
      *     summary="Mostra un tipus",
@@ -151,7 +141,7 @@ class TipusController extends Controller
      * )
      * )
      */
-    public function show($id)
+    public function getTipus($id)
     {
         try {
             $tipus = Tipus::findOrFail($id);
@@ -166,13 +156,8 @@ class TipusController extends Controller
             ], 404);
         }
     }
-
+// ! PUT DE TIPUS
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      * @OA\Put(
      *     path="/tipus/put/{id}",
      *     summary="Actualitza un tipus",
@@ -214,7 +199,7 @@ class TipusController extends Controller
      * )
      * )
      */
-    public function update(Request $request, $id)
+    public function updateTipus(Request $request, $id)
     {
         $reglesvalidacio = [
             'ID_TIPUS' => 'required|integer',
@@ -239,7 +224,7 @@ class TipusController extends Controller
             ]);
         }
     }
-
+// ! DELETE DE TIPUS
     /**
      * @OA\Delete(
      *     path="/tipus/destroy/{id}",
@@ -276,7 +261,7 @@ class TipusController extends Controller
      * )
      *
      */
-    public function destroy($id)
+    public function deleteTipus($id)
     {
         $tuples = Tipus::findOrFail($id);
         $tuples->delete();

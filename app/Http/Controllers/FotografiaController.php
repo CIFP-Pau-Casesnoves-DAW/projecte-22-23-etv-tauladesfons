@@ -12,7 +12,7 @@ class FotografiaController extends Controller
 {
 
 
-    public function getFotografies()
+    public function getAllFotografies()
     {
         $foto = Fotografia::all();
         return response()->json($foto);

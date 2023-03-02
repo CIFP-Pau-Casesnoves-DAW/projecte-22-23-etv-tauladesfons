@@ -19,7 +19,7 @@ class ComentariController extends Controller
      *     tags={"Comentaris"},
      *     summary="Mostra tots els comentaris",
      *     description="Retorna tots els comentaris",
-     *     operationId="index",
+     *     operationId="getAllComentaris",
      *     @OA\Response(
      *     response=200,
      *     description="Retorna tots els comentaris",
@@ -50,7 +50,8 @@ class ComentariController extends Controller
      *
      * )
      */
-    public function index()
+    // ! GET DE TOTS
+    public function getAllComentaris()
     {
         $tuples = Comentari::all();
         return response()->json($tuples);
@@ -94,7 +95,7 @@ class ComentariController extends Controller
      * )
      * )
      */
-    public function store(Request $request)
+    public function insertComentari(Request $request)
     {
         $reglesvalidacio = [
             'ID_COMENTARI' => 'required',
@@ -168,7 +169,7 @@ class ComentariController extends Controller
      *
      * )
      */
-    public function show($id)
+    public function getComentari($id)
     {
         try {
             $comentaris = Comentari::findOrFail($id);
@@ -226,7 +227,7 @@ class ComentariController extends Controller
      * )
      * )
      */
-    public function update(Request $request, $id)
+    public function updateComentari(Request $request, $id)
     {
         $reglesvalidacio = [
             'ID_COMENTARI' => 'required',
@@ -303,7 +304,7 @@ class ComentariController extends Controller
      * )
      *     )
      */
-    public function destroy($id)
+    public function deleteComentari($id)
     {
         try {
             $comentaris = Comentari::findOrFail($id);

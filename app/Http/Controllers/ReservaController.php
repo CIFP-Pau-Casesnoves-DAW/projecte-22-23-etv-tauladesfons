@@ -38,7 +38,8 @@ class ReservaController extends Controller
      *     @OA\Property(property="CONFIRMADA", type="boolean")
      * )
      */
-    public function getReserves()
+    // ! GET DE TOTS
+    public function getAllReserves()
     {
         $tuples=Reserva::all();
         return response()->json(['status'=>'success', 'result' => $tuples],200);
@@ -51,7 +52,7 @@ class ReservaController extends Controller
      *     security={{"bearerAuth":{}}},
      *     summary="Añaade una nueva reserva",
      *     description="Añade una nueva reserva",
-     *     operationId="store",
+     *     operationId="insertReserva",
      *     @OA\RequestBody(
      *     required=true,
      *     description="Pass reserva data",
@@ -150,7 +151,7 @@ class ReservaController extends Controller
      *     security={{"bearerAuth":{}}},
      *     summary="Mostra una reserva",
      *     description="Mostra una reserva",
-     *     operationId="show",
+     *     operationId="getReserva",
      *     @OA\Parameter(
      *     description="ID de la reserva",
      *     in="path",
