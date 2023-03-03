@@ -128,9 +128,15 @@ class IdiomaController extends Controller
     {
         try {
             $tuples = Idioma::findOrFail($id);
-            return response()->json(['status' => 'success', 'result' => $tuples], 200);
+            return response()->json([
+                'status' => 'success',
+                'data' => $tuples
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat cap idioma amb aquest ID'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'L\'idioma amb id ' . $id . ' no existeix'
+            ], 404);
         }
     }
     // ! PUT D'IDIOMA

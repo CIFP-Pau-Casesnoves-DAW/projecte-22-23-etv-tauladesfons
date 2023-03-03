@@ -94,9 +94,15 @@ class Traduccio_serveiController extends Controller
     {
         try {
             $traduccio_servei = Traduccio_servei::where('FK_ID_SERVEI', $id_servei)->where('FK_ID_IDIOMA', $id_idioma)->first();
-            return response()->json(['status' => 'success', 'result' => $traduccio_servei], 200);
+            return response()->json([
+                'status' => 'success',
+                'data' => $traduccio_servei
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'result' => 'No existeix aquesta traduccio_servei'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No existeix traduccio_servei amb ID servei: ' . $id_servei . ' i ID idioma: ' . $id_idioma
+            ], 404);
         }
     }
 

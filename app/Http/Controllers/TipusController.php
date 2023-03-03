@@ -152,7 +152,7 @@ class TipusController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Tipus no trobat'
+                'message' => 'El tipus amb id ' . $id . ' no existeix'
             ], 404);
         }
     }

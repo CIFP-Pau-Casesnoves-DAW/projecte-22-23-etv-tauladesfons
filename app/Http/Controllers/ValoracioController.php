@@ -149,9 +149,15 @@ class ValoracioController extends Controller
     {
         try {
             $valoracions = Valoracio::findOrFail($id);
-            return response()->json(['status' => 'success', 'result' => $valoracions], 200);
+            return response()->json([
+                'status' => 'success',
+                'data' => $valoracions
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat la valoració.'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'La valoració amb id ' . $id . ' no existeix'
+            ], 404);
         }
     }
 

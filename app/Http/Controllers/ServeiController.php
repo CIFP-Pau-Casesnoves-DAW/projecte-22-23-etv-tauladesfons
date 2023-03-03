@@ -105,9 +105,15 @@ class ServeiController extends Controller
     {
         try {
             $serveis = Servei::findOrFail($id);
-            return response()->json(['status' => 'success', 'result' => $serveis], 200);
+            return response()->json([
+                'status' => 'success',
+                'data' => $serveis
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat aquest servei'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'El servei amb id ' . $id . ' no existeix'
+            ], 404);
         }
     }
 

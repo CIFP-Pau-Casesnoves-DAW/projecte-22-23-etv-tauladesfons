@@ -176,9 +176,15 @@ class ComentariController extends Controller
     {
         try {
             $comentaris = Comentari::findOrFail($id);
-            return response()->json($comentaris);
+            return response()->json([
+                'status' => 'success',
+                'data' => $comentaris
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Comentari no trobat'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'El comentari amb id ' . $id . ' no existeix'
+            ], 404);
         }
     }
 

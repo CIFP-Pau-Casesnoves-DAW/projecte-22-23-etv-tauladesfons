@@ -138,9 +138,15 @@ class VacancesController extends Controller
     {
         try {
             $vacances = Vacances::findOrFail($id);
-            return response()->json(['status' => 'success', 'result' => $vacances], 200);
+            return response()->json([
+                'status' => 'success',
+                'data' => $vacances
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'result' => 'No s\'han trobat les vacances.'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Les vacances amb id ' . $id . ' no existeixen'
+            ], 404);
         }
     }
 

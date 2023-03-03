@@ -95,9 +95,15 @@ class Traduccio_vacancesController extends Controller
     {
         try {
             $traduccio_vacances = Traduccio_vacances::where('FK_ID_VACANCES', $id_vacances)->where('FK_ID_IDIOMA', $id_idioma)->first();
-            return response()->json(['status' => 'success', 'result' => $traduccio_vacances], 200);
+            return response()->json([
+                'status' => 'success',
+                'data' => $traduccio_vacances
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'result' => 'No existeix aquesta traduccio_vacances'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No existeix traduccio_vacances amb ID vacances: ' . $id_vacances . ' i ID idioma: ' . $id_idioma
+            ], 404);
         }
     }
 

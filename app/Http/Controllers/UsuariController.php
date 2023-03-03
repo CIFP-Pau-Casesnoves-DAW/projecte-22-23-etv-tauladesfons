@@ -187,9 +187,15 @@ class UsuariController extends Controller
     {
         try {
             $usuaris = Usuari::findOrFail($id);
-            return response()->json(['status' => 'success', 'result' => $usuaris], 200);
+            return response()->json([
+                'status' => 'success',
+                'data' => $usuaris
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'error', 'result' => 'No s\'ha trobat l\'usuari'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'L\'usuari amb id ' . $id . ' no existeix'
+            ], 404);
         }
     }
 

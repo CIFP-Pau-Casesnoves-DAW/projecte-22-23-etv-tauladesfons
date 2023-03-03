@@ -135,9 +135,15 @@ class Allotjament_serveiController extends Controller
     {
         try {
             $allotjament_servei = Allotjament_servei::where('FK_ID_ALLOT', $id_allot)->where('FK_ID_SERVEI', $id_servei)->firstOrFail();
-            return response()->json("Allotjament_servei: " . $allotjament_servei . " amb ID allotjament: " . $id_allot . " i ID servei: " . $id_servei);
+            return response()->json([
+                'stauts' => 'success',
+                'data' => $allotjament_servei
+            ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'No existeix allotjament_servei amb aquest ID allotjament: ' . $id_allot . ' i ID servei: ' . $id_servei], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No existeix allotjament_servei amb ID allotjament: ' . $id_allot . ' i ID servei: ' . $id_servei
+            ], 404);
         }
     }
 
