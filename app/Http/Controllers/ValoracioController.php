@@ -38,7 +38,6 @@ class ValoracioController extends Controller
      *     schema="Valoracio",
      *     type="object",
      *     title="Valoracio model",
-     *     @OA\Property(property="ID_VALORACIO", type="integer", format="int64", description="ID de la valoracio"),
      *     @OA\Property(property="PUNTUACIO", type="integer", format="int64", description="Puntuacio de la valoracio"),
      *     @OA\Property(property="FK_ID_USUARI", type="integer", format="int64", description="ID de l'usuari que ha valorat"),
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", format="int64", description="ID de l'allotjament que ha estat valorat")
@@ -84,14 +83,11 @@ class ValoracioController extends Controller
     public function insertValoracio(Request $request)
     {
         $reglesvalidacio  = [
-            'ID_VALORACIO' => 'required|integer',
             'PUNTUACIO' => 'required|integer',
             'FK_ID_USUARI' => 'required|integer',
             'FK_ID_ALLOTJAMENT' => 'required|integer'
         ];
         $missatges = [
-            'ID_VALORACIO.required' => 'El camp ID_VALORACIO és obligatori.',
-            'ID_VALORACIO.integer' => 'El camp ID_VALORACIO ha de ser un número enter.',
             'PUNTUACIO.required' => 'El camp PUNTUACIO és obligatori.',
             'PUNTUACIO. integer' => 'El camp PUNTUACIO ha de ser un número enter.',
             'FK_ID_USUARI.required' => 'El camp FK_ID_USUARI és obligatori.',
@@ -101,15 +97,25 @@ class ValoracioController extends Controller
         ];
         $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
         if ($validacio->fails()) {
-            return response()->json($validacio->errors(), 400);
+            return response()->json([
+                'stauts' => 'error',
+                $validacio->errors()
+            ], 400);
         } else {
-            $valoracions = new Valoracio();
-            $valoracions->ID_VALORACIO = $request->input('ID_VALORACIO');
-            $valoracions->PUNTUACIO = $request->input('PUNTUACIO');
-            $valoracions->FK_ID_USUARI = $request->input('FK_ID_USUARI');
-            $valoracions->FK_ID_ALLOTJAMENT = $request->input('FK_ID_ALLOTJAMENT');
-            $valoracions->save();
-            return response()->json(['status' => 'success', 'result' => $valoracions], 200);
+            $valoracio = Valoracio::firstOrCreate(['PUNTUACIO' => $request->PUNTUACIO,
+                                                'FK_ID_USUARI' => $request->FK_ID_USUARI,
+                                                'FK_ID_ALLOTJAMENT' => $request->FK_ID_ALLOTJAMENT]);
+            if ($valoracio->wasRecentlyCreated) {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $valoracio
+                ], 201);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'La valoració ja existeix'
+                ], 409);
+            }
         }
     }
 

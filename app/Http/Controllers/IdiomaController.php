@@ -29,10 +29,10 @@ class IdiomaController extends Controller
      * @OA\Schema(
      *     schema="Idiomes",
      *     type="object",
-     *     @OA\Property(property="ID_IDIOMA", type="integer"),
      *     @OA\Property(property="NOM_IDIOMA", type="string")
      * )
      */
+        // ! GET DE TOTS
     public function  getAllIdiomes()
     {
         $tuples = Idioma::all();
@@ -71,12 +71,9 @@ class IdiomaController extends Controller
     public function insertIdioma(Request $request)
     {
         $reglesvalidacio = [
-            'ID_IDIOMA' => 'required|integer',
-            'NOM_IDIOMA' => 'required|string|max:50',
+            'NOM_IDIOMA' => 'required|string|max:50'
         ];
         $missatges = [
-            'ID_IDIOMA.required' => 'El camp ID_IDIOMA és obligatori',
-            'ID_IDIOMA.integer' => 'El camp ID_IDIOMA ha de ser un número enter',
             'NOM_IDIOMA.required' => 'El camp NOM_IDIOMA és obligatori',
             'NOM_IDIOMA.string' => 'El camp NOM_IDIOMA ha de ser una cadena de caràcters',
             'NOM_IDIOMA.max' => 'El camp NOM_IDIOMA no pot tenir més de 50 caràcters.'
@@ -85,17 +82,22 @@ class IdiomaController extends Controller
         if ($validador->fails()) {
             return response()->json([
                 'status' => 'error',
-                'errors' => $validador->errors()->all()
+                'errors' => $validador->errors()
             ], 400);
+        } else {
+            $idioma = Idioma::firstOrCreate(['NOM_IDIOMA' => $request->NOM_IDIOMA]);
+            if ($idioma->wasRecentlyCreated) {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $idioma
+                ], 201);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'L\'idioma ja existeix'
+                ], 409);
+            }
         }
-        $tuple = new Idioma;
-        $tuple->ID_IDIOMA = $request->input('ID_IDIOMA');
-        $tuple->NOM_IDIOMA = strtoupper($request->input('NOM_IDIOMA'));
-        $tuple->save();
-        return response()->json([
-            'status' => 'success',
-            'data' => $tuple
-        ], 201);
     }
     // ! GET DE UN IDIOMA
     /**

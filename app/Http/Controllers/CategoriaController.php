@@ -36,7 +36,6 @@ class CategoriaController extends Controller
      * @OA\Schema(
      *     schema="Categoria",
      *     type="object",
-     *     @OA\Property(property="ID_CATEGORIA", type="integer"),
      *     @OA\Property(property="NOM_CATEGORIA", type="string"),
      *     @OA\Property(property="TARIFA", type="number")
      * )
@@ -52,30 +51,67 @@ class CategoriaController extends Controller
         ], 200);
     }
 
+    // ! POST D'UN CATEGORIA
+/**
+     * @OA\Post(
+     *     path="/categories",
+     *     summary="Crea una categoria",
+     *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *     required=true,
+     *     description="Dades de la categoria",
+     *     @OA\JsonContent(
+     *     required={"NOM_CATEGORIA","TARIFA"},
+     *     @OA\Property(property="NOM_CATEGORIA", type="string"),
+     *     @OA\Property(property="TARIFA", type="number")
+     *  )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Categoria creada",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="data", ref="#/components/schemas/Categoria")
+     * )
+     * )
+     * )
+     */
+
     public function insertCategoria(Request $request)
     {
         $reglesvalidacio = [
-            'ID_CATEGORIA' => 'required',
             'NOM_CATEGORIA' => 'required|max:50',
             'TARIFA' => 'required|numeric'
         ];
         $missatges = [
-            'ID_CATEGORIA.required' => 'El camp ID_CATEGORIA és obligatori',
             'NOM_CATEGORIA.required' => 'El camp NOM_CATEGORIA és obligatori',
+            'NOM_CATEGORIA.string' => 'El camp NOM_CATEGORIA és obligatori',
             'NOM_CATEGORIA.max' => 'El camp NOM_CATEGORIA no pot tenir més de 50 caràcters',
             'TARIFA.required' => 'El camp TARIFA és obligatori',
             'TARIFA.numeric' => 'El camp TARIFA ha de ser numèric'
         ];
         $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 400);
         } else {
-            $categoria = new Categoria();
-            $categoria->ID_CATEGORIA = $request->input('ID_CATEGORIA');
-            $categoria->NOM_CATEGORIA = $request->input('NOM_CATEGORIA');
-            $categoria->TARIFA = $request->input('TARIFA');
-            $categoria->save();
-            return response()->json(['status' => 'Categoria creada correctament'], 201);
+            $categoria = Categoria::firstOrCreate(['NOM_CATEGORIA' => $request->NOM_CATEGORIA,
+                                                    'TARIFA' => $request->TARIFA]);
+            if ($categoria->wasRecentlyCreated) {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $categoria
+                ], 201);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'La categoria ja existeix'
+                ], 409);
+            }
         }
     }
 
