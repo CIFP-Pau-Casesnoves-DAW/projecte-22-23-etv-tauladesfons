@@ -150,10 +150,10 @@ class MunicipiController extends Controller
                 'status' => 'success',
                 'data' => $municipis
             ], 200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'El municipi amb id ' . $id . ' no existeix'
+                'message' => 'No s\'ha trobat cap municipi amb la ID proporcionada'
             ], 404);
         }
     }
