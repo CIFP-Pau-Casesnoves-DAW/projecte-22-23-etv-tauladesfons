@@ -150,12 +150,6 @@ class UsuariController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     /** * @OA\Get(
      *     path="/usuaris/{id}",
      *     operationId="Obtenir usuari",
