@@ -18,6 +18,7 @@ use App\Http\Controllers\Traduccio_vacancesController;
 use App\Http\Controllers\UsuariController;
 use App\Http\Controllers\VacancesController;
 use App\Http\Controllers\ValoracioController;
+use App\Models\Fotografia;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -160,8 +161,9 @@ Route::group(['prefix' => 'login'], function () {
 });
 // !ruta de fotografies
 Route::group(['prefix' => 'fotografies'], function () {
-    Route::get('/', [FotografiaController::class, 'getAllFotografies'])->middleware("token");
-    Route::get('/{id}', [FotografiaController::class, 'getFotografia'])->middleware("token");
+    Route::get('/', [FotografiaController::class, 'getAllFotografies']);
+    Route::get('/{id}', [FotografiaController::class, 'getFotografia']);
+    Route::get("/allotjament/{idAllotjament}", [FotografiaController::class, "getFotografiesAllotjament"]);
     Route::post('', [FotografiaController::class, 'insertFotografia'])->middleware("token");
     Route::put('/put/{id}', [FotografiaController::class, 'updateFotografia'])->middleware("token");
     Route::delete('/destroy/{id}', [FotografiaController::class, 'deleteFotografia'])->middleware("token");
