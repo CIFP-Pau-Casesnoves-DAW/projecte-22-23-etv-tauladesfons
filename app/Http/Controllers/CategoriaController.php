@@ -157,37 +157,158 @@ class CategoriaController extends Controller
         }
     }
 
+    /**
+     *  @OA\Put(
+     *     path="/categories/put/{id}",
+     *     summary="Actualitza una categoria",
+     *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *     description="ID de la categoria",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     * )
+     * ),
+     *     @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *     required={"NOM_CATEGORIA","TARIFA"},
+     *     @OA\Property(property="NOM_CATEGORIA", type="string"),
+     *     @OA\Property(property="TARIFA", type="number")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Categoria actualitzada",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="data", ref="#/components/schemas/Categoria")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=400,
+     *     description="Error de validació",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="errors", ref="#/components/schemas/Categoria")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Categoria no trobada",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="data", type="string")
+     * )
+     * )
+     * )
+     *
+     */
+
     public function updateCategoria(Request $request, $id)
     {
         $reglesvalidacio = [
-            'ID_CATEGORIA' => 'required',
             'NOM_CATEGORIA' => 'required|max:50',
             'TARIFA' => 'required|numeric'
         ];
         $missatges = [
-            'ID_CATEGORIA.required' => 'El camp ID_CATEGORIA és obligatori',
             'NOM_CATEGORIA.required' => 'El camp NOM_CATEGORIA és obligatori',
             'NOM_CATEGORIA.max' => 'El camp NOM_CATEGORIA no pot tenir més de 50 caràcters',
             'TARIFA.required' => 'El camp TARIFA és obligatori',
             'TARIFA.numeric' => 'El camp TARIFA ha de ser numèric'
         ];
-        $validator = Validator::make($request->all(), $reglesvalidacio);
+        $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
+            return response()->json([
+                'status' => 'error',
+                'error' => $validator->errors()
+            ], 400);
         } else {
-            $categoria = Categoria::findOrFail($id);
-            $categoria->ID_CATEGORIA = $request->input('ID_CATEGORIA');
-            $categoria->NOM_CATEGORIA = $request->input('NOM_CATEGORIA');
-            $categoria->TARIFA = $request->input('TARIFA');
-            $categoria->save();
-            return response()->json(['status' => 'Categoria actualitzada correctament'], 200);
+            try {
+                $categoria = Categoria::findOrFail($id);
+                $nouNomCategoria = $request->NOM_CATEGORIA;
+                $novaTarifa = $request->TARIFA;
+                if ($categoria->NOM_CATEGORIA !== $nouNomCategoria) {
+                    $categoriaExist = Categoria::where('NOM_CATEGORIA', $nouNomCategoria)->first();
+                    if ($categoriaExist !== null) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'El nom de la categoria ja existeix'
+                        ], 409);
+                    }
+                    $categoria->NOM_CATEGORIA = $nouNomCategoria;
+                    $categoria->TARIFA = $novaTarifa;
+                }
+                $categoria->save();
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $categoria
+                ], 200);
+            } catch (ModelNotFoundException $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No s\'ha trobat cap categoria amb la ID proporcionada',
+                ], 404);
+            }
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/categories/destroy/{id}",
+     *     summary="Elimina una categoria",
+     *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *     description="ID de la categoria",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *     type="integer"
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="Categoria eliminada",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="message", type="string")
+     * )
+     * ),
+     *     @OA\Response(
+     *     response=404,
+     *     description="Categoria no trobada",
+     *     @OA\JsonContent(
+     *     type="object",
+     *     @OA\Property(property="status", type="string"),
+     *     @OA\Property(property="message", type="string")
+     * )
+     * )
+     * )
+     */
+
     public function deleteCategoria(int $id)
     {
-        $categoria = Categoria::findOrFail($id);
-        $categoria->delete();
-        return response()->json(['status' => 'Categoria eliminada correctament'], 200);
+        try {
+            $tuples = Categoria::findOrFail($id);
+            $tuples->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Categoria eliminada correctament'
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No s\'ha trobat cap categoria amb la ID proporcionada',
+            ], 404);
+        }
     }
 }
