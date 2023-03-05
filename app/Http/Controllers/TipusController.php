@@ -51,8 +51,7 @@ class TipusController extends Controller
      *     required=true,
      *     description="Dades del nou tipus",
      *     @OA\JsonContent(
-     *     required={"ID_TIPUS", "NOM_TIPUS"},
-     *     @OA\Property(property="ID_TIPUS", type="integer"),
+     *     required={"NOM_TIPUS"},
      *     @OA\Property(property="NOM_TIPUS", type="string")
      *  )
      * ),
@@ -79,12 +78,9 @@ class TipusController extends Controller
     public function insertTipus(Request $request)
     {
         $reglesvalidacio = [
-            'ID_TIPUS' => 'required|integer',
-            'NOM_TIPUS' => 'required|string|max:50',
+            'NOM_TIPUS' => 'required|string|max:50'
         ];
         $missatge = [
-            'ID_TIPUS.required' => 'El camp ID_TIPUS és obligatori',
-            'ID_TIPUS.integer' => 'El camp ID_TIPUS ha de ser un enter',
             'NOM_TIPUS.required' => 'El camp NOM_TIPUS és obligatori',
             'NOM_TIPUS.string' => 'El camp NOM_TIPUS ha de ser una cadena de caràcters',
             'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 50 caràcters',
@@ -96,14 +92,18 @@ class TipusController extends Controller
                 'errors' => $validacio->errors()
             ], 400);
         } else {
-            $tuple = new Tipus();
-            $tuple->ID_TIPUS = $request->input('ID_TIPUS');
-            $tuple->NOM_TIPUS = $request->input('NOM_TIPUS');
-            $tuple->save();
-            return response()->json([
-                'status' => 'success',
-                'data' => $tuple
-            ], 201);
+            $tipus = Tipus::firstOrCreate(['NOM_TIPUS' => $request->NOM_TIPUS]);
+            if ($tipus->wasRecentlyCreated) {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $tipus
+                ], 201);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'El tipus ja existeix'
+                ], 409);
+            }
         }
     }
 // ! GET D'UN TIPUS
