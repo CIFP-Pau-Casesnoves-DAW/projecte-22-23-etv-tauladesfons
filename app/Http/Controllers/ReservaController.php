@@ -345,9 +345,9 @@ class ReservaController extends Controller
         try {
             $tuples=Reserva::findOrFail($id);
             $tuples->delete();
-            return response()->json(['status'=>'success', 'result' => 'Reserva eliminada correctament'],200);
+            return response()->json(['status'=>'success', 'message' => 'Reserva eliminada correctament'],200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status'=>'error', 'result' => 'No existeix aquesta reserva'],404);
+            return response()->json(['status'=>'error', 'message' => 'No existeix aquesta reserva'],404);
         }
     }
 }
