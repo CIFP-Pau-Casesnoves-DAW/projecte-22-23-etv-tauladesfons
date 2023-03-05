@@ -62,13 +62,12 @@ class UsuariController extends Controller
                 'status' => 'success',
                 'data' => $tuples
             ], 200);
-        }else {
+        } else {
             return response()->json([
                 'status' => 'error',
                 'message' => 'permisos insuficients'
             ]);
         }
-
     }
 
     /**
@@ -146,16 +145,10 @@ class UsuariController extends Controller
             if ($usuari->save()) {
                 return response()->json(['status' => 'success', 'data' => $usuari], 200);
             }
-            return response()->json(['status' => 'Error', 'data' => 'Error guardant'], 400);
+            return response()->json(['status' => 'error', 'data' => 'Error guardant'], 400);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     /** * @OA\Get(
      *     path="/usuaris/{id}",
      *     operationId="Obtenir usuari",
@@ -194,16 +187,17 @@ class UsuariController extends Controller
      */
     public function getUsuari($id)
     {
+
         try {
-            $usuaris = Usuari::findOrFail($id);
+            $usuari = Usuari::findOrFail($id);
             return response()->json([
                 'status' => 'success',
-                'data' => $usuaris
+                'data' => $usuari
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'L\'usuari amb id ' . $id . ' no existeix'
+                'message' => 'No s\'ha trobat cap usuari amb la ID proporcionada'
             ], 404);
         }
     }
@@ -225,8 +219,7 @@ class UsuariController extends Controller
      *     required=true,
      *     description="Usuari a modificar",
      *     @OA\JsonContent(
-     *     required={"ID_USUARI","DNI","NOM_COMPLET","CORREU_ELECTRONIC","CONTRASENYA","TELEFON","ADMINISTRADOR"},
-     *     @OA\Property(property="ID_USUARI", type="integer", format="int64", example=1),
+     *     required={"DNI","NOM_COMPLET","CORREU_ELECTRONIC","CONTRASENYA","TELEFON"},
      *     @OA\Property(property="DNI", type="string", format="string", example="12345678Z"),
      *     @OA\Property(property="NOM_COMPLET", type="string", format="string", example="Nom Cognom"),
      *     @OA\Property(property="CORREU_ELECTRONIC", type="string", format="string", example="patata@gmail.com"),
@@ -260,49 +253,60 @@ class UsuariController extends Controller
      * )
      */
     public function updateUsuaris(Request $request, $id)
+
     {
-        $reglesvalidacio = [
-            'ID_USUARI' => 'required|integer',
-            'DNI' => 'required|string|max:9',
-            'NOM_COMPLET' => 'required|string|max:50',
-            'CORREU_ELECTRONIC' => 'required|string|max:50',
-            'CONTRASENYA' => 'required|string|max:50',
-            'TELEFON' => 'required|string|max:9'
-        ];
-        $missatges = [
-            'ID_USUARI.required' => 'El camp ID_USUARI és obligatori.',
-            'ID_USUARI.integer' => 'El camp ID_USUARI ha de ser un número enter.',
-            'DNI.required' => 'El camp DNI és obligatori.',
-            'DNI.string' => 'El camp DNI ha de ser una cadena de caràcters.',
-            'DNI.max' => 'El camp DNI no pot tenir més de 9 caràcters.',
-            'NOM_COMPLET.required' => 'El camp NOM_COMPLET és obligatori.',
-            'NOM_COMPLET.string' => 'El camp NOM_COMPLET ha de ser una cadena de caràcters.',
-            'NOM_COMPLET.max' => 'El camp DNI no pot tenir més de 50 caràcters.',
-            'CORREU_ELECTRONIC.required' => 'El camp CORREU_ELECTRONIC és obligatori.',
-            'CORREU_ELECTRONIC.string' => 'El camp CORREU_ELECTRONICA ha de ser una cadena de caràcters.',
-            'CORREU_ELECTRONIC.max' => 'El camp DNI no pot tenir més de 50 caràcters.',
-            'CONTRASENYA.required' => 'El camp CONTRASENYA és obligatori.',
-            'CONTRASENYA.string' => 'El camp CONTRASENYA ha de ser una cadena de caràcters.',
-            'CONTRASENYA.max' => 'El camp CONTRASENYA no pot tenir més de 50 caràcters.',
-            'TELEFON.required' => 'El camp TELEFON és obligatori.',
-            'TELEFON.string' => 'El camp TELEFON ha de ser una cadena de caràcters.',
-            'TELEFON.max' => 'El camp DNI no pot tenir més de 9 caràcters.'
-        ];
-        $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        } else {
-            $usuaris = Usuari::findOrFail($id);
-            $usuaris->ID_USUARI = $request->input('ID_USUARI');
-            $usuaris->DNI = $request->input('DNI');
-            $usuaris->NOM_COMPLET = $request->input('NOM_COMPLET');
-            $usuaris->CORREU_ELECTRONIC = $request->input('CORREU_ELECTRONIC');
-            $usuaris->CONTRASENYA = Hash::make($request->input('CONTRASENYA'));
-            $usuaris->TELEFON = $request->input('TELEFON');
-            $usuaris->save();
-            return response()->json(['status' => 'Usuari actualitzat correctament'], 200);
+        try {
+            if ($request->validat_id == $id || $request->esAdministrador) {
+                $reglesvalidacio = [
+                    'DNI' => 'required|string|max:9',
+                    'NOM_COMPLET' => 'required|string|max:50',
+                    'CORREU_ELECTRONIC' => 'required|string|max:50|unique:USUARIS,CORREU_ELECTRONIC',
+                    'CONTRASENYA' => 'required|string|max:50',
+                    'TELEFON' => 'required|string|max:9'
+                ];
+                $missatges = [
+                    'DNI.required' => 'El camp DNI és obligatori.',
+                    'DNI.string' => 'El camp DNI ha de ser una cadena de caràcters.',
+                    'DNI.max' => 'El camp DNI no pot tenir més de 9 caràcters.',
+                    'NOM_COMPLET.required' => 'El camp NOM_COMPLET és obligatori.',
+                    'NOM_COMPLET.string' => 'El camp NOM_COMPLET ha de ser una cadena de caràcters.',
+                    'NOM_COMPLET.max' => 'El camp DNI no pot tenir més de 50 caràcters.',
+                    'CORREU_ELECTRONIC.required' => 'El camp CORREU_ELECTRONIC és obligatori.',
+                    'CORREU_ELECTRONIC.string' => 'El camp CORREU_ELECTRONIC ha de ser una cadena de caràcters.',
+                    'CORREU_ELECTRONIC.max' => 'El camp DNI no pot tenir més de 50 caràcters.',
+                    'CORREU_ELECTRONIC.unique' => 'El camp CORREU_ELECTRONIC ja s\'està empleant',
+                    'CONTRASENYA.required' => 'El camp CONTRASENYA és obligatori.',
+                    'CONTRASENYA.string' => 'El camp CONTRASENYA ha de ser una cadena de caràcters.',
+                    'CONTRASENYA.max' => 'El camp CONTRASENYA no pot tenir més de 50 caràcters.',
+                    'TELEFON.required' => 'El camp TELEFON és obligatori.',
+                    'TELEFON.string' => 'El camp TELEFON ha de ser una cadena de caràcters.',
+                    'TELEFON.max' => 'El camp DNI no pot tenir més de 9 caràcters.'
+                ];
+                $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
+                if ($validator->fails()) {
+                    return response()->json(['error' => $validator->errors()], 400);
+                } else {
+                    $usuaris = Usuari::findOrFail($id);
+                    $usuaris->DNI = $request->input('DNI');
+                    $usuaris->NOM_COMPLET = $request->input('NOM_COMPLET');
+                    $usuaris->CORREU_ELECTRONIC = $request->input('CORREU_ELECTRONIC');
+                    $usuaris->CONTRASENYA = Hash::make($request->input('CONTRASENYA'));
+                    $usuaris->TELEFON = $request->input('TELEFON');
+                    $usuaris->save();
+                    return response()->json(['status' => 'success', 'data' => $usuaris], 200);
+                }
+            }else{
+                return response()->json(['status' => 'error', 'message' => 'Permisos insuficients']);
+            }
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No s\'ha trobat cap usuari amb la ID proporcionada',
+            ], 404);
         }
+        
     }
+
     /**
      * @OA\Delete(
      *     path="/usuaris/destroy/{id}",
@@ -345,17 +349,24 @@ class UsuariController extends Controller
      * )
      * )
      */
-    public function deleteUsuari($id)
+    public function deleteUsuari(Request $request, $id)
     {
         try {
-            $tuples = Usuari::where('ID_USUARI', $id)->delete();
-            return  response()->json([
-                'success' => 'Usuari eliminat correctament.'
-            ]);
-        } catch (Exception $e) {
+            if ($request->validat_id == $id || $request->esAdministrador) {
+            $tuples = Usuari::findOrFail($id);
+            $tuples->delete();
             return response()->json([
-                'error' => 'No s\'ha pogut eliminar l\'usuari.'
-            ]);
+                'status' => 'success',
+                'message' => 'Usuari eliminat correctament'
+            ], 200);
+        }else{
+            return response()->json(['status' => 'error', 'message' => 'Permisos insuficients']);
+        }
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No s\'ha trobat cap usuari amb la ID proporcionada',
+            ], 404);
         }
     }
 }

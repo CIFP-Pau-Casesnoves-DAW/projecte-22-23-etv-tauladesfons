@@ -70,34 +70,39 @@ class IdiomaController extends Controller
      */
     public function insertIdioma(Request $request)
     {
-        $reglesvalidacio = [
-            'NOM_IDIOMA' => 'required|string|max:50'
-        ];
-        $missatges = [
-            'NOM_IDIOMA.required' => 'El camp NOM_IDIOMA és obligatori',
-            'NOM_IDIOMA.string' => 'El camp NOM_IDIOMA ha de ser una cadena de caràcters',
-            'NOM_IDIOMA.max' => 'El camp NOM_IDIOMA no pot tenir més de 50 caràcters.'
-        ];
-        $validador = Validator::make($request->all(), $reglesvalidacio, $missatges);
-        if ($validador->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'errors' => $validador->errors()
-            ], 400);
-        } else {
-            $idioma = Idioma::firstOrCreate(['NOM_IDIOMA' => $request->NOM_IDIOMA]);
-            if ($idioma->wasRecentlyCreated) {
-                return response()->json([
-                    'status' => 'success',
-                    'data' => $idioma
-                ], 201);
-            } else {
+        if ($request->esAdministrador) {
+            $reglesvalidacio = [
+                'NOM_IDIOMA' => 'required|string|max:50'
+            ];
+            $missatges = [
+                'NOM_IDIOMA.required' => 'El camp NOM_IDIOMA és obligatori',
+                'NOM_IDIOMA.string' => 'El camp NOM_IDIOMA ha de ser una cadena de caràcters',
+                'NOM_IDIOMA.max' => 'El camp NOM_IDIOMA no pot tenir més de 50 caràcters.'
+            ];
+            $validador = Validator::make($request->all(), $reglesvalidacio, $missatges);
+            if ($validador->fails()) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'L\'idioma ja existeix'
-                ], 409);
+                    'errors' => $validador->errors()
+                ], 400);
+            } else {
+                $idioma = Idioma::firstOrCreate(['NOM_IDIOMA' => $request->NOM_IDIOMA]);
+                if ($idioma->wasRecentlyCreated) {
+                    return response()->json([
+                        'status' => 'success',
+                        'data' => $idioma
+                    ], 201);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'L\'idioma ja existeix'
+                    ], 409);
+                }
             }
+        }else{
+            return response()->json(['status' => 'error', 'message' => 'Permisos insuficients']);
         }
+
     }
     // ! GET DE UN IDIOMA
     /**
