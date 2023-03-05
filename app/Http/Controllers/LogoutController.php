@@ -20,18 +20,19 @@ class LogoutController extends Controller
      *    security={{"bearerAuth":{}}},
      *    @OA\Response(
      *         response=200,
-     *         description="Success"
+     *         description="success"
      *    )
      *  )
      */
     public function logout(Request $request)
     {
-        $request->Usuari->Token = null;
+        $usuari = Usuari::where("ID_USUARI",$request->validat_id)->first();
+        $usuari->TOKEN =null;
 
-        if ($request->Usuari->save()) {
-            return response()->json(['Status' => 'Success','Result' => ""], 200);
+        if ($usuari->save()) {
+            return response()->json(['status' => 'success','message' => ""], 200);
         } else {
-            return response()->json(['Status' => 'Error','Result' => 'Error fent logout'], 400);
+            return response()->json(['status' => 'error','message' => 'Error fent logout'], 400);
         }
     }
 }

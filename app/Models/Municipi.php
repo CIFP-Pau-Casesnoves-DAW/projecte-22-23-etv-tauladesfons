@@ -12,8 +12,5 @@ class Municipi extends Model
     protected $primaryKey = 'ID_MUNICIPI';
     public $timestamps = false;
     public $incrementing = false;
-    protected $fillable = [
-        'ID_MUNICIPI',
-        'NOM_MUNICIPI'
-    ];
+    protected $fillable = ['NOM_MUNICIPI'];
 }

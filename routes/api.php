@@ -68,7 +68,7 @@ Route::group(['prefix' => 'allotjaments'], function () {
 });
 // !ruta de allotjament_servei
 Route::group(['prefix' => 'allotjaments_serveis'], function () {
-    Route::get('/', [Allotjament_serveiController::class, 'getAllAllotjamentServei'])->middleware("token");
+    Route::get('/', [Allotjament_serveiController::class, 'getAllAllotjamentServei']);
     Route::get('/{id_allot}/{id_servei}', [Allotjament_serveiController::class, 'getAllotjamentServei']);
     Route::post('', [Allotjament_serveiController::class, 'insertAllotjamentServei'])->middleware("token")->middleware("token");
     Route::put('/put/{id_allot}/{id_servei}', [Allotjament_serveiController::class, 'updateAllotjamentServei'])->middleware("token");
@@ -144,7 +144,7 @@ Route::group(['prefix' => 'vacances'], function () {
     Route::get('/{id}', [VacancesController::class, 'getVacances']);
     Route::post('', [VacancesController::class, 'insertVacances'])->middleware("token");
     Route::put('/put/{id}', [VacancesController::class, 'updateVacances'])->middleware("token");
-    Route::delete('/destroy/{id}', [VacancesController::class, 'destroy'])->middleware("token");
+    Route::delete('/destroy/{id}', [VacancesController::class, 'deleteVacances'])->middleware("token");
 });
 // !ruta de valoracions
 Route::group(['prefix' => 'valoracions'], function () {
@@ -152,7 +152,7 @@ Route::group(['prefix' => 'valoracions'], function () {
     Route::get('/{id}', [ValoracioController::class, 'getValoracio']);
     Route::post('', [ValoracioController::class, 'insertValoracio'])->middleware("token");
     Route::put('/put/{id}', [ValoracioController::class, 'updateValoracio'])->middleware("token");
-    Route::delete('/destroy/{id}', [ValoracioController::class, 'destroy'])->middleware("token");
+    Route::delete('/destroy/{id}', [ValoracioController::class, 'deleteValoracio'])->middleware("token");
 });
 // ! ruta de login
 Route::group(['prefix' => 'login'], function () {
@@ -160,7 +160,7 @@ Route::group(['prefix' => 'login'], function () {
 });
 // !ruta de fotografies
 Route::group(['prefix' => 'fotografies'], function () {
-    Route::get('/', [FotografiaController::class, 'getFotografies'])->middleware("token");
+    Route::get('/', [FotografiaController::class, 'getAllFotografies'])->middleware("token");
     Route::get('/{id}', [FotografiaController::class, 'getFotografia'])->middleware("token");
     Route::post('', [FotografiaController::class, 'insertFotografia'])->middleware("token");
     Route::put('/put/{id}', [FotografiaController::class, 'updateFotografia'])->middleware("token");
