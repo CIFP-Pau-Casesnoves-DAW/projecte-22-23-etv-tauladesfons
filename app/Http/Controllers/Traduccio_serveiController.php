@@ -44,7 +44,7 @@ class Traduccio_serveiController extends Controller
         $tuples = Traduccio_servei::all();
         return response()->json([
             'status' => 'success',
-            'result' => $tuples
+            'data' => $tuples
         ], 200);
     }
     /**
@@ -146,7 +146,7 @@ class Traduccio_serveiController extends Controller
             $traduccio_servei->FK_ID_IDIOMA = $request->FK_ID_IDIOMA;
             $traduccio_servei->TRADUCCIO_SERVEI = $request->TRADUCCIO_SERVEI;
             $traduccio_servei->save();
-            return response()->json(['status' => 'success', 'result' => $traduccio_servei], 200);
+            return response()->json(['status' => 'success', 'data' => $traduccio_servei], 200);
         }
     }
 

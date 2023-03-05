@@ -43,7 +43,7 @@ class Traduccio_vacancesController extends Controller
         $tuples = Traduccio_vacances::all();
         return response()->json([
             'status' => 'success',
-            'result' => $tuples
+            'data' => $tuples
         ], 200);
     }
 
@@ -148,7 +148,7 @@ class Traduccio_vacancesController extends Controller
             $traduccio_vacances->FK_ID_IDIOMA = $request->FK_ID_IDIOMA;
             $traduccio_vacances->TRADUCCIO_VAC = $request->TRADUCCIO_VAC;
             if ($traduccio_vacances->save()) {
-                return response()->json(['status' => 'Creat', 'result' => $traduccio_vacances], 200);
+                return response()->json(['status' => 'success', 'data' => $traduccio_vacances], 200);
             } else {
                 return response()->json(['status' => 'Error creant']);
             }
