@@ -225,8 +225,7 @@ class ReservaController extends Controller
      *     required=true,
      *     description="Dades de la reserva",
      *     @OA\JsonContent(
-     *     required={"ID_RESERVA","FK_ID_USUARI","FK_ID_ALLOTJAMENT","DATA_INICIAL","DATA_FINAL","CONFIRMADA"},
-     *     @OA\Property(property="ID_RESERVA", type="integer", example="1"),
+     *     required={"FK_ID_USUARI","FK_ID_ALLOTJAMENT","DATA_INICIAL","DATA_FINAL","CONFIRMADA"},
      *     @OA\Property(property="FK_ID_USUARI", type="integer", example="1"),
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", example="1"),
      *     @OA\Property(property="DATA_INICIAL", type="string", example="2020-01-01"),
@@ -240,7 +239,6 @@ class ReservaController extends Controller
      *     @OA\JsonContent(
      *     @OA\Property(property="status", type="string", example="success"),
      *     @OA\Property(property="result", type="object",
-     *     @OA\Property(property="ID_RESERVA", type="integer", example="1"),
      *     @OA\Property(property="FK_ID_USUARI", type="integer", example="1"),
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", example="1"),
      *     @OA\Property(property="DATA_INICIAL", type="string", example="2020-01-01"),
