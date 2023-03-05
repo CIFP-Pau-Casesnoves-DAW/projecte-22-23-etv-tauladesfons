@@ -71,8 +71,7 @@ class ComentariController extends Controller
      *     required=true,
      *     description="Dades del comentari",
      *     @OA\JsonContent(
-     *     required={"ID_COMENTARI","DESCRIPCIO","HORA","DATA","FK_ID_USUARI","FK_ID_ALLOTJAMENT"},
-     *     @OA\Property(property="ID_COMENTARI", type="integer", format="int64", example=1),
+     *     required={"DESCRIPCIO","HORA","DATA","FK_ID_USUARI","FK_ID_ALLOTJAMENT"},
      *     @OA\Property(property="DESCRIPCIO", type="string", format="string", example="Bon allotjament"),
      *     @OA\Property(property="HORA", type="string", format="string", example="12:00:00"),
      *     @OA\Property(property="DATA", type="string", format="string", example="2020-12-12"),
@@ -101,7 +100,6 @@ class ComentariController extends Controller
     public function insertComentari(Request $request)
     {
         $reglesvalidacio = [
-            'ID_COMENTARI' => 'required',
             'DESCRIPCIO' => 'required|max:255',
             'HORA' => 'required|date_format:H:i:s',
             'DATA' => 'required|date_format:Y-m-d',
@@ -110,7 +108,6 @@ class ComentariController extends Controller
 
         ];
         $missatges = [
-            'ID_COMENTARI.required' => 'El camp ID_COMENTARI és obligatori',
             'DESCRIPCIO.required' => 'El camp DESCRIPCIO és obligatori',
             'DESCRIPCIO.max' => 'El camp DESCRIPCIO no pot tenir més de 255 caràcters',
             'HORA.required' => 'El camp HORA és obligatori',
@@ -125,14 +122,13 @@ class ComentariController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         } else {
             $comentaris = new Comentari();
-            $comentaris->ID_COMENTARI = $request->input('ID_COMENTARI');
             $comentaris->DESCRIPCIO = $request->input('DESCRIPCIO');
             $comentaris->HORA = $request->input('HORA');
             $comentaris->DATA = $request->input('DATA');
             $comentaris->FK_ID_USUARI = $request->input('FK_ID_USUARI');
             $comentaris->FK_ID_ALLOTJAMENT = $request->input('FK_ID_ALLOTJAMENT');
             $comentaris->save();
-            return response()->json(['status' => 'Comentari creat correctament'], 201);
+            return response()->json(['status' => 'success', 'data' => $comentaris], 200);
         }
     }
 
@@ -209,8 +205,7 @@ class ComentariController extends Controller
      *     required=true,
      *     description="Dades del comentari",
      *     @OA\JsonContent(
-     *     required={"ID_COMENTARI","DESCRIPCIO","HORA","DATA","FK_ID_USUARI","FK_ID_ALLOTJAMENT"},
-     *     @OA\Property(property="ID_COMENTARI", type="integer", format="int64", example=1),
+     *     required={"DESCRIPCIO","HORA","DATA","FK_ID_USUARI","FK_ID_ALLOTJAMENT"},
      *     @OA\Property(property="DESCRIPCIO", type="string", format="string", example="Bon allotjament"),
      *     @OA\Property(property="HORA", type="string", format="string", example="12:00:00"),
      *     @OA\Property(property="DATA", type="string", format="string", example="2020-12-12"),
@@ -239,7 +234,6 @@ class ComentariController extends Controller
     public function updateComentari(Request $request, $id)
     {
         $reglesvalidacio = [
-            'ID_COMENTARI' => 'required',
             'DESCRIPCIO' => 'required|max:255',
             'HORA' => 'required|date_format:H:i:s',
             'DATA' => 'required|date_format:Y-m-d',
@@ -248,7 +242,6 @@ class ComentariController extends Controller
 
         ];
         $missatges = [
-            'ID_COMENTARI.required' => 'El camp ID_COMENTARI és obligatori',
             'DESCRIPCIO.required' => 'El camp DESCRIPCIO és obligatori',
             'DESCRIPCIO.max' => 'El camp DESCRIPCIO no pot tenir més de 255 caràcters',
             'HORA.required' => 'El camp HORA és obligatori',
@@ -264,16 +257,22 @@ class ComentariController extends Controller
         } else {
             try {
                 $comentaris = Comentari::findOrFail($id);
-                $comentaris->ID_COMENTARI = $request->input('ID_COMENTARI');
-                $comentaris->DESCRIPCIO = $request->input('DESCRIPCIO');
-                $comentaris->HORA = $request->input('HORA');
-                $comentaris->DATA = $request->input('DATA');
-                $comentaris->FK_ID_USUARI = $request->input('FK_ID_USUARI');
-                $comentaris->FK_ID_ALLOTJAMENT = $request->input('FK_ID_ALLOTJAMENT');
-                $comentaris->save();
-                return response()->json(['status' => 'Comentari actualitzat correctament'], 200);
+                if ($request->esAdministrador || $request->validat_id == $comentaris->FK_ID_USUARI) {
+                    $comentaris->DESCRIPCIO = $request->input('DESCRIPCIO');
+                    $comentaris->HORA = $request->input('HORA');
+                    $comentaris->DATA = $request->input('DATA');
+                    $comentaris->FK_ID_USUARI = $request->input('FK_ID_USUARI');
+                    $comentaris->FK_ID_ALLOTJAMENT = $request->input('FK_ID_ALLOTJAMENT');
+                    $comentaris->save();
+                    return response()->json(['status' => 'Comentari actualitzat correctament'], 200);
+                } else {
+                    return response()->json(['status' => 'No tens permisos per actualitzar aquest comentari'], 401);
+                }
             } catch (ModelNotFoundException $e) {
-                return response()->json(['error' => 'Comentari no trobat'], 404);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'El comentari amb id ' . $id . ' no existeix'
+                ], 404);
             }
         }
     }
