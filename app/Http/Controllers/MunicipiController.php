@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Municipi;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
@@ -36,14 +37,14 @@ class MunicipiController extends Controller
      *     @OA\Property(property="NOM_MUNICIPI", type="string")
      * )
      */
-    
+
     // ! GET DE TOTS
     public function getAllMunicipis()
     {
-        $tuples = Municipi::all();
+        $llistaMunicipis = Municipi::all();
         return response()->json([
             'status' => 'success',
-            'data' => $tuples
+            'data' => $llistaMunicipis
         ], 200);
     }
 
@@ -59,8 +60,7 @@ class MunicipiController extends Controller
      *     required=true,
      *     description="Dades del municipi",
      *     @OA\JsonContent(
-     *     required={"ID_MUNICIPI", "NOM_MUNICIPI"},
-     *     @OA\Property(property="ID_MUNICIPI", type="integer"),
+     *     required={"NOM_MUNICIPI"},
      *     @OA\Property(property="NOM_MUNICIPI", type="string")
      *  )
      * ),
@@ -78,12 +78,9 @@ class MunicipiController extends Controller
     public function insertMunicipi(Request $request)
     {
         $reglesvalidacio = [
-            'ID_MUNICIPI' => 'required|integer',
             'NOM_MUNICIPI' => 'required|string|max:50',
         ];
         $missatges = [
-            'ID_MUNICIPI.required' => 'El camp ID_MUNICIPI és obligatori',
-            'ID_MUNICIPI.integer' => 'El camp ID_MUNICIPI ha de ser un número enter',
             'NOM_MUNICIPI.required' => 'El camp NOM_MUNICIPI és obligatori',
             'NOM_MUNICIPI.string' => 'El camp NOM_MUNICIPI ha de ser una cadena de caràcters',
             'NOM_MUNICIPI.max' => 'El camp NOM_MUNICIPI no pot tenir més de 50 caràcters',
@@ -95,11 +92,18 @@ class MunicipiController extends Controller
                 'errors' => $validacio->errors()
             ], 400);
         } else {
-            $tuples = Municipi::create($request->all());
-            return response()->json([
-                'status' => 'success',
-                'data' => $tuples
-            ], 200);
+            $municipi = Municipi::firstOrCreate(['NOM_MUNICIPI' => $request->NOM_MUNICIPI]);
+            if ($municipi->wasRecentlyCreated) {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $municipi
+                ], 201);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'El municipi ja existeix'
+                ], 409);
+            }
         }
     }
 
@@ -132,7 +136,7 @@ class MunicipiController extends Controller
      *     @OA\JsonContent(
      *     type="object",
      *     @OA\Property(property="status", type="string"),
-     *     @OA\Property(property="message", type="string")
+     *     @OA\Property(property="data", type="string")
      * )
      * )
      * )
@@ -174,8 +178,7 @@ class MunicipiController extends Controller
      *     @OA\RequestBody(
      *     required=true,
      *     @OA\JsonContent(
-     *     required={"ID_MUNICIPI", "NOM_MUNICIPI"},
-     *     @OA\Property(property="ID_MUNICIPI", type="integer"),
+     *     required={"NOM_MUNICIPI"},
      *     @OA\Property(property="NOM_MUNICIPI", type="string")
      * )
      * ),
@@ -203,7 +206,7 @@ class MunicipiController extends Controller
      *     @OA\JsonContent(
      *     type="object",
      *     @OA\Property(property="status", type="string"),
-     *     @OA\Property(property="message", type="string")
+     *     @OA\Property(property="data", type="string")
      * )
      * )
      * )
@@ -212,12 +215,9 @@ class MunicipiController extends Controller
     public function updateMunicipi(Request $request, $id)
     {
         $reglesvalidacio = [
-            'ID_MUNICIPI' => 'required|integer',
             'NOM_MUNICIPI' => 'required|string|max:50',
         ];
         $missatges = [
-            'ID_MUNICIPI.required' => 'El camp ID_MUNICIPI és obligatori',
-            'ID_MUNICIPI.integer' => 'El camp ID_MUNICIPI ha de ser un número enter',
             'NOM_MUNICIPI.required' => 'El camp NOM_MUNICIPI és obligatori',
             'NOM_MUNICIPI.string' => 'El camp NOM_MUNICIPI ha de ser una cadena de caràcters',
             'NOM_MUNICIPI.max' => 'El camp NOM_MUNICIPI no pot tenir més de 50 caràcters',
@@ -230,16 +230,27 @@ class MunicipiController extends Controller
             ], 400);
         } else {
             try {
-                $municipis = Municipi::findOrFail($id);
-                $municipis->update($request->all());
+                $municipi = Municipi::findOrFail($id);
+                $nouNomMunicipi = $request->NOM_MUNICIPI;
+                if ($municipi->NOM_MUNICIPI !== $nouNomMunicipi) {
+                    $municipiExist = Municipi::where('NOM_MUNICIPI', $nouNomMunicipi)->first();
+                    if ($municipiExist !== null) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'el nom del Municipi ja existeix'
+                        ], 409);
+                    }
+                    $municipi->NOM_MUNICIPI = $nouNomMunicipi;
+                }
+                $municipi->save();
                 return response()->json([
                     'status' => 'success',
-                    'data' => $municipis
+                    'data' => $municipi
                 ], 200);
-            } catch (\Exception $e) {
+            } catch (ModelNotFoundException $e) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'El municipi amb id ' . $id . ' no existeix'
+                    'message' => 'No s\'ha trobat cap municipi amb la ID proporcionada',
                 ], 404);
             }
         }
@@ -282,11 +293,19 @@ class MunicipiController extends Controller
      */
     public function deleteMunicipi($id)
     {
-        $tuples = Municipi::findOrFail($id);
-        $tuples->delete();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Municipi eliminat correctament'
-        ], 200);
+        try {
+            $tuples = Municipi::findOrFail($id);
+            $tuples->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Municipi eliminat correctament'
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No s\'ha trobat cap municipi amb la ID proporcionada',
+            ], 404);
+        }
+
     }
 }
