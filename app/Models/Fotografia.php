@@ -13,13 +13,8 @@ class Fotografia extends Model
     public $timestamps = false;
     public $incrementing = false;
     protected $fillable = [
-        'ID_FOTO',
-        'FOTO',
-        'FK_ID_ALLOTJAMENT'
+        'URL',
+        'FK_ID_ALLOTJAMENT',
+        'DESCRIPCIO'
     ];
-    public function allotjament()
-    {
-        return $this->belongsTo('App\Models\Allotjament', 'FK_ID_ALLOTJAMENT', 'ID_ALLOTJAMENT');
-    }
-
 }
