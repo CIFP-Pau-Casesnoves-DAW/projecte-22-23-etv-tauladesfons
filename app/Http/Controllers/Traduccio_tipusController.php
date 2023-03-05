@@ -60,7 +60,7 @@ class Traduccio_tipusController extends Controller
         $tuples = Traduccio_tipus::all();
         return response()->json([
             'status' => 'success',
-            'result' => $tuples
+            'data' => $tuples
         ], 200);
     }
     /**
@@ -190,7 +190,7 @@ class Traduccio_tipusController extends Controller
             $traduccio_tipus->FK_ID_IDIOMA = $request->FK_ID_IDIOMA;
             $traduccio_tipus->TRADUCCIO_TIPUS = $request->TRADUCCIO_TIPUS;
             if ($traduccio_tipus->save()) {
-                return response()->json(['status' => 'Creat', 'result' => $traduccio_tipus], 200);
+                return response()->json(['status' => 'success', 'data' => $traduccio_tipus], 200);
             } else {
                 return response()->json(['status' => 'Error creant']);
             }
