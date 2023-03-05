@@ -278,19 +278,32 @@ class ReservaController extends Controller
         ];
         $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
         if ($validator->fails()) {
-            return response()->json(['status'=>'error','result'=>$validator->errors()], 400);
-        }else {
-            $reserves= Reserva::findOrFail($id);
-            $reserves->ID_RESERVA=$request->input('ID_RESERVA');
-            $reserves->FK_ID_USUARI=$request->input('FK_ID_USUARI');
-            $reserves->FK_ID_ALLOTJAMENT=$request->input('FK_ID_ALLOTJAMENT');
-            $reserves->DATA_INICIAL=$request->input('DATA_INICIAL');
-            $reserves->DATA_FINAL=$request->input('DATA_FINAL');
-            $reserves->CONFIRMADA=$request->input('CONFIRMADA');
-            $reserves->save();
-            return response()->json(['status'=>'success','result'=>$reserves], 200);
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()->all()
+            ], 400);
+        } else {
+            try {
+                $reserva = Reserva::findOrFail($id);
+                $reserva->FK_ID_USUARI = $request->FK_ID_USUARI;
+                $reserva->FK_ID_ALLOTJAMENT = $request->FK_ID_ALLOTJAMENT;
+                $reserva->DATA_INICIAL = $request->DATA_INICIAL;
+                $reserva->DATA_FINAL = $request->DATA_FINAL;
+                $reserva->CONFIRMADA = $request->CONFIRMADA;
+                $reserva->save();
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $reserva
+                ], 200);
+            } catch (ModelNotFoundException $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'La reserva amb id ' . $id . ' no existeix'
+                ], 404);
+            }
         }
     }
+
 
     /**
      * @OA\Delete(
