@@ -30,7 +30,6 @@ class ReservaController extends Controller
      * @OA\Schema(
      *     schema="Reserva",
      *     type="object",
-     *     @OA\Property(property="ID_RESERVA", type="integer"),
      *     @OA\Property(property="FK_ID_USUARI", type="integer"),
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer"),
      *     @OA\Property(property="DATA_INICIAL", type="string"),
@@ -60,8 +59,7 @@ class ReservaController extends Controller
      *     required=true,
      *     description="Pass reserva data",
      *     @OA\JsonContent(
-     *     required={"ID_RESERVA","FK_ID_USUARI","FK_ID_ALLOTJAMENT","DATA_INICIAL","DATA_FINAL","CONFIRMADA"},
-     *     @OA\Property(property="ID_RESERVA", type="integer", format="int64", example=1),
+     *     required={"FK_ID_USUARI","FK_ID_ALLOTJAMENT","DATA_INICIAL","DATA_FINAL","CONFIRMADA"},
      *     @OA\Property(property="FK_ID_USUARI", type="integer", format="int64", example=1),
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", format="int64", example=1),
      *     @OA\Property(property="DATA_INICIAL", type="string", format="date", example="2021-01-01"),
@@ -75,7 +73,6 @@ class ReservaController extends Controller
      *     @OA\JsonContent(
      *     @OA\Property(property="status", type="string", example="success"),
      *     @OA\Property(property="result", type="object",
-     *     @OA\Property(property="ID_RESERVA", type="integer", format="int64", example=1),
      *     @OA\Property(property="FK_ID_USUARI", type="integer", format="int64", example=1),
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", format="int64", example=1),
      *     @OA\Property(property="DATA_INICIAL", type="string", format="date", example="2021-01-01"),
@@ -90,7 +87,6 @@ class ReservaController extends Controller
      *     @OA\JsonContent(
      *     @OA\Property(property="status", type="string", example="error"),
      *     @OA\Property(property="result", type="object",
-     *     @OA\Property(property="ID_RESERVA", type="string", example="El camp ID_RESERVA és obligatori"),
      *     @OA\Property(property="FK_ID_USUARI", type="string", example="El camp FK_ID_USUARI és obligatori"),
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="string", example="El camp FK_ID_ALLOTJAMENT és obligatori"),
      *     @OA\Property(property="DATA_INICIAL", type="string", example="El camp DATA_INICIAL és obligatori"),
@@ -112,7 +108,6 @@ class ReservaController extends Controller
     public function insertReserva(Request $request)
     {
         $reglesvalidacio = [
-            'ID_RESERVA' => 'required',
             'FK_ID_USUARI' => 'required',
             'FK_ID_ALLOTJAMENT' => 'required',
             'DATA_INICIAL' => 'required|date_format:Y-m-d',
@@ -120,7 +115,6 @@ class ReservaController extends Controller
             'CONFIRMADA' => 'required|boolean'
         ];
         $missatges = [
-            'ID_RESERVA.required' => 'El camp ID_RESERVA és obligatori',
             'FK_ID_USUARI.required' => 'El camp FK_ID_USUARI és obligatori',
             'FK_ID_ALLOTJAMENT.required' => 'El camp FK_ID_ALLOTJAMENT és obligatori',
             'DATA_INICIAL.required' => 'El camp DATA_INICIAL és obligatori',
@@ -132,17 +126,21 @@ class ReservaController extends Controller
         ];
         $validator = Validator::make($request->all(), $reglesvalidacio, $missatges);
         if ($validator->fails()) {
-            return response()->json(['status'=>'error','result'=>$validator->errors()], 400);
+            return response()->json(['status'=>'error','errors'=>$validator->errors()], 400);
         }else {
-            $reserves= new Reserva;
-            $reserves->ID_RESERVA=$request->ID_RESERVA;
-            $reserves->FK_ID_USUARI=$request->FK_ID_USUARI;
-            $reserves->FK_ID_ALLOTJAMENT=$request->FK_ID_ALLOTJAMENT;
-            $reserves->DATA_INICIAL=$request->DATA_INICIAL;
-            $reserves->DATA_FINAL=$request->DATA_FINAL;
-            $reserves->CONFIRMADA=$request->CONFIRMADA;
-            $reserves->save();
-            return response()->json(['status'=>'success','result'=>$reserves], 200);
+            $reserva=Reserva::firstOrCreate([
+                'FK_ID_USUARI' => $request->FK_ID_USUARI,
+                'FK_ID_ALLOTJAMENT' => $request->FK_ID_ALLOTJAMENT,
+                'DATA_INICIAL' => $request->DATA_INICIAL,
+                'DATA_FINAL' => $request->DATA_FINAL,
+                'CONFIRMADA' => $request->CONFIRMADA
+            ]);
+            if ($reserva->wasRecentlyCreated) {
+                return response()->json(['status' => 'success', 'data' => $reserva], 200);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Reserva ja existent'], 400);
+
+            }
         }
 
     }
@@ -171,7 +169,6 @@ class ReservaController extends Controller
      *     @OA\JsonContent(
      *     @OA\Property(property="status", type="string", example="success"),
      *     @OA\Property(property="result", type="object",
-     *     @OA\Property(property="ID_RESERVA", type="integer", example="1"),
      *     @OA\Property(property="FK_ID_USUARI", type="integer", example="1"),
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", example="1"),
      *     @OA\Property(property="DATA_INICIAL", type="string", example="2020-01-01"),
@@ -228,8 +225,7 @@ class ReservaController extends Controller
      *     required=true,
      *     description="Dades de la reserva",
      *     @OA\JsonContent(
-     *     required={"ID_RESERVA","FK_ID_USUARI","FK_ID_ALLOTJAMENT","DATA_INICIAL","DATA_FINAL","CONFIRMADA"},
-     *     @OA\Property(property="ID_RESERVA", type="integer", example="1"),
+     *     required={"FK_ID_USUARI","FK_ID_ALLOTJAMENT","DATA_INICIAL","DATA_FINAL","CONFIRMADA"},
      *     @OA\Property(property="FK_ID_USUARI", type="integer", example="1"),
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", example="1"),
      *     @OA\Property(property="DATA_INICIAL", type="string", example="2020-01-01"),
@@ -243,7 +239,6 @@ class ReservaController extends Controller
      *     @OA\JsonContent(
      *     @OA\Property(property="status", type="string", example="success"),
      *     @OA\Property(property="result", type="object",
-     *     @OA\Property(property="ID_RESERVA", type="integer", example="1"),
      *     @OA\Property(property="FK_ID_USUARI", type="integer", example="1"),
      *     @OA\Property(property="FK_ID_ALLOTJAMENT", type="integer", example="1"),
      *     @OA\Property(property="DATA_INICIAL", type="string", example="2020-01-01"),
@@ -265,7 +260,6 @@ class ReservaController extends Controller
     public function updateReserva(Request $request, $id)
     {
         $reglesvalidacio = [
-            'ID_RESERVA' => 'required',
             'FK_ID_USUARI' => 'required',
             'FK_ID_ALLOTJAMENT' => 'required',
             'DATA_INICIAL' => 'required|date_format:Y-m-d',
@@ -273,7 +267,6 @@ class ReservaController extends Controller
             'CONFIRMADA' => 'required|boolean'
         ];
         $missatges = [
-            'ID_RESERVA.required' => 'El camp ID_RESERVA és obligatori',
             'FK_ID_USUARI.required' => 'El camp FK_ID_USUARI és obligatori',
             'FK_ID_ALLOTJAMENT.required' => 'El camp FK_ID_ALLOTJAMENT és obligatori',
             'DATA_INICIAL.required' => 'El camp DATA_INICIAL és obligatori',
