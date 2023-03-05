@@ -207,14 +207,11 @@ class ValoracioController extends Controller
     public function updateValoracio(Request $request, $id)
     {
         $reglesvalidacio  = [
-            'ID_VALORACIO' => 'required|integer',
             'PUNTUACIO' => 'required|integer',
             'FK_ID_USUARI' => 'required|integer',
             'FK_ID_ALLOTJAMENT' => 'required|integer'
         ];
         $missatges = [
-            'ID_VALORACIO.required' => 'El camp ID_VALORACIO és obligatori.',
-            'ID_VALORACIO.integer' => 'El camp ID_VALORACIO ha de ser un número enter.',
             'PUNTUACIO.required' => 'El camp PUNTUACIO és obligatori.',
             'PUNTUACIO. integer' => 'El camp PUNTUACIO ha de ser un número enter.',
             'FK_ID_USUARI.required' => 'El camp FK_ID_USUARI és obligatori.',
@@ -223,15 +220,35 @@ class ValoracioController extends Controller
             'FK_ID_ALLOTJAMENT.integer' => 'El camp FK_ID_ALLOTJAMENT ha de ser un número enter.'
         ];
         $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
-        $tuples = Valoracio::where('ID_VALORACIO', $id)->update($request->except(['_token']));
         if ($validacio->fails()) {
             return response()->json([
-                'error' => $validacio->errors()->all()
-            ]);
+                'stauts' => 'error',
+                $validacio->errors()
+            ], 400);
         } else {
-            return response()->json([
-                'success' => 'Valoració modificada correctament.'
-            ]);
+            try {
+                $valoracio = Valoracio::findOrFail($id);
+                if($request->esAdministrador || $request->validar_id == $valoracio->FK_ID_USUARI){
+                    $valoracio->PUNTUACIO = $request->PUNTUACIO;
+                    $valoracio->FK_ID_USUARI = $request->FK_ID_USUARI;
+                    $valoracio->FK_ID_ALLOTJAMENT = $request->FK_ID_ALLOTJAMENT;
+                    $valoracio->save();
+                    return response()->json([
+                        'status' => 'success',
+                        'data' => $valoracio
+                    ], 200);
+
+    } else {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No tens permisos per actualitzar aquesta valoració'
+        ], 403);
+    }
+} catch (ModelNotFoundException $e) {
+    return response()->json([
+        'status' => 'error',
+        'message' => 'La valoració amb id ' . $id . ' no existeix'], 404);
+            }
         }
     }
 
@@ -267,17 +284,27 @@ class ValoracioController extends Controller
      *     )
      * )
      */
-    public function deleteValoracio($id)
+    public function deleteValoracio($id, Request $request)
     {
-        try {
-            $tuples = Valoracio::where('ID_VALORACIO', $id)->delete();
-            return  response()->json([
-                'success' => 'Valoració eliminada correctament.'
-            ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'error' => 'No s\'ha pogut eliminar la valoració.'
-            ]);
+       try {
+                $valoracio = Valoracio::findOrFail($id);
+                if($request->esAdministrador || $request->validar_id == $valoracio->FK_ID_USUARI){
+                    $valoracio->delete();
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'La valoració amb id ' . $id . ' s\'ha eliminat correctament'
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'No tens permisos per eliminar aquesta valoració'
+                    ], 403);
+                }
+            } catch (ModelNotFoundException $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'La valoració amb id ' . $id . ' no existeix'
+                ], 404);
+            }
         }
     }
-}
