@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tipus;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
@@ -176,8 +177,7 @@ class TipusController extends Controller
      *     description="Dades del tipus",
      *     required=true,
      *     @OA\JsonContent(
-     *     required={"ID_TIPUS","NOM_TIPUS"},
-     *     @OA\Property(property="ID_TIPUS", type="integer"),
+     *     required={"NOM_TIPUS"},
      *     @OA\Property(property="NOM_TIPUS", type="string")
      *   )
      * ),
@@ -202,26 +202,44 @@ class TipusController extends Controller
     public function updateTipus(Request $request, $id)
     {
         $reglesvalidacio = [
-            'ID_TIPUS' => 'required|integer',
             'NOM_TIPUS' => 'required|string|max:50'
         ];
         $missatge = [
-            'ID_TIPUS.required' => 'El camp ID_TIPUS és obligatori',
-            'ID_TIPUS.integer' => 'El camp ID_TIPUS ha de ser un enter',
             'NOM_TIPUS.required' => 'El camp NOM_TIPUS és obligatori',
             'NOM_TIPUS.string' => 'El camp NOM_TIPUS ha de ser una cadena de caràcters',
             'NOM_TIPUS.max' => 'El camp NOM_TIPUS no pot tenir més de 50 caràcters'
         ];
         $validacio = Validator::make($request->all(), $reglesvalidacio, $missatge);
-        $tuples = Tipus::where('ID_TIPUS', $id)->update($request->except(['_token']));
         if ($validacio->fails()) {
             return response()->json([
-                'error' => $validacio->errors()->all()
-            ]);
+                'status' => 'error',
+                'errors' => $validacio->errors()
+            ], 400);
         } else {
-            return response()->json([
-                'success' => 'Tipus modificat correctament.'
-            ]);
+            try {
+                $tipus = Tipus::findOrFail($id);
+                $nouNomTipus = $request->NOM_TIPUS;
+                if ($tipus->NOM_TIPUS !== $nouNomTipus) {
+                    $tipusExist = Tipus::where('NOM_TIPUS', $nouNomTipus)->first();
+                    if ($tipusExist !== null) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Aquest tipus ja existeix'
+                        ], 409);
+                    }
+                    $tipus->NOM_TIPUS = $nouNomTipus;
+                }
+                $tipus->save();
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $tipus
+                ], 200);
+            } catch (ModelNotFoundException $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No s\'ha trobat cap tipus amb la ID proporcionada',
+                ], 404);
+            }
         }
     }
 // ! DELETE DE TIPUS
@@ -263,11 +281,18 @@ class TipusController extends Controller
      */
     public function deleteTipus($id)
     {
-        $tuples = Tipus::findOrFail($id);
-        $tuples->delete();
-        return response()->json([
-            'status' => 'deleted',
-            'data' => $tuples
-        ], 200);
+        try {
+            $tuples = Tipus::findOrFail($id);
+            $tuples->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Tipus eliminat correctament'
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No s\'ha trobat cap tipus amb la ID proporcionada',
+            ], 404);
+        }
     }
 }
