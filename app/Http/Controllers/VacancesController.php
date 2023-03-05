@@ -37,7 +37,6 @@ class VacancesController extends Controller
      * @OA\Schema(
      *     schema="Vacances",
      *     type="object",
-     *     @OA\Property(property="ID_VACANCES", type="integer"),
      *     @OA\Property(property="NOM_VACANCES", type="string")
      *
      * )
@@ -81,12 +80,9 @@ class VacancesController extends Controller
     public function insertVacances(Request $request)
     {
         $reglesvalidacio = [
-            'ID_VACANCES' => 'required|integer',
             'NOM_VACANCES' => 'required|string|max:50'
         ];
         $missatges = [
-            'ID_VACANCES.required' => 'El camp ID_VACANCES és obligatori.',
-            'ID_VACANCES.integer' => 'El camp ID_VACANCES ha de ser un número enter.',
             'NOM_VACANCES.required' => 'El camp NOM_VACANCES és obligatori.',
             'NOM_VACANCES.string' => 'El camp NOM_VACANCES ha de ser una cadena de caràcters.',
             'NOM_VACANCES.max' => 'El camp NOM_VACANCES no pot tenir més de 50 caràcters.'
@@ -95,11 +91,21 @@ class VacancesController extends Controller
         if ($validacio->fails()) {
             return response()->json($validacio->errors(), 400);
         } else {
-            $vacances = new Vacances;
-            $vacances->ID_VACANCES = $request->input('ID_VACANCES');
-            $vacances->NOM_VACANCES = $request->input('NOM_VACANCES');
-            $vacances->save();
-            return response()->json($vacances, 201);
+            $vacances=Vacances::firstOrCreate(
+                ['NOM_VACANCES' => $request->NOM_VACANCES]
+            );
+            if ($vacances->wasRecentlyCreated) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Vacances afegida correctament.'
+                ], 201);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Vacances ja existent.'
+                ], 409);
+            }
+
         }
     }
 
@@ -194,26 +200,44 @@ class VacancesController extends Controller
     public function updateVacances(Request $request, $id)
     {
         $reglesvalidacio = [
-            'ID_VACANCES' => 'required|integer',
             'NOM_VACANCES' => 'required|string|max:50'
         ];
         $missatges = [
-            'ID_VACANCES.required' => 'El camp ID_VACANCES és obligatori.',
-            'ID_VACANCES.integer' => 'El camp ID_VACANCES ha de ser un número enter.',
             'NOM_VACANCES.required' => 'El camp NOM_VACANCES és obligatori.',
             'NOM_VACANCES.string' => 'El camp NOM_VACANCES ha de ser una cadena de caràcters.',
             'NOM_VACANCES.max' => 'El camp NOM_VACANCES no pot tenir més de 50 caràcters.'
         ];
         $validacio = Validator::make($request->all(), $reglesvalidacio, $missatges);
-        $tuples = Vacances::where('ID_VACANCES', $id)->update($request->except(['_token']));
         if ($validacio->fails()) {
             return response()->json([
-                'error' => $validacio->errors()->all()
-            ]);
-        } else {
-            return response()->json([
-                'success' => 'Vacances modificades correctament.'
-            ]);
+                'status' => 'error',
+                'errors' => $validacio->errors()
+            ], 400);
+    } else{
+            try {
+                $vacances = Vacances::findOrFail($id);
+                $nouNom = $request->NOM_VACANCES;
+                if($vacances->NOM_VACANCES!==$nouNom) {
+                    $nomExistents = Vacances::where('NOM_VACANCES', $nouNom)->first();
+                    if ($nomExistents !== null) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'La vacances amb nom ' . $nouNom . ' ja existeix.'
+                        ], 409);
+                    }
+                    $vacances->NOM_VACANCES = $nouNom;
+                }
+                $vacances->save();
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $vacances
+                ], 200);
+    } catch (ModelNotFoundException $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Les vacances amb id ' . $id . ' no existeixen'
+                ], 404);
+            }
         }
     }
 
