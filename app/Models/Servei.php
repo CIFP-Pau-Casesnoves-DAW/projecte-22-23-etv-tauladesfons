@@ -12,7 +12,7 @@ class Servei extends Model
     protected $primaryKey = 'ID_SERVEI';
     public $timestamps = false;
     public $incrementing = false;
-    public $fillable = ['ID_SERVEI','NOM_SERVEI'];
+    public $fillable = ['NOM_SERVEI'];
 
 
 }
