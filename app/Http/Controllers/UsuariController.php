@@ -27,7 +27,7 @@ class UsuariController extends Controller
      *         description="Success",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="result", type="array",@OA\Items(
+     *             @OA\Property(property="data", type="array",@OA\Items(
      *                 @OA\Property(property="ID_USUARI", type="integer", example=1),
      *                 @OA\Property(property="DNI", type="string", example="12345678Z"),
      *                 @OA\Property(property="NOM_COMPLET", type="string", example="Pere Pujol"),
@@ -54,14 +54,23 @@ class UsuariController extends Controller
      *
      * )
      */
-    public function getAllUsuaris()
+    public function getAllUsuaris(Request $request)
     {
-        $tuples = Usuari::all();
-        return response()->json([
-            'status' => 'success',
-            'result' => $tuples
-        ], 200);
+        if ($request->esAdministrador) {
+            $tuples = Usuari::all();
+            return response()->json([
+                'status' => 'success',
+                'data' => $tuples
+            ], 200);
+        }else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'permisos insuficients'
+            ]);
+        }
+
     }
+
     /**
      * @OA\Post(
      *     path="/usuaris",
@@ -135,9 +144,9 @@ class UsuariController extends Controller
             $usuari->TELEFON = $request->input('TELEFON');
             $usuari->ADMINISTRADOR = 0;
             if ($usuari->save()) {
-                return response()->json(['status' => 'success', 'result' => $usuari], 200);
+                return response()->json(['status' => 'success', 'data' => $usuari], 200);
             }
-            return response()->json(['status' => 'Error', 'Result' => 'Error guardant'], 400);
+            return response()->json(['status' => 'Error', 'data' => 'Error guardant'], 400);
         }
     }
 

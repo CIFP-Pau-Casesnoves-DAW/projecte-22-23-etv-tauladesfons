@@ -13,13 +13,11 @@ class Usuari extends Model
     public $timestamps = false;
     public $incrementing = false;
     protected $fillable = [
-        'ID_USUARI',
         'DNI',
         'NOM_COMPLET',
         'CORREU_ELECTRONIC',
         'CONTRASENYA',
-        'TELEFON',
-        'ADMINISTRADOR'
+        'TELEFON'
     ];
-    protected $hidden = ['CONTRASENYA', 'TOKEN', 'ADMINISTRADOR'];
+    protected $hidden = ['CONTRASENYA'];
 }
