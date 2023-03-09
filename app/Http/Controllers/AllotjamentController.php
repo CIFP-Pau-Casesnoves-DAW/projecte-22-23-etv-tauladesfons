@@ -63,39 +63,43 @@ class AllotjamentController extends Controller
 
 
     /**
-     * @OA\Post (
+     * @OA\Post(
      *     path="/allotjaments",
-     *     summary="Crea un allotjament",
+     *     summary="Crear un allotjament",
      *     tags={"Allotjaments"},
      *     security={{"bearerAuth":{}}},
-     *     @OA\RequestBody (
-     *     required=true,
-     *     description="Dades de l'allotjament",
-     *     @OA\JsonContent (
-     *     ref="#/components/schemas/Allotjament"
-     *   )
-     * ),
-     *     @OA\Response (
+     *     description="Crear un nou allotjament",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="NOM_COMERCIAL", type="string", example="Hotel vista al mar"),
+     *             @OA\Property(property="NUM_REGISTRE", type="string", example="S2W777"),             
+     *             @OA\Property(property="DESCRIPCIO", type="string", example="Descripcio ipsum xd"),
+     *             @OA\Property(property="LLITS", type="integer", example="4"),
+     *             @OA\Property(property="PERSONES", type="integer", example="5"),
+     *             @OA\Property(property="BANYS", type="integer", example="3"),
+     *             @OA\Property(property="ADREÇA", type="string", example="c/Sant Pere 25"),
+     *             @OA\Property(property="FK_ID_MUNICIPI", type="integer", example="1"),
+     *             @OA\Property(property="FK_ID_TIPUS", type="integer", example="1"),
+     *             @OA\Property(property="FK_ID_VACANCES", type="integer", example="1"),
+     *             @OA\Property(property="FK_ID_CATEGORIA", type="integer", example="1"),
+     *             @OA\Property(property="FK_ID_USUARI", type="integer", example="1"),
+     *        )
+     *    ),
+     *     @OA\Response(
      *     response=200,
-     *     description="Allotjament creat",
-     *     @OA\JsonContent (
-     *     ref="#/components/schemas/Allotjament"
-     *   )
-     * ),
-     *     @OA\Response (
-     *     response=400,
-     *     description="Error de validació",
-     *     @OA\JsonContent (
-     *     ref="#/components/schemas/Error"
-     *  )
+     *     description="success",
+     *     @OA\JsonContent(
+     *     @OA\Property(property="status", type="integer", example="success"),
+     *     @OA\Property(property="data",type="object")
+     *   ))
      * )
-     * )
+     * )))
      */
     public function insertAllotjament(Request $request)
     {
 
         $reglesvalidacio = [
-            'ID_ALLOTJAMENT' => 'required|integer',
             'NOM_COMERCIAL' => 'required|string|max:50',
             'NUM_REGISTRE' => 'required|string|max:50',
             'DESCRIPCIO' => 'required|string|max:500',
@@ -103,8 +107,6 @@ class AllotjamentController extends Controller
             'PERSONES' => 'required|integer',
             'BANYS' => 'required|integer',
             'ADREÇA' => 'required|string|max:50',
-            'DESTACAT' => 'required|boolean',
-            'VALORACIO_GLOBAL' => 'required|integer',
             'FK_ID_MUNICIPI' => 'required|integer',
             'FK_ID_TIPUS' => 'required|integer',
             'FK_ID_VACANCES' => 'required|integer',
@@ -112,8 +114,6 @@ class AllotjamentController extends Controller
             'FK_ID_USUARI' => 'required|integer',
         ];
         $missatges = [
-            'ID_ALLOTJAMENT.required' => 'El camp ID_ALLOTJAMENT és obligatori.',
-            'ID_ALLOTJAMENT.integer' => 'El camp ID_ALLOTJAMENT ha de ser un número enter.',
             'NOM_COMERCIAL.required' => 'El camp NOM_COMERCIAL és obligatori.',
             'NOM_COMERCIAL.string' => 'El camp NOM_COMERCIAL ha de ser una cadena de caràcters.',
             'NOM_COMERCIAL.max' => 'El camp NOM_COMERCIAL no pot tenir més de 50 caràcters.',
@@ -132,10 +132,6 @@ class AllotjamentController extends Controller
             'ADREÇA.required' => 'El camp ADRECA és obligatori.',
             'ADREÇA.string' => 'El camp ADRECA ha de ser una cadena de caràcters.',
             'ADREÇA.max' => ' El camp ADRECA no pot tenir més de 50 caràcters.',
-            'DESTACAT.required' => 'El camp DESTACAT és obligatori.',
-            'DESTACAT.boolean' => 'El camp DESTACAT ha de ser un booleà.',
-            'VALORACIO_GLOBAL.required' => 'El camp VALORACIO_GLOBAL és obligatori.',
-            'VALORACIO_GLOBAL.integer' => 'El camp VALORACIO_GLOBAL ha de ser un número enter.',
             'FK_ID_MUNICIPI.required' => 'El camp FK_ID_MUNICIPI és obligatori.',
             'FK_ID_MUNICIPI.integer' => 'El camp FK_ID_MUNICIPI ha de ser un número enter.',
             'FK_ID_TIPUS.required' => 'El camp FK_ID_TIPUS és obligatori.',
@@ -152,7 +148,6 @@ class AllotjamentController extends Controller
             return response()->json($validacio->errors(), 400);
         } else {
             $allotjament = new Allotjament();
-            $allotjament->ID_ALLOTJAMENT = $request->input('ID_ALLOTJAMENT');
             $allotjament->NOM_COMERCIAL = $request->input('NOM_COMERCIAL');
             $allotjament->NUM_REGISTRE = $request->input('NUM_REGISTRE');
             $allotjament->DESCRIPCIO = $request->input('DESCRIPCIO');
@@ -160,15 +155,15 @@ class AllotjamentController extends Controller
             $allotjament->PERSONES = $request->input('PERSONES');
             $allotjament->BANYS = $request->input('BANYS');
             $allotjament->ADREÇA = $request->input('ADREÇA');
-            $allotjament->DESTACAT = $request->input('DESTACAT');
-            $allotjament->VALORACIO_GLOBAL = $request->input('VALORACIO_GLOBAL');
             $allotjament->FK_ID_MUNICIPI = $request->input('FK_ID_MUNICIPI');
             $allotjament->FK_ID_TIPUS = $request->input('FK_ID_TIPUS');
             $allotjament->FK_ID_VACANCES = $request->input('FK_ID_VACANCES');
             $allotjament->FK_ID_CATEGORIA = $request->input('FK_ID_CATEGORIA');
             $allotjament->FK_ID_USUARI = $request->input('FK_ID_USUARI');
-            $allotjament->save();
-            return response()->json($allotjament, 200);
+            if ($allotjament->save()) {
+                return response()->json(['status' => 'success', 'data' => $allotjament], 200);
+            }
+            return response()->json(['status' => 'error', 'data' => 'Error guardant'], 400);
         }
     }
     /**
@@ -310,12 +305,7 @@ class AllotjamentController extends Controller
      *    required=true,
      *    description="Dades allotjament",
      *    @OA\JsonContent(
-     *       required={"ID_ALLOTJAMENT","NOM_COMERCIAL","NUM_REGISTRE","DESCRIPCIO","LLITS","PERSONES","BANYS","ADREÇA","DESTACAT","VALORACIO_GLOBAL","FK_ID_MUNICIPI","FK_ID_TIPUS","FK_ID_VACANCES","FK_ID_CATEGORIA","FK_ID_USUARI"},
-     *       @OA\Property(
-     *        property="ID_ALLOTJAMENT",
-     *        type="integer",
-     *        example="1"
-     *       ),
+     *       required={"NOM_COMERCIAL","NUM_REGISTRE","DESCRIPCIO","LLITS","PERSONES","BANYS","ADREÇA","FK_ID_MUNICIPI","FK_ID_TIPUS","FK_ID_VACANCES","FK_ID_CATEGORIA","FK_ID_USUARI"},
      *       @OA\Property(
      *        property="NOM_COMERCIAL",
      *        type="string",
@@ -350,16 +340,6 @@ class AllotjamentController extends Controller
      *        property="ADREÇA",
      *        type="string",
      *        example="Carrer de l'hotel, 1"
-     *       ),
-     *       @OA\Property(
-     *        property="DESTACAT",
-     *        type="integer",
-     *        example="1"
-     *       ),
-     *       @OA\Property(
-     *        property="VALORACIO_GLOBAL",
-     *        type="integer",
-     *        example="5"
      *       ),
      *       @OA\Property(
      *        property="FK_ID_MUNICIPI",
@@ -401,7 +381,6 @@ class AllotjamentController extends Controller
     public function updateAllotjament(Request $request, $id)
     {
         $regles = [
-            'ID_ALLOTJAMENT' => 'required|integer',
             'NOM_COMERCIAL' => 'required|string|max:50',
             'NUM_REGISTRE' => 'required|string|max:50',
             'DESCRIPCIO' => 'required|string|max:500',
@@ -409,8 +388,6 @@ class AllotjamentController extends Controller
             'PERSONES' => 'required|integer',
             'BANYS' => 'required|integer',
             'ADREÇA' => 'required|string|max:50',
-            'DESTACAT' => 'required|boolean',
-            'VALORACIO_GLOBAL' => 'required|integer',
             'FK_ID_MUNICIPI' => 'required|integer',
             'FK_ID_TIPUS' => 'required|integer',
             'FK_ID_VACANCES' => 'required|integer',
@@ -418,8 +395,6 @@ class AllotjamentController extends Controller
             'FK_ID_USUARI' => 'required|integer'
         ];
         $missatges = [
-            'ID_ALLOTJAMENT.required' => 'El camp ID_ALLOTJAMENT és obligatori.',
-            'ID_ALLOTJAMENT.integer' => 'El camp ID_ALLOTJAMENT ha de ser un número enter.',
             'NOM_COMERCIAL.required' => 'El camp NOM_COMERCIAL és obligatori.',
             'NOM_COMERCIAL.string' => 'El camp NOM_COMERCIAL ha de ser una cadena de text.',
             'NOM_COMERCIAL.max' => 'El camp NOM_COMERCIAL no pot tenir més de 50 caràcters.',
@@ -438,10 +413,6 @@ class AllotjamentController extends Controller
             'ADREÇA.required' => 'El camp ADREÇA és obligatori.',
             'ADREÇA.string' => 'El camp ADREÇA ha de ser una cadena de text.',
             'ADREÇA.max' => 'El camp ADREÇA no pot tenir més de 50 caràcters.',
-            'DESTACAT.required' => 'El camp DESTACAT és obligatori.',
-            'DESTACAT.boolean' => 'El camp DESTACAT ha de ser un booleà.',
-            'VALORACIO_GLOBAL.required' => 'El camp VALORACIO_GLOBAL és obligatori.',
-            'VALORACIO_GLOBAL.integer' => 'El camp VALORACIO_GLOBAL ha de ser un número enter.',
             'FK_ID_MUNICIPI.required' => 'El camp FK_ID_MUNICIPI és obligatori.',
             'FK_ID_MUNICIPI.integer' => 'El camp FK_ID_MUNICIPI ha de ser un número enter.',
             'FK_ID_TIPUS.required' => 'El camp FK_ID_TIPUS és obligatori.',
@@ -459,10 +430,10 @@ class AllotjamentController extends Controller
         }
         $allotjament = Allotjament::find($id);
         if ($allotjament == null) {
-            return response()->json(['error' => 'No s\'ha trobat l\'allotjament'], 404);
+            return response()->json(['status'=>'error', 'message' => 'No s\'ha trobat l\'allotjament'], 404);
         }
         $allotjament->update($request->all());
-        return response()->json($allotjament, 200);
+        return response()->json(['status'=> 'success', 'data' => $allotjament],200);
     }
 
     /**
@@ -519,15 +490,17 @@ class AllotjamentController extends Controller
     public function deleteAllotjament($id)
     {
         try {
-            $tuples = Allotjament::FindOrFail($id);
-            $tuples->delete();
+            $tuples = Allotjament::findOrFail($id);
+            $tuples->delete(); 
             return response()->json([
-                'success' => 'Allotjament eliminat correctament'
-            ]);
-        } catch (Exception $e) {
+                'status' => 'success',
+                'message' => 'Allotjament eliminat correctament'
+            ], 200);
+        } catch (ModelNotFoundException $e) {
             return response()->json([
-                'error' => 'No s\'ha pogut eliminar l\'allotjament'
-            ]);
+                'status' => 'error',
+                'message' => 'No s\'ha trobat cap allotjament amb la ID proporcionada',
+            ], 404);
         }
     }
 }

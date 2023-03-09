@@ -13,7 +13,6 @@ class Allotjament extends Model
     public $incrementing = false;
     public $timestamps = false;
     protected $fillable = [
-        'ID_ALLOTJAMENT',
         'NOM_COMERCIAL',
         'NUM_REGISTRE',
         'DESCRIPCIO',
@@ -21,8 +20,6 @@ class Allotjament extends Model
         'PERSONES',
         'BANYS',
         'ADRECA',
-        'DESTACAT',
-        'VALORACIO_GLOBAL',
         'FK_ID_MUNICIPI',
         'FK_ID_TIPUS',
         'FK_ID_VACANCES',
